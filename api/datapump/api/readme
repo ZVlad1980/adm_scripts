@@ -1,0 +1,30 @@
+﻿CREATE PLUGGABLE DATABASE datapump ADMIN USER admin IDENTIFIED BY adminpasswd STORAGE UNLIMITED  PATH_PREFIX = '/u01/datapump';
+alter pluggable database datapump open;
+alter pluggable database all save state;
+alter session set container=nodepdb;
+CREATE BIGFILE TABLESPACE GFNDDATA datafile size 90G AUTOEXTEND ON NEXT 100M MAXSIZE UNLIMITED blocksize 16K;
+
+коннект к pdb и заливка )
+
+Монтирование шары VB:
+# /bin/mount -t vboxsf gfdump /u01/datapump/gfdump
+# chown -R oracle:oinstall gfdump
+# chmod -R 774 gfdump
+
+постоянное (надо решить вопрос с автозагрузка ACFS:
+vi /etc/fstab
+gfdump /u01/data/oradata/NODEPDB/gfdump vboxsf comment=systemd.automount,uid=conib,gid=conib,noauto 0 0
+
+alter pluggable database nodepdb close immediate;
+alter pluggable database nodepdb open read only;
+create pluggable database pdb000 from nodepdb SNAPSHOT COPY;
+alter pluggable database nodepdb close immediate;
+alter pluggable database pdb000 open;
+
+drop pluggable database pdb001 including datafiles;
+
+Также ставил rlwrap для поддержки истории команд в sqlplus
+Oracle Doc: https://oracle-base.com/articles/linux/rlwrap
+Источник: https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
+yum install rlwrap
+Настройка: http://www.f-notes.info/oracle:sqlplus_rlwrap

@@ -1,0 +1,56 @@
+﻿/u01/app/oracle/oradata/pdbs/tempfiles
+
+NODEPDB_CLONE01
+ls -l /u01/app/oracle/oradata/TESTCDB/6BAC3A07AD285A84E055E371072A900A/datafile
+total 3981356
+o1_mf_gfndcdm_fh2k24z0_.dbf   -> /u01/app/oracle/oradata/.ACFS/snaps/6BAC3A07AD285A84E055E371072A900A/TESTCDB/69CE71C52A604F30E055E371072A900A/datafile/o1_mf_gfndcdm_ff3t70wf_.dbf
+o1_mf_gfnddata_fh2k24z2_.dbf  -> /u01/app/oracle/oradata/.ACFS/snaps/6BAC3A07AD285A84E055E371072A900A/TESTCDB/69CE71C52A604F30E055E371072A900A/datafile/o1_mf_gfnddata_ff3t70wg_.dbf
+o1_mf_gfndfnd_fh2k24z1_.dbf   -> /u01/app/oracle/oradata/.ACFS/snaps/6BAC3A07AD285A84E055E371072A900A/TESTCDB/69CE71C52A604F30E055E371072A900A/datafile/o1_mf_gfndfnd_ff3t70wg_.dbf
+o1_mf_sysaux_fh2k24yx_.dbf    -> /u01/app/oracle/oradata/.ACFS/snaps/6BAC3A07AD285A84E055E371072A900A/TESTCDB/69CE71C52A604F30E055E371072A900A/datafile/o1_mf_sysaux_ff3t70wb_.dbf
+o1_mf_system_fh2k24yw_.dbf    -> /u01/app/oracle/oradata/.ACFS/snaps/6BAC3A07AD285A84E055E371072A900A/TESTCDB/69CE71C52A604F30E055E371072A900A/datafile/o1_mf_system_ff3t70vw_.dbf
+o1_mf_undotbs1_fh2k24yy_.dbf  -> /u01/app/oracle/oradata/.ACFS/snaps/6BAC3A07AD285A84E055E371072A900A/TESTCDB/69CE71C52A604F30E055E371072A900A/datafile/o1_mf_undotbs1_ff3t70wc_.dbf
+o1_mf_users_fh2k24yz_.dbf     -> /u01/app/oracle/oradata/.ACFS/snaps/6BAC3A07AD285A84E055E371072A900A/TESTCDB/69CE71C52A604F30E055E371072A900A/datafile/o1_mf_users_ff3t70wd_.dbf
+
+o1_mf_temp_fh2k24yz_.dbf
+
+exec DBMS_PDB.DESCRIBE('/home/oracle/tstcdb/nodepdb_clone01.xml'); --replace /u01/app/oracle/oradata/TESTCDB/6BAC3A07AD285A84E055E371072A900A to /u01/app/oracle/oradata/TESTCDB/nodepdb_clone03
+
+acfsutil snap create -w -p 6BAC3A07AD285A84E055E371072A900A nodepdbclone03 .
+
+cp -R /u01/app/oracle/oradata/TESTCDB/6BAC3A07AD285A84E055E371072A900A/ /u01/app/oracle/oradata/TESTCDB/nodepdb_clone03/
+cd /u01/app/oracle/oradata/TESTCDB/nodepdb_clone03/datafile
+
+
+o1_mf_gfndcdm_fh2k24z0_.dbf  -> /u01/app/oracle/oradata/.ACFS/snaps/6BAC3A07AD285A84E055E371072A900A/TESTCDB/69CE71C52A604F30E055E371072A900A/datafile/o1_mf_gfndcdm_ff3t70wf_.dbf
+o1_mf_gfnddata_fh2k24z2_.dbf -> /u01/app/oracle/oradata/.ACFS/snaps/6BAC3A07AD285A84E055E371072A900A/TESTCDB/69CE71C52A604F30E055E371072A900A/datafile/o1_mf_gfnddata_ff3t70wg_.dbf
+o1_mf_gfndfnd_fh2k24z1_.dbf  -> /u01/app/oracle/oradata/.ACFS/snaps/6BAC3A07AD285A84E055E371072A900A/TESTCDB/69CE71C52A604F30E055E371072A900A/datafile/o1_mf_gfndfnd_ff3t70wg_.dbf
+o1_mf_sysaux_fh2k24yx_.dbf   -> /u01/app/oracle/oradata/.ACFS/snaps/6BAC3A07AD285A84E055E371072A900A/TESTCDB/69CE71C52A604F30E055E371072A900A/datafile/o1_mf_sysaux_ff3t70wb_.dbf
+o1_mf_system_fh2k24yw_.dbf   -> /u01/app/oracle/oradata/.ACFS/snaps/6BAC3A07AD285A84E055E371072A900A/TESTCDB/69CE71C52A604F30E055E371072A900A/datafile/o1_mf_system_ff3t70vw_.dbf
+o1_mf_undotbs1_fh2k24yy_.dbf -> /u01/app/oracle/oradata/.ACFS/snaps/6BAC3A07AD285A84E055E371072A900A/TESTCDB/69CE71C52A604F30E055E371072A900A/datafile/o1_mf_undotbs1_ff3t70wc_.dbf
+o1_mf_users_fh2k24yz_.dbf    -> /u01/app/oracle/oradata/.ACFS/snaps/6BAC3A07AD285A84E055E371072A900A/TESTCDB/69CE71C52A604F30E055E371072A900A/datafile/o1_mf_users_ff3t70wd_.dbf
+
+o1_mf_temp_fh2k24yz_.dbf
+
+ln -sf /u01/app/oracle/oradata/.ACFS/snaps/nodepdbclone03/TESTCDB/69CE71C52A604F30E055E371072A900A/datafile/o1_mf_gfndcdm_ff3t70wf_.dbf   o1_mf_gfndcdm_fh2k24z0_.dbf 
+ln -sf /u01/app/oracle/oradata/.ACFS/snaps/nodepdbclone03/TESTCDB/69CE71C52A604F30E055E371072A900A/datafile/o1_mf_gfnddata_ff3t70wg_.dbf  o1_mf_gfnddata_fh2k24z2_.dbf
+ln -sf /u01/app/oracle/oradata/.ACFS/snaps/nodepdbclone03/TESTCDB/69CE71C52A604F30E055E371072A900A/datafile/o1_mf_gfndfnd_ff3t70wg_.dbf   o1_mf_gfndfnd_fh2k24z1_.dbf 
+ln -sf /u01/app/oracle/oradata/.ACFS/snaps/nodepdbclone03/TESTCDB/69CE71C52A604F30E055E371072A900A/datafile/o1_mf_sysaux_ff3t70wb_.dbf    o1_mf_sysaux_fh2k24yx_.dbf  
+ln -sf /u01/app/oracle/oradata/.ACFS/snaps/nodepdbclone03/TESTCDB/69CE71C52A604F30E055E371072A900A/datafile/o1_mf_system_ff3t70vw_.dbf    o1_mf_system_fh2k24yw_.dbf  
+ln -sf /u01/app/oracle/oradata/.ACFS/snaps/nodepdbclone03/TESTCDB/69CE71C52A604F30E055E371072A900A/datafile/o1_mf_undotbs1_ff3t70wc_.dbf  o1_mf_undotbs1_fh2k24yy_.dbf
+ln -sf /u01/app/oracle/oradata/.ACFS/snaps/nodepdbclone03/TESTCDB/69CE71C52A604F30E055E371072A900A/datafile/o1_mf_users_ff3t70wd_.dbf     o1_mf_users_fh2k24yz_.dbf   
+
+
+ls -l
+
+o1_mf_gfndcdm_fh2k24z0_.dbf -> /u01/app/oracle/oradata/.ACFS/snaps/nodepdbclone03/TESTCDB/69CE71C52A604F30E055E371072A900A/datafile/o1_mf_gfndcdm_ff3t70wf_.dbf
+o1_mf_gfnddata_fh2k24z2_.dbf -> /u01/app/oracle/oradata/.ACFS/snaps/nodepdbclone03/TESTCDB/69CE71C52A604F30E055E371072A900A/datafile/o1_mf_gfnddata_ff3t70wg_.dbf
+o1_mf_gfndfnd_fh2k24z1_.dbf -> /u01/app/oracle/oradata/.ACFS/snaps/nodepdbclone03/TESTCDB/69CE71C52A604F30E055E371072A900A/datafile/o1_mf_gfndfnd_ff3t70wg_.dbf
+o1_mf_sysaux_fh2k24yx_.dbf -> /u01/app/oracle/oradata/.ACFS/snaps/nodepdbclone03/TESTCDB/69CE71C52A604F30E055E371072A900A/datafile/o1_mf_sysaux_ff3t70wb_.dbf
+o1_mf_system_fh2k24yw_.dbf -> /u01/app/oracle/oradata/.ACFS/snaps/nodepdbclone03/TESTCDB/69CE71C52A604F30E055E371072A900A/datafile/o1_mf_system_ff3t70vw_.dbf
+o1_mf_undotbs1_fh2k24yy_.dbf -> /u01/app/oracle/oradata/.ACFS/snaps/nodepdbclone03/TESTCDB/69CE71C52A604F30E055E371072A900A/datafile/o1_mf_undotbs1_ff3t70wc_.dbf
+o1_mf_users_fh2k24yz_.dbf -> /u01/app/oracle/oradata/.ACFS/snaps/nodepdbclone03/TESTCDB/69CE71C52A604F30E055E371072A900A/datafile/o1_mf_users_ff3t70wd_.dbf
+
+o1_mf_temp_fh2k24yz_.dbf
+
+
+CREATE PLUGGABLE DATABASE nodepdb_clone03 as clone using '/home/oracle/tstcdb/nodepdb_clone03.xml' nocopy tempfile reuse;

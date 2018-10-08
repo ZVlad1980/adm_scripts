@@ -1,0 +1,127 @@
+﻿connect root:
+/ora1/grid/bin/acfsload start
+
+connect oralce:
+lsnrctl start
+. .grid_env
+
+[oracle@ibm02:~]$ asmcmd
+ASMCMD> lsdg
+State    Type    Rebal  Sector  Block       AU  Total_MB  Free_MB  Req_mir_free_MB  Usable_file_MB  Offline_disks  Voting_files  Name
+MOUNTED  EXTERN  N         512   4096  1048576   1394851    32841                0           32841              0             N  ORADATA/
+ASMCMD> umount oradata
+ASMCMD> mount oradata
+ASMCMD> volenable --all
+exit
+
+root:
+mount -v acfs /dev/asm/asm_oradata-5 /ora1/dat
+mount -v jfs2 -o log=/dev/loglv00 /dev/lv_cdb /ora1/dat/TSTCDB
+mount -v jfs2 -o log=/dev/loglv01 /dev/lv_pdbtmp /ora1/dat/pdbs/tempfiles
+
+oracle:
+[oracle@ibm02:~]$ . .cdb_env
+[oracle@ibm02:~]$ sqlplus / as sysdba
+
+SQL*Plus: Release 12.1.0.1.0 Production on Fri May 25 11:05:53 2018
+
+Copyright (c) 1982, 2013, Oracle.  All rights reserved.
+
+Connected to an idle instance.
+
+SQL> startup
+ORACLE instance started.
+
+Total System Global Area 1,7103E+10 bytes
+Fixed Size                  2773936 bytes
+Variable Size            2449476688 bytes
+Database Buffers         1,4630E+10 bytes
+Redo Buffers               21180416 bytes
+Database mounted.
+Database opened.
+SQL> show pdbs
+
+CON_ID CON_NAME                       OPEN MODE  RESTRICTED
+---------- ------------------------------ ---------- ----------
+         2 PDB$SEED                       READ ONLY  NO
+         3 PDB_ROOT                       READ WRITE NO
+         4 PDB_NODE                       MOUNTED
+         5 TSTDB                          READ WRITE NO
+         6 BASE_CLONE                     READ ONLY  NO
+         7 PDB_RELEASE1                   READ WRITE NO
+         8 DDECLONE1                      READ WRITE NO
+         9 ANIKIN_TSTDB                   READ WRITE NO
+        10 TSTDB_TTS2                     MOUNTED
+        11 TSTDB_TTS2_1                   READ WRITE NO
+
+alter pluggable database PDB_ROOT open;
+alter pluggable database TSTDB open;
+alter pluggable database BASE_CLONE open read only;
+alter pluggable database PDB_RELEASE1 open;
+alter pluggable database SUT_PDB001 open;
+alter pluggable database BSV_PDB000 open;
+alter pluggable database DDECLONE1 open;
+
+2 PDB$SEED                       READ ONLY  NO
+         3 PDB_ROOT                       READ WRITE NO
+         4 PDB_NODE                       MOUNTED
+         5 TSTDB                          READ WRITE NO
+         6 BASE_CLONE                     READ ONLY  NO
+         7 PDB_RELEASE1                   READ WRITE NO
+         8 SUT_PDB001                     READ WRITE NO
+         9 ANIKIN_TESTDB                  MOUNTED
+        10 BSV_PDB000                     READ WRITE NO
+        11 DDECLONE1                      READ WRITE NO
+        12 VBZ_TSTDB                      READ WRITE NO
+
+    CON_ID CON_NAME                       OPEN MODE  RESTRICTED
+---------- ------------------------------ ---------- ----------
+        13 TSTDB_TTS                      READ WRITE NO
+        14 VBZ_TSTDB_TTS                  READ WRITE NO
+
+
+и запустить демона:                            
+cd /scripts/pdb_daemon/
+./start.sh
+
+
+Shutdown:
+oracle:
+sqlplus / as sysdba
+shut immediate
+exit
+
+root:
+umount /ora1/dat/pdbs/tempfiles
+umount /ora1/dat/TSTCDB
+umount /ora1/dat
+
+oracle:
+. .grid_env
+cd $ORACLE_HOME/bin
+asmcmd voldisable --all
+asmcmd umount -a
+lsnrctl stop
+./srvctl stop asm
+
+shutdown -r
+
+
+#umount /ora1/dat/TSTCDB
+[ibm02:]#mount
+  node       mounted        mounted over    vfs       date        options
+-------- ---------------  ---------------  ------ ------------ ---------------
+         /dev/hd4         /                jfs2   Jul 05 10:47 rw,log=/dev/hd8
+         /dev/hd2         /usr             jfs2   Jul 05 10:47 rw,log=/dev/hd8
+         /dev/hd9var      /var             jfs2   Jul 05 10:47 rw,log=/dev/hd8
+         /dev/hd3         /tmp             jfs2   Jul 05 10:47 rw,log=/dev/hd8
+         /dev/hd1         /home            jfs2   Jul 05 10:48 rw,log=/dev/hd8
+         /proc            /proc            procfs Jul 05 10:48 rw
+         /dev/hd10opt     /opt             jfs2   Jul 05 10:48 rw,log=/dev/hd8
+         /dev/oracle_lv   /ora1            jfs2   Jul 05 10:48 rw,log=/dev/hd8
+         /dev/hd11admin   /admin           jfs2   Jul 05 10:48 rw,log=/dev/hd8
+         /dev/livedump    /var/adm/ras/livedump jfs2   Jul 05 10:48 rw,log=/dev/hd8
+         /dev/lv_obuf     /ora1/buf        jfs2   Jul 05 10:48 rw,log=/dev/lv_jlog_od2
+         /dev/lv_osav     /ora1/sav        jfs2   Jul 05 10:48 rw,log=/dev/lv_jlog_od3
+         /dev/lv_grid     /ora1/grid       jfs2   Jul 05 10:48 rw,log=/dev/lv_jlog_od2
+         /dev/lv_odat1    /ora1/dat        jfs2   Jul 05 12:28 rw,log=/dev/lv_jlog_od1

@@ -1,0 +1,20 @@
+Start duplicate DB at Wed Jul 11 12:16:57 MSK 2018
+Prepare complete at Wed Jul 11 12:16:57 MSK 2018
+Create duplicate complete at Wed Jul 11 12:16:57 MSK 2018
+Post duplicate complete at Wed Jul 11 12:16:57 MSK 2018
+Plugin TSTDB to TSTCDB
+Plugin complete at Wed Jul 11 12:16:57 MSK 2018
+
+SQL*Plus: Release 12.1.0.1.0 Production on Wed Jul 11 12:16:57 2018
+
+Copyright (c) 1982, 2013, Oracle.  All rights reserved.
+
+Connected.
+create table vbz.tts_invalids_t(
+                 *
+ERROR at line 1:
+ORA-00955: name is already used by an existing object
+
+
+Disconnected from Oracle Database 12c Enterprise Edition Release 12.1.0.1.0 - 64bit Production
+With the Partitioning, OLAP, Advanced Analytics and Real Application Testing options

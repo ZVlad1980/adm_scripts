@@ -1,0 +1,15 @@
+connect auxiliary /
+connect catalog rmc1/rmc1_1234@fndwh
+RUN
+{
+ ALLOCATE AUXILIARY CHANNEL ch1 DEVICE TYPE DISK;
+    DUPLICATE DATABASE 'FONDDB' TO 'tstdb' UNTIL SCN 61326664373
+    BACKUP LOCATION '/ora1/sav/bkup'
+    LOGFILE
+      GROUP 1 ('/ora1/dat/tstdb/redo/log01.log') SIZE 1G REUSE,
+      GROUP 2 ('/ora1/dat/tstdb/redo/log02.log') SIZE 1G REUSE,
+      GROUP 3 ('/ora1/dat/tstdb/redo/log03.log') SIZE 1G REUSE,
+      GROUP 4 ('/ora1/dat/tstdb/redo/log04.log') SIZE 1G REUSE;
+ RELEASE CHANNEL ch1;
+}
+exit

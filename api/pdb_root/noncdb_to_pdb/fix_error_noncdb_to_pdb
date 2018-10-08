@@ -1,0 +1,94 @@
+﻿Check Tag:       INVALID_SYS_TABLEDATA
+Check Summary:   Check for invalid (not converted) table data
+Check Help Text:
+ERROR: --> Invalid Oracle supplied table data found in your database.
+
+
+Invalid data can be seen prior to the database upgrade or during PDB plugin.  This table data must be made valid BEFORE upgrade or plug in.
+  - To fix the data, load the Preupgrade package and execute the fixup routine.
+For plug in, execute the fix up routine in the PDB.
+@$ORACLE_HOME/rdbms/admin/utluppkg.sql
+SET SERVEROUTPUT ON;
+exec dbms_preup.run_fixup_and_report('INVALID_SYS_TABLEDATA')
+SET SERVEROUTPUT OFF;
+Fixup Summary:
+UPGRADE Oracle supplied table data prior to the database upgrade.
+++++ Check Failed:
+ERROR: --> Invalid Oracle supplied table data found in your database.
+
+Invalid data can be seen prior to the database upgrade or during PDB plugin.  This table data must be made valid BEFORE upgrade or plug in.
+ - To fix the data, load the Preupgrade package and execute he fixup routine.
+For plug in, execute the fix up routine in the PDB.
+
+@$ORACLE_HOME/rdbms/admin/utluppkg.sql
+SET SERVEROUTPUT ON;
+exec dbms_preup.run_fixup_and_report('INVALID_SYS_TABLEDATA')
+SET SERVEROUTPUT OFF;
+/
+Invalid table data.
+Non-CDB conversion aborting.
+For instructions, look for ORA-01722 in this script.
+Please resolve these and rerun noncdb_to_pdb.sql. declare
+*
+ERROR at line 1:
+ORA-01722: invalid number
+ORA-06512: at line 19
+
+SQL> -- PRE-SCRIPT CHECKS GO HERE:
+SQL>
+SQL> set serveroutput on
+SQL>
+SQL> -- Check that we have no invalid table data
+SQL> DOC
+DOC>#######################################################################
+DOC>#######################################################################
+DOC>
+DOC>     The following statement will cause an "ORA-01722: invalid number"
+DOC>     error, if the database contains invalid data as a result of type
+DOC>     evolution which was performed without the data being converted.
+DOC>
+DOC>     To resolve this specific "ORA-01722: invalid number" error:
+DOC>       Perform the data conversion (details below) in the pluggable database.
+DOC>
+DOC>     Please refer to Oracle Database Object-Relational Developer's Guide
+DOC>     for more information about type evolution.
+DOC>
+DOC>     Data in columns of evolved types must be converted before the
+DOC>     database can be converted.
+DOC>
+DOC>     The following commands, run inside the PDB, will perform the data
+DOC>     conversion for Oracle supplied data:
+DOC>
+DOC>     @?/rdbms/admin/utluppkg.sql
+DOC>     SET SERVEROUTPUT ON;
+DOC>     exec dbms_preup.run_fixup_and_report('INVALID_SYS_TABLEDATA');
+DOC>     SET SERVEROUTPUT OFF;
+DOC>
+DOC>     You should then confirm that any non-Oracle supplied data is also
+DOC>     converted.  You should review the data and determine if it needs
+DOC>     to be converted or removed.
+DOC>
+DOC>     To view the data that is affected by type evolution, execute the
+DOC>     following inside the PDB:
+DOC>
+SELECT rpad(u.name,128) TABLENAME, rpad(o.name,128) OWNER,
+  rpad(c.name,128) COLNAME FROM SYS.OBJ$ o, SYS.COL$ c, SYS.COLTYPE$ t,
+    SYS.USER$ u
+    WHERE o.OBJ# = t.OBJ# AND c.OBJ# = t.OBJ# AND c.COL# = t.COL#
+      AND t.INTCOL# = c.INTCOL# AND BITAND(t.FLAGS, 256) = 256
+      AND o.OWNER# = u.USER# AND o.OWNER# NOT IN
+       (SELECT UNIQUE (d.USER_ID) FROM SYS.DBA_USERS d, SYS.REGISTRY$ r
+          WHERE d.USER_ID = r.SCHEMA# and r.NAMESPACE='SERVER');
+DOC>
+DOC>     Once the data is confirmed, the following commands, run inside the PDB,
+DOC>     will convert the data returned by the above query.
+DOC>
+DOC>     @?/rdbms/admin/utluppkg.sql
+DOC>     SET SERVEROUTPUT ON;
+DOC>     exec dbms_preup.run_fixup_and_report('INVALID_USR_TABLEDATA');
+DOC>     SET SERVEROUTPUT OFF;
+DOC>
+DOC>     Depending on the amount of data involved, converting the evolved type
+DOC>     data can take a significant amount of time.
+DOC>
+DOC>     After this is complete, please rerun noncdb_to_pdb.sql.

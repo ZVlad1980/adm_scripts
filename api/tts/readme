@@ -1,0 +1,180 @@
+ Подготовка базы-источника (IBM02):
+  1. настроить TSTDB_TTS на базу источник в vi $ORACLE_HOME/network/admin/tnsnames.ora
+  2. sqlplus sys@tstdb_tts as sysdba  
+  3. grant dba to vbz
+  4. check_tts.sql
+  5. connect vbz@tstdb_tts
+!!!!!!!! ОБЕРНУТЬ переменные в функцию to_number в этих пакетах (BUG 17404511, видимо полечен на IBM02!)
+Поиск по телам пакетов, ищем fetch first и fetch next и offset, заворачиваем аргументы в to_number
+DISPATCH_PLAN_PKG
+FIRSTPAY_REGISTER
+PAY_FSTREG_PKG
+PAY_OPSREG1_PKG
+
+
+GAZFOND	DOCLIPACKAGE BODY	129	"    OFFSET pagingStart ROWS FETCH NEXT pagingSize ROWS ONLY;
+GAZFOND	DOCLIST_PKG	PACKAGE BODY	264	"    OFFSET pagingStart ROWS FETCH NEXT pagingSize ROWS ONLY;
+FND	FXNDFL_UTIL	PACKAGE BODY	2099	"                         fetch next c_batch_size rows only
+GAZFOND_PN	DOCLIST_PKG	PACKAGE BODY	129	"    OFFSET pagingStart ROWS FETCH NEXT pagingSize ROWS ONLY;
+GAZFOND_PN	DOCLIST_PKG	PACKAGE BODY	264	"    OFFSET pagingStart ROWS FETCH NEXT pagingSize ROWS ONLY;
+
+  6. Install prepare_tts objects (./install/sql/)
+  7.1. выполнить ./install/sql/start_perpare.sql
+  7.2. выполнить ./install/sql/prepare_transport.sql
+  8. выполнить ./install/sql/show_scp_commands.sql - скопировать команды scp в файл /home/oracle/projects/move_tstcdb/scripts/copy_files/start.sh на приемнике
+  8. connect system@tstdb_tts => выполнить ./install/sql/offline.sql
+  9. exit
+ 10. cd /ora1/buf/datapump
+   rm -f expdat.dmp
+   rm -f export.log
+   rm -f nohup.out
+ 11. vi exp.sh + chmod 774 exp.sh
+#! /bin/bash
+expdp system@tstdb_tts full=y dumpfile=expdat.dmp directory=data_dump_dir transportable=always logfile=export.log
+
+expdp system@tstdb_tts parfile=./exp.par logfile=exp_fnd.log
+ 
+ 12. nohup ./exp.sh &
+
+
+ Подготовка базы-приемника (SV084)     
+ Настроить DEV_NODE: vi $ORACLE_HOME/network/admin/tnsnames.ora
+rm -f /u01/app/oracle/buf/datapump/exp*
+rm -f /u01/app/oracle/buf/datapump/import.log
+rm -f /home/oracle/projects/move_tstcdb/scripts/copy_files/nohup.out
+rm -f /home/oracle/projects/move_tstcdb/scripts/copy_files/rman.log
+rm -f /u01/app/oracle/backup/aix_files/*
+
+Install pdb_root (http://teamcity:3000/v.zhuravov/pdb_root.git)
+
+sqlplus / as sysdba
+alter system set job_queue_processes=0;
+create pluggable database dev_node admin user admin identified by admin file_name_convert=(
+  '/u01/app/oracle/oradata/tstcdb/pdbseed/system01.dbf', '/u01/app/oracle/oradata/dev/DEV_NODE/datafile/system01.dbf',
+  '/u01/app/oracle/oradata/tstcdb/pdbseed/sysaux01.dbf', '/u01/app/oracle/oradata/dev/DEV_NODE/datafile/sysaux01.dbf',
+  '/u01/app/oracle/oradata/tstcdb/pdbseed/temp01.dbf', '/u01/app/oracle/oradata/tempfiles/dev_node_temp01.dbf'
+);
+
+alter pluggable database dev_node open;
+alter session set container=dev_node;
+
+!!!Переименовать OMF файлы, если юзался OMF!!!
+alter database move datafile '/u01/app/oracle/oradata/dev/TSTCDB/6E0AA92885AE624FE0530100007F2CE2/datafile/o1_mf_system_fkkxnzqv_.dbf' to '/u01/app/oracle/oradata/dev/TSTCDB/6E0AA92885AE624FE0530100007F2CE2/datafile/system.dbf'
+alter tablespace temp add tempfile '/u01/app/oracle/oradata/tempfiles/dev_node_temp01.dbf' size 1G reuse autoextend on next 500M maxsize 5G;
+alter tablespace temp drop tempfile '/u01/app/oracle/oradata/dev/TSTCDB/6E0AA92885AE624FE0530100007F2CE2/datafile/o1_mf_temp_fkkxo5w2_.dbf';
+
+ALTER DATABASE TEMPFILE '/u01/app/oracle/oradata/tempfiles/dev_node_temp01.dbf' RESIZE 5G;
+ALTER DATABASE TEMPFILE '/u01/app/oracle/oradata/tempfiles/_temp_01.dbf' autoextend on maxsize 5G;
+ALTER DATABASE dataFILE '/u01/app/oracle/oradata/dev/DEV_NODE/datafile/system01.dbf' RESIZE 9G;
+ALTER DATABASE dataFILE '/u01/app/oracle/oradata/dev/DEV_NODE/datafile/sysaux01.dbf' RESIZE 1G;
+
+connect system@dev_node
+CREATE OR REPLACE DIRECTORY data_dump_dir AS '/u01/app/oracle/buf/datapump';
+
+exit
+
+du -ha $ORACLE_BASE/oradata/dev
+cd /home/oracle/projects/move_tstcdb/scripts/copy_files
+скопировать путь к /datafile и вставить в convert.rman
+заменить путь к файлам в /u01/app/oracle/buf/datapump/imp_file.par
+
+17404511
+
+nohup ./start.sh &
+
+SV:  tail -n 30 -s 5 -f nohup.out
+
+IBM: tail -n 30 -f nohup.out
+
+
+
+После импорта:
+connect / as sys
+./sql/disable_all_jobs
+connect sys@dev_node as sys
+./sql/Grants/grant_on_sys.sql
+connect vbz@dev_node
+./sql/start_repaire.sql
+connect sys@dev_node as sys
+./sql/recompile_all_schemas.sql
+
+View show_invalids.sql
+
+pdb_api.add_pdb_node(
+    p_pdb_name          => 'DEV_NODE',
+    p_acfs_path         => '/u01/app/oracle/oradata/dev',
+    p_create_base_clone => true
+  );
+
+
+Example of clone
+
+alter pluggable database DEV_NODE open read only force;
+create pluggable database DEV_NODE_CLONE from DEV_NODE snapshot copy file_name_convert=(
+'/u01/app/oracle/oradata/dev/DEV_NODE/datafile', '/u01/app/oracle/oradata/dev/DEV_NODE_CLONE/datafile', '/u01/app/oracle/oradata/tempfiles/dev_node_temp01.dbf', '/u01/app/oracle/oradata/tempfiles/dev_node_clone_temp_01.dbf'
+)
+alter pluggable database DEV_NODE_CLONE open;
+alter pluggable database DEV_NODE_CLONE open read only force;
+create pluggable database DEV from DEV_NODE_CLONE snapshot copy file_name_convert=(
+'/u01/app/oracle/oradata/dev/DEV_NODE_CLONE/datafile', '/u01/app/oracle/oradata/dev/DEV/datafile', '/u01/app/oracle/oradata/tempfiles/dev_node_clone_temp_01.dbf', '/u01/app/oracle/oradata/tempfiles/dev_temp_01.dbf'
+);
+alter pluggable database DEV_NODE_CLONE close immediate;
+
+drop pluggable database DEV including datafiles;
+drop pluggable database DEV_NODE_CLONE including datafiles;
+
+alter pluggable database DEV_NODE open read write force;
+
+
+02.07.2018
+acfsutil snap info $ORACLE_BASE/oradata/dev
+snapshot name:               6FFE585B477C3366E0530100007FECE0
+snapshot location:           /u01/app/oracle/oradata/dev/.ACFS/snaps/6FFE585B477C3366E0530100007FECE0
+RO snapshot or RW snapshot:  RW
+parent name:                 /u01/app/oracle/oradata/dev
+snapshot creation time:      Mon Jul  2 08:19:46 2018
+storage added to snapshot:   498782208   ( 475.68 MB )
+
+
+snapshot name:               6FFE585B477D3366E0530100007FECE0
+snapshot location:           /u01/app/oracle/oradata/dev/.ACFS/snaps/6FFE585B477D3366E0530100007FECE0
+RO snapshot or RW snapshot:  RW
+parent name:                 6FFE585B477C3366E0530100007FECE0
+snapshot creation time:      Mon Jul  2 08:21:38 2018
+storage added to snapshot:   490393600   ( 467.68 MB )
+
+
+snapshot name:               6FFE585B477E3366E0530100007FECE0
+snapshot location:           /u01/app/oracle/oradata/dev/.ACFS/snaps/6FFE585B477E3366E0530100007FECE0
+RO snapshot or RW snapshot:  RW
+parent name:                 6FFE585B477C3366E0530100007FECE0
+snapshot creation time:      Mon Jul  2 08:24:10 2018
+storage added to snapshot:   473616384   ( 451.68 MB )
+
+
+snapshot name:               6FFE585B477F3366E0530100007FECE0
+snapshot location:           /u01/app/oracle/oradata/dev/.ACFS/snaps/6FFE585B477F3366E0530100007FECE0
+RO snapshot or RW snapshot:  RW
+parent name:                 6FFE585B477C3366E0530100007FECE0
+snapshot creation time:      Mon Jul  2 08:24:29 2018
+storage added to snapshot:   473616384   ( 451.68 MB )
+
+
+snapshot name:               6FFE585B47803366E0530100007FECE0
+snapshot location:           /u01/app/oracle/oradata/dev/.ACFS/snaps/6FFE585B47803366E0530100007FECE0
+RO snapshot or RW snapshot:  RW
+parent name:                 6FFE585B477C3366E0530100007FECE0
+snapshot creation time:      Mon Jul  2 08:24:45 2018
+storage added to snapshot:   473616384   ( 451.68 MB )
+
+
+snapshot name:               6FFE585B47813366E0530100007FECE0
+snapshot location:           /u01/app/oracle/oradata/dev/.ACFS/snaps/6FFE585B47813366E0530100007FECE0
+RO snapshot or RW snapshot:  RW
+parent name:                 6FFE585B477C3366E0530100007FECE0
+snapshot creation time:      Mon Jul  2 09:06:41 2018
+storage added to snapshot:   723177472   ( 689.68 MB )
+
+
+    number of snapshots:  6
+    snapshot space usage: 3133288448  (   2.92 GB )

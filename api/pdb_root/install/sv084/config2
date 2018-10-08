@@ -1,0 +1,73 @@
+﻿Disks:
+sdb - PDB1, 10 GB, PDBS, mount /u01/app/oracle/oradata/evday
+sdc - PDB2, 10 GB, PDBS, mount /u01/app/oracle/oradata/weekly
+
+VB Share: D:\vb\share\
+backup
+buf
+tmp
+tstcdb
+
+mkdir /u01/app/oracle/oradata/tstcdb
+mkdir /u01/app/oracle/oradata/tempfiles
+mkdir /u01/app/oracle/oradata/tempfiles/clones
+mkdir /u01/app/oracle/buf
+mkdir /u01/app/oracle/oradata/evday
+mkdir /u01/app/oracle/oradata/weekly
+
+Mount shares:
+mount -t vboxsf tstcdb /u01/app/oracle/oradata/tstcdb
+mount -t vboxsf tmp /u01/app/oracle/oradata/tempfiles
+mount -t vboxsf buf /u01/app/oracle/
+mount -t vboxsf backup /u01/app/oracle/
+chown -R oracle:oinstall /u01/app/oracle/oradata/tstcdb
+chmod -R 774 /u01/app/oracle/oradata/tstcdb
+chown -R oracle:oinstall /u01/app/oracle/oradata/tempfiles
+chmod -R 774 /u01/app/oracle/oradata/tempfiles
+chown -R oracle:oinstall /u01/app/oracle/buf
+chmod -R 774 /u01/app/oracle/buf
+chown -R oracle:oinstall /u01/app/oracle/backup
+chmod -R 774 /u01/app/oracle/backup
+
+
+
+vi /etc/fstab
+/dev/vg_cdb/lv_cdb /u01/app/oracle/oradata/tstcdb     ext4 defaults 0 2
+/dev/vg_cdb/lv_tmp /u01/app/oracle/oradata/pdbs/tempfiles ext4 defaults 0 2
+/dev/vg_cdb/lv_buf /u01/app/oracle/buf ext4 defaults 0 2
+/dev/vg_cdb/lv_backup /u01/app/oracle/backup ext4 defaults 0 2
+
+ну или разово:
+
+
+Настройка ACFS дисков:
+fdisk /dev/sdb --n w
+fdisk /dev/sdc --n w
+
+/usr/sbin/oracleasm createdisk EVDAY /dev/sdb1
+/usr/sbin/oracleasm createdisk WEEKLY /dev/sdc1
+
+/usr/sbin/oracleasm deletedisk EVDAY
+/usr/sbin/oracleasm deletedisk WEEKLY
+
+
+Start ACFS:
+/u01/app/oracle/product/12.2.0/grid/bin/acfsload start
+
+ASMCA: config disk groups, volumes and ACFS
+
+/sbin/mkfs -t acfs /dev/asm/vol_evday-380
+/bin/mount -t acfs /dev/asm/vol_evday-380 /u01/app/oracle/oradata/evday
+/sbin/mkfs -t acfs /dev/asm/vol_weekly-377
+/bin/mount -t acfs /dev/asm/vol_weekly-377 /u01/app/oracle/oradata/weekly
+
+chown -R oracle:oinstall /u01/app/oracle/oradata/evday
+chown -R oracle:oinstall /u01/app/oracle/oradata/weekly
+chmod -R 774 /u01/app/oracle/oradata/evday
+chmod -R 774 /u01/app/oracle/oradata/weekly
+
+удаление
+umount /u01/app/oracle/oradata/tstcdb
+umount /u01/app/oracle/oradata/tempfiles
+umount /u01/app/oracle/buf
+umount /u01/app/oracle/backup

@@ -1,0 +1,196 @@
+rm -f /home/oracle/tstcdb/tstdb.xml
+
+. .db_env
+sqlplus / as sysdba
+startup mount;
+alter database open read only;
+BEGIN
+  DBMS_PDB.DESCRIBE(
+    pdb_descr_file => '/home/oracle/tstcdb/tstdb.xml');
+END;
+/
+
+shut immediate
+exit
+
+. .cdb_env
+sqlplus / as sysdba
+startup
+
+SET SERVEROUTPUT ON
+DECLARE
+  compatible CONSTANT VARCHAR2(3) := CASE DBMS_PDB.CHECK_PLUG_COMPATIBILITY(
+            pdb_descr_file => '/home/oracle/tstcdb/tstdb.xml',
+            pdb_name       => 'tstdb')
+     WHEN TRUE THEN 'YES'
+     ELSE 'NO'
+ END;
+ BEGIN
+  DBMS_OUTPUT.PUT_LINE(compatible);
+END;
+/
+YES !
+NO ???
+
+CREATE PLUGGABLE DATABASE tstdb_node using '/home/oracle/tstcdb/tstdb.xml' nocopy tempfile reuse;
+
+ALTER SESSION SET CONTAINER=tstdb_node;
+@$ORACLE_HOME/rdbms/admin/noncdb_to_pdb.sql
+
+Ошибка (см. noncdb_to_pdb_1.log)
+$ sqlplus / as sysdba
+@$ORACLE_HOME/rdbms/admin/utluppkg.sql
+SET SERVEROUTPUT ON;
+exec dbms_preup.run_fixup_and_report('INVALID_SYS_TABLEDATA')
+SET SERVEROUTPUT OFF;
+перезапуск:
+@$ORACLE_HOME/rdbms/admin/noncdb_to_pdb.sql
+
+
+
+полный лог: noncdb_to_pdb
+Рекомпиляция остановилась по ошибке: рекурсивный запрос (
+Отключил рекомпиляцию и перезапустил /noncdb_to_pdb.sql (см. 3 запуск в noncdb_to_pdb) utlprp.sql
+
+Подключился SYS и запускал рекомпиляцию отдельно по схемам:
+
+DECLARE
+   --threads pls_integer := &&1;
+BEGIN
+   utl_recomp.recomp_parallel(4, 'PUBLIC'); --PUBLIC, SYS, SYSTEM, FND, GAZFOND, GAZFOND_PN, FIAS, PAYMENTS, PAYMENTS_GPN, PDN, INF, INF_PN
+END;
+Рекурсия в FND, GAZFOND, GAZFOND_PN ???
+Потом так:
+DECLARE
+   --threads pls_integer := &&1;
+   cursor c is
+     select o.owner, count(1) cnt
+from   all_objects o
+where  o.status = 'INVALID'
+and    o.owner not in ('SYS', 'SYSTEM', 'PUBLIC', 'FND', 'GAZFOND', 'GAZFOND_PN')
+group by o.owner;
+BEGIN
+  for s in c loop
+    dbms_output.put('Compile scheme: ' || s.owner || ' .. ');
+    begin
+    utl_recomp.recomp_parallel(1, s.owner);
+    dbms_output.put_line('ok');
+    exception
+      when others then
+        dbms_output.put_line('error: ' || sqlerrm);
+    end;
+  end loop;
+END;
+
+
+/ora1/diag/rdbms/tstcdb/tstcdb/alert
+
+20182304: /home/oracle/tstcdb/tstcdb_init20182304.ora (увеличил db_files до 1000)
+
+
+
+ALTER SESSION SET CONTAINER=cdb$root;
+alter pluggable database pdb_node open;
+
+test connection!
+drop pluggable database tstdb including datafiles;
+alter pluggable database pdb_node open;
+ALTER DATABASE TEMPFILE '/ora1/dat/tstdb/dbs/temp__01.dbf' RESIZE 40G;
+alter pluggable database pdb_node close;
+alter pluggable database pdb_node open read only;
+create pluggable database tstdb from pdb_node snapshot copy file_name_convert=('/ora1/dat/tstdb', '/ora1/dat/pdbs/tstdb_pdb');
+
+snap info 
+acfsutil snap info /ora1/dat
+snapshot name:               6A5C10FDB1D101BAE0530A01016CB036
+snapshot location:           /ora1/dat/.ACFS/snaps/6A5C10FDB1D101BAE0530A01016CB036
+RO snapshot or RW snapshot:  RW
+parent name:                 /ora1/dat
+snapshot creation time:      Sat Apr 21 15:37:24 2018
+
+    number of snapshots:  1
+    snapshot space usage: 560689152  ( 534.71 MB )
+
+du -g /ora1/dat
+du -g /ora1/dat
+13.80   /ora1/dat/TSTCDB
+888.08  /ora1/dat/tstdb
+5.00   /ora1/dat/pdbs/tstdb_pdb/dbs --temp__01.dbf
+941.89  /ora1/dat
+
+alter pluggable database tstdb open;
+
+
+du -g /ora1/dat
+0.00    /ora1/dat/lost+found
+0.01    /ora1/dat/TSTCDB/controlfile
+1.46    /ora1/dat/TSTCDB/onlinelog
+11.01   /ora1/dat/TSTCDB/datafile
+0.67    /ora1/dat/TSTCDB/6A55AB21AE2000CCE0530A01016C80CB/datafile
+0.67    /ora1/dat/TSTCDB/6A55AB21AE2000CCE0530A01016C80CB
+0.63    /ora1/dat/TSTCDB/6A570BC4FF800184E0530A01016CE862/datafile
+0.63    /ora1/dat/TSTCDB/6A570BC4FF800184E0530A01016CE862
+0.00    /ora1/dat/TSTCDB/6A571741D1850184E0530A01016CC9B5/datafile
+0.00    /ora1/dat/TSTCDB/6A571741D1850184E0530A01016CC9B5
+0.00    /ora1/dat/TSTCDB/6A571741D1860184E0530A01016CC9B5/datafile
+0.00    /ora1/dat/TSTCDB/6A571741D1860184E0530A01016CC9B5
+13.80   /ora1/dat/TSTCDB
+0.00    /ora1/dat/tstdb/arc/TSTDB/onlinelog
+0.00    /ora1/dat/tstdb/arc/TSTDB
+0.00    /ora1/dat/tstdb/arc/sav
+0.82    /ora1/dat/tstdb/arc
+0.13    /ora1/dat/tstdb/ctl/sav
+0.20    /ora1/dat/tstdb/ctl
+918.06  /ora1/dat/tstdb/dbs
+4.01    /ora1/dat/tstdb/redo
+923.09  /ora1/dat/tstdb
+936.89  /ora1/dat
+
+create pluggable database tstdb from pdb_node snapshot copy;
+alter pluggable database pdb_node open read only;
+snap info + dbfile sizes
+create pluggable database pdb001 from pdb_node snapshot copy;
+create pluggable database pdb002 from pdb_node snapshot copy;
+create pluggable database pdb003 from pdb_node snapshot copy;
+create pluggable database pdb004 from pdb_node snapshot copy;
+snap info
+Все!
+
+create pluggable database zpdb000 from pdb_node snapshot copy file_name_convert=('/ora1/dat/tstdb', '/ora1/dat/pdbs/zpdb000');
+create pluggable database zpdb001 from pdb_node snapshot copy file_name_convert=('/ora1/dat/tstdb', '/ora1/dat/pdbs/zpdb001', '/ora1/dat/releases/tmp/temp01.dbf', '/ora1/dat/releases/tmp/zpdb000_temp01.dbf');
+create pluggable database zpdb000 from pdb_node snapshot copy file_name_convert=('/ora1/dat/tstdb', '/ora1/dat/releases/pdbs/zpdb001', '/ora1/dat/releases/tmp/temp01.dbf', '/ora1/dat/releases/tmp/zpdb000_temp01.dbf');
+
+create pluggable database zpdb002 from pdb_node snapshot copy file_name_convert=('/ora1/dat/tstdb', '/ora1/dat/pdbs/zpdb002');
+create pluggable database zpdb003 from pdb_node snapshot copy file_name_convert=('/ora1/dat/tstdb', '/ora1/dat/pdbs/zpdb003');
+create pluggable database zpdb004 from pdb_node TEMPFILE REUSE file_name_convert=('/ora1/dat/tstdb', '/ora1/dat/pdbs/zpdb004') snapshot copy;
+create pluggable database zpdb000 from pdb_node storage(max_shared_temp_size 1G) file_name_convert=('/ora1/dat/tstdb', '/ora1/dat/pdbs/zpdb000') snapshot copy;
+После клонирования - обязательно перемещение temp файла в отдельную ФС (чтобы другие клоны не цепляли)
+alter tablespace temp add tempfile '/ora1/dat/releases/tmp/zpdb000_temp.dbf' size 1G reuse autoextend on next 500m maxsize 7000m;
+alter tablespace temp drop tempfile '/ora1/dat/tstdb/dbs/temp__01.dbf'; -- including datafiles;
+
+
+alter tablespace temp add tempfile '/ora1/dat/release/tmp/zpdb000/temp01.dbf' size 1G reuse autoextend on next 500m maxsize 7000m;
+
+drop pluggable database zpdb000 including datafiles;
+drop pluggable database zpdb001 including datafiles;
+drop pluggable database zpdb002 including datafiles;
+drop pluggable database zpdb003 including datafiles;
+drop pluggable database zpdb004 including datafiles;
+
+alter system set sga_max_size=20G scope=spfile;
+alter system set sga_target=20G scope=spfile;
+create pfile='/home/oracle/tstcdb/pfile_tstcdb.ora' from memory;
+create pfile='/home/oracle/tstcdb/spfile_tstcdb.ora' from spfile;
+
+
+alter pluggable database pdb_node open read only;
+alter pluggable database tstdb open;
+alter pluggable database pdb_node save state;
+
+
+shut immediate
+ORA-00450: background process 'CJQ0' did not start
+ORA-00444: background process "CJQ0" failed while starting
+ORA-01089: immediate shutdown or close in progress - no operations are
+permitted
+ORA-01154: database busy. Open, close, mount, and dismount not allowed now

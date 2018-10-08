@@ -1,0 +1,5 @@
+RUN {
+  allocate channel disk1 device type disk format '/u01/app/oracle/orafra/testdb/backup/%U.bkp';
+   backup as backupset database include current
+    controlfile plus archivelog not backed up delete input;
+}

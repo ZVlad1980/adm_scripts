@@ -1,0 +1,620 @@
+Assignments with PO: 23864557, operation date: 10.09.2018
+Start at 27.09.2018 08:06:41
+Update PA periods at 27.09.2018 08:06:41
+update_pa_periods: 0 row(s) inserted
+update_pa_periods: 28871 row(s) updated
+Complete update PA periods at 27.09.2018 08:07:32
+Update account balances at 27.09.2018 08:07:32
+update_balances: update 26160 row(s)
+Complete update balances at 27.09.2018 08:08:32
+----------------------------------------
+p_pay_order_id: 23864557
+l_depth_recalc: 180
+l_filter_code:
+----------------------------------------
+with w_pay_order as ( --обрабатываемый pay_order
+  select /*+ materialize*/
+         po.fk_document,
+         po.payment_period,
+         po.operation_date,
+         po.start_month,
+         po.end_month,
+         po.start_quarter,
+         po.end_quarter,
+         po.start_halfyear,
+         po.end_half_year,
+         po.start_year,
+         po.end_year,
+         po.end_year_month
+  from   pay_order_periods_v po
+  where  po.fk_document = 23864557 --:fk_pay_order
+),
+w_months as ( --список обрабатываемых месяцев
+select /*+ materialize*/ trunc(po.payment_period, 'MM') month_date,
+         last_day(po.payment_period) end_month_date
+  from   w_pay_order po
+
+),
+w_sspv as (
+  select /*+ materialize*/
+         acc.fk_scheme,
+         acc.id fk_sspv_id
+  from   accounts acc
+  where  acc.fk_acct_type = 4
+),
+w_pension_agreements as (
+  select /*+ materialize*/
+     po.fk_document fk_pay_order,
+     pa.fk_pension_agreement,
+     pa.calc_date,
+     pa.fk_base_contract,
+     pa.state,
+     pa.period_code,
+     coalesce(ab.fk_account, sspv.fk_sspv_id, pa.fk_debit) fk_debit,
+     pa.fk_credit,
+     pa.fk_company,
+     pa.fk_scheme,
+     pa.fk_contragent,
+     pa.effective_date,
+     pa.expiration_date,
+     pa.pa_amount,
+     least(pa.last_pay_date,
+           case pa.period_code
+             when 1 then  po.end_month
+             when 3 then  po.end_quarter
+             when 6 then  po.end_half_year
+             when 12 then po.end_year
+           end
+     ) last_pay_date,
+     pa.creation_date,
+     po.payment_period,
+     case when ab.fk_account is null and sspv.fk_sspv_id is not null then 'N' else 'Y' end is_ips,
+     ab.amount account_balance,
+     case
+       when pa.fk_scheme in (1, 5, 6) then
+         'LIFE'
+       when pa.fk_scheme in (2, 7) then
+         'PERIOD'
+       when pa.fk_scheme in (3, 4) then
+         'REST'
+       else
+         'UNKNOWN'
+     end scheme_type,
+     pa.is_disabled_pa,
+     pa.date_pension_age
+ from  pension_agreement_periods_v   pa,
+       w_pay_order                   po,
+       w_sspv                        sspv,
+       accounts_balance              ab
+ where coalesce(ab.transfer_date(+), po.payment_period) >= po.payment_period
+ and   ab.fk_account(+) = pa.fk_debit
+ and   sspv.fk_scheme(+) = pa.fk_scheme
+ and    pa.effective_date <= po.end_month
+and  pa.calc_date = po.payment_period
+       and  pa.period_code = 1
+)
+select /*+ parallel(4) */
+       pa.fk_pay_order,
+       pa.fk_pension_agreement,
+       pa.fk_debit,
+       pa.fk_credit,
+       2 fk_asgmt_type,
+       pa.fk_company,
+       pa.fk_scheme,
+       pa.fk_contragent,
+       pa.paydate,
+       pa.amount,
+       pa.fk_paycode,
+       pa.paydays,
+       pa.addendum_from_date,
+       pa.last_pay_date,
+       pa.effective_date,
+       pa.expiration_date,
+       pa.account_balance,
+       case pa.is_ips
+         when 'Y' then sum(pa.amount)over(partition by pa.fk_debit order by pa.paydate)
+       end total_amount,
+       pa.pension_amount,
+       pa.is_ips,
+       pa.scheme_type
+from   (
+          select pa.fk_pay_order,
+                 pa.fk_pension_agreement,
+                 pa.fk_debit,
+                 pa.fk_credit,
+                 pa.fk_company,
+                 pa.fk_scheme,
+                 pa.fk_contragent,
+                 pa.month_date paydate,
+                 case
+                   when pa.special_calc = 'Y' then
+                     pay_gfnpo_pkg.get_pension(pa.fk_pension_agreement, pa.month_date)
+                   when pa.month_date = pa.addendum_from_date then
+                     pa.first_amount
+                   else pa.amount
+                 end amount,
+                 pa.fk_paycode,
+                 case
+                   when pa.special_calc = 'Y' then
+                     pay_gfnpo_pkg.get_pay_days(pa.fk_pension_agreement, pa.month_date)
+                   else
+                     trunc(least(pa.last_pay_date, pa.end_month_date)) - trunc(greatest(pa.month_date, pa.effective_date)) + 1
+                 end paydays,
+                 pa.addendum_from_date,
+                 pa.last_pay_date,
+                 pa.effective_date,
+                 pa.expiration_date,
+                 pa.account_balance,
+                 pa.pension_amount,
+                 pa.is_ips,
+                 pa.scheme_type
+          from   (
+                  select pa.fk_pay_order,
+                         pa.fk_pension_agreement,
+                         pa.fk_debit,
+                         pa.fk_credit,
+                         pa.fk_company,
+                         pa.fk_scheme,
+                         pa.fk_contragent,
+                         m.month_date,
+                         m.end_month_date,
+                         paa.first_amount ,
+                         paa.amount ,
+                         case
+                           when pa.is_disabled_pa = 'Y' and
+                             (pa.date_pension_age is null or pa.date_pension_age > m.month_date)
+                           then 5066
+                           else 5000
+                         end fk_paycode,
+                         paa.from_date addendum_from_date,
+                         pa.last_pay_date,
+                         pa.effective_date,
+                         pa.expiration_date,
+                         pa.account_balance,
+                         paa.amount pension_amount,
+                         pa.is_ips,
+                         pa.payment_period,
+                         pa.period_code,
+                         pa.scheme_type,
+                         case
+                           when (pa.expiration_date between m.month_date and m.end_month_date - 1)
+                             or exists(
+                                  select 1
+                                  from   pay_restrictions pr
+                                  where  greatest(m.month_date, pa.effective_date) <= coalesce(pr.expiration_date, greatest(m.month_date, pa.effective_date))
+                                  and    m.end_month_date >= pr.effective_date
+                                  and    pr.fk_document_cancel is null
+                                  and    pr.fk_doc_with_acct = pa.fk_pension_agreement
+                                ) then 'Y'
+                           else        'N'
+                         end special_calc
+                  from   w_pension_agreements          pa,
+                         w_months                      m,
+                         pension_agreement_addendums_v paa
+                  where  m.month_date between paa.from_date and paa.end_date
+                  and    paa.fk_pension_agreement = pa.fk_pension_agreement
+                  and    not exists (
+                           select 1
+                           from   assignments a
+                           where  1=1
+                           and    a.fk_paycode in (5000, 5066)
+                           and    a.fk_doc_with_acct = pa.fk_pension_agreement
+                           and    a.paydate between m.month_date and m.end_month_date
+                           and    a.fk_asgmt_type = 2
+                         )
+                  and    not exists (
+                            select 1
+                            from   pay_restrictions pr
+                            where  pr.fk_document_cancel is null
+                            and    greatest(m.month_date, pa.effective_date) >= pr.effective_date
+                            and    m.end_month_date <= coalesce(pr.expiration_date, m.end_month_date)
+                            and    pr.fk_doc_with_acct = pa.fk_pension_agreement
+                         )
+                  and    m.month_date between pa.calc_date and pa.last_pay_date
+    ) pa
+) pa
+----------------------------------------
+start insert_assignments_ (at 27.09.2018 08:08:42)... Выплачены остатки средств по ИПС, пенс.соглашение: 5008585
+Выплачены остатки средств по ИПС, пенс.соглашение: 5008592
+Выплачены остатки средств по ИПС, пенс.соглашение: 6293392
+Выплачены остатки средств по ИПС, пенс.соглашение: 6293390
+Выплачены остатки средств по ИПС, пенс.соглашение: 6294933
+Выплачены остатки средств по ИПС, пенс.соглашение: 6293420
+Выплачены остатки средств по ИПС, пенс.соглашение: 6293388
+Выплачены остатки средств по ИПС, пенс.соглашение: 5008608
+calc_pension
+get_pension(5008616, 01.09.2018): 63.9
+get_pay_days(5008616, 01.09.2018): 3
+Выплачены остатки средств по ИПС, пенс.соглашение: 5008616
+calc_pension
+get_pension(5005130, 01.09.2018): 1471.63
+get_pay_days(5005130, 01.09.2018): 17
+Выплачены остатки средств по ИПС, пенс.соглашение: 5005130
+Выплачены остатки средств по ИПС, пенс.соглашение: 5008613
+Выплачены остатки средств по ИПС, пенс.соглашение: 5007474
+Выплачены остатки средств по ИПС, пенс.соглашение: 5008597
+Выплачены остатки средств по ИПС, пенс.соглашение: 5195485
+Выплачены остатки средств по ИПС, пенс.соглашение: 5008483
+Выплачены остатки средств по ИПС, пенс.соглашение: 5195370
+Выплачены остатки средств по ИПС, пенс.соглашение: 23261669
+Выплачены остатки средств по ИПС, пенс.соглашение: 5007877
+Выплачены остатки средств по ИПС, пенс.соглашение: 13464054
+calc_pension
+get_pension(5008390, 01.09.2018): 2057.4
+get_pay_days(5008390, 01.09.2018): 9
+Выплачены остатки средств по ИПС, пенс.соглашение: 5008390
+Выплачены остатки средств по ИПС, пенс.соглашение: 13554701
+Выплачены остатки средств по ИПС, пенс.соглашение: 13559086
+Выплачены остатки средств по ИПС, пенс.соглашение: 13559066
+Выплачены остатки средств по ИПС, пенс.соглашение: 12215947
+Выплачены остатки средств по ИПС, пенс.соглашение: 23271623
+Выплачены остатки средств по ИПС, пенс.соглашение: 12225814
+Выплачены остатки средств по ИПС, пенс.соглашение: 12048341
+Выплачены остатки средств по ИПС, пенс.соглашение: 13469684
+Выплачены остатки средств по ИПС, пенс.соглашение: 13699224
+Выплачены остатки средств по ИПС, пенс.соглашение: 13470030
+Выплачены остатки средств по ИПС, пенс.соглашение: 13558829
+Выплачены остатки средств по ИПС, пенс.соглашение: 2879259
+Выплачены остатки средств по ИПС, пенс.соглашение: 13498580
+Выплачены остатки средств по ИПС, пенс.соглашение: 13464011
+Выплачены остатки средств по ИПС, пенс.соглашение: 13469503
+Выплачены остатки средств по ИПС, пенс.соглашение: 12153669
+Выплачены остатки средств по ИПС, пенс.соглашение: 12144285
+Выплачены остатки средств по ИПС, пенс.соглашение: 12140473
+Выплачены остатки средств по ИПС, пенс.соглашение: 13469977
+Выплачены остатки средств по ИПС, пенс.соглашение: 3308464
+Выплачены остатки средств по ИПС, пенс.соглашение: 5006508
+Выплачены остатки средств по ИПС, пенс.соглашение: 5007779
+Выплачены остатки средств по ИПС, пенс.соглашение: 5008594
+Выплачены остатки средств по ИПС, пенс.соглашение: 5008605
+Выплачены остатки средств по ИПС, пенс.соглашение: 3308067
+Выплачены остатки средств по ИПС, пенс.соглашение: 5008620
+calc_pension
+get_pension(5007639, 01.09.2018): 524.67
+get_pay_days(5007639, 01.09.2018): 2
+Выплачены остатки средств по ИПС, пенс.соглашение: 5007639
+Выплачены остатки средств по ИПС, пенс.соглашение: 5008619
+Выплачены остатки средств по ИПС, пенс.соглашение: 5007873
+Выплачены остатки средств по ИПС, пенс.соглашение: 5008618
+Выплачены остатки средств по ИПС, пенс.соглашение: 5008617
+calc_pension
+get_pension(5008391, 01.09.2018): 202.2
+get_pay_days(5008391, 01.09.2018): 2
+Выплачены остатки средств по ИПС, пенс.соглашение: 5008391
+Выплачены остатки средств по ИПС, пенс.соглашение: 5007188
+Выплачены остатки средств по ИПС, пенс.соглашение: 5006676
+Выплачены остатки средств по ИПС, пенс.соглашение: 5006673
+Выплачены остатки средств по ИПС, пенс.соглашение: 5007963
+Выплачены остатки средств по ИПС, пенс.соглашение: 5006681
+Выплачены остатки средств по ИПС, пенс.соглашение: 5195031
+Выплачены остатки средств по ИПС, пенс.соглашение: 5007871
+Выплачены остатки средств по ИПС, пенс.соглашение: 3307526
+Выплачены остатки средств по ИПС, пенс.соглашение: 5006680
+Выплачены остатки средств по ИПС, пенс.соглашение: 5007969
+Выплачены остатки средств по ИПС, пенс.соглашение: 5037368
+Выплачены остатки средств по ИПС, пенс.соглашение: 5007971
+Выплачены остатки средств по ИПС, пенс.соглашение: 2881857
+Выплачены остатки средств по ИПС, пенс.соглашение: 5006678
+Выплачены остатки средств по ИПС, пенс.соглашение: 5008610
+Выплачены остатки средств по ИПС, пенс.соглашение: 5007972
+Выплачены остатки средств по ИПС, пенс.соглашение: 2848459
+Выплачены остатки средств по ИПС, пенс.соглашение: 5006677
+Выплачены остатки средств по ИПС, пенс.соглашение: 5007976
+Выплачены остатки средств по ИПС, пенс.соглашение: 5007978
+Выплачены остатки средств по ИПС, пенс.соглашение: 6290901
+Выплачены остатки средств по ИПС, пенс.соглашение: 5007970
+Выплачены остатки средств по ИПС, пенс.соглашение: 5006675
+Выплачены остатки средств по ИПС, пенс.соглашение: 3305708
+Выплачены остатки средств по ИПС, пенс.соглашение: 3307600
+Выплачены остатки средств по ИПС, пенс.соглашение: 5008604
+Выплачены остатки средств по ИПС, пенс.соглашение: 12203734
+Выплачены остатки средств по ИПС, пенс.соглашение: 12204785
+Выплачены остатки средств по ИПС, пенс.соглашение: 13497612
+Выплачены остатки средств по ИПС, пенс.соглашение: 12066260
+Выплачены остатки средств по ИПС, пенс.соглашение: 12153897
+Выплачены остатки средств по ИПС, пенс.соглашение: 13469691
+Выплачены остатки средств по ИПС, пенс.соглашение: 13497687
+Выплачены остатки средств по ИПС, пенс.соглашение: 13502769
+Выплачены остатки средств по ИПС, пенс.соглашение: 13502845
+Выплачены остатки средств по ИПС, пенс.соглашение: 13464078
+Выплачены остатки средств по ИПС, пенс.соглашение: 13469926
+Выплачены остатки средств по ИПС, пенс.соглашение: 13498648
+Выплачены остатки средств по ИПС, пенс.соглашение: 13503063
+Выплачены остатки средств по ИПС, пенс.соглашение: 6293419
+Выплачены остатки средств по ИПС, пенс.соглашение: 6294927
+Выплачены остатки средств по ИПС, пенс.соглашение: 13531783
+Выплачены остатки средств по ИПС, пенс.соглашение: 13569877
+Выплачены остатки средств по ИПС, пенс.соглашение: 23272124
+Выплачены остатки средств по ИПС, пенс.соглашение: 5008615
+calc_pension
+get_pension(5195486, 01.09.2018): 1659.97
+get_pay_days(5195486, 01.09.2018): 19
+Выплачены остатки средств по ИПС, пенс.соглашение: 5195486
+Выплачены остатки средств по ИПС, пенс.соглашение: 3308689
+Выплачены остатки средств по ИПС, пенс.соглашение: 12140561
+Выплачены остатки средств по ИПС, пенс.соглашение: 15761064
+Выплачены остатки средств по ИПС, пенс.соглашение: 13554644
+Выплачены остатки средств по ИПС, пенс.соглашение: 12154815
+Выплачены остатки средств по ИПС, пенс.соглашение: 5007878
+Выплачены остатки средств по ИПС, пенс.соглашение: 5007478
+Выплачены остатки средств по ИПС, пенс.соглашение: 5008588
+Выплачены остатки средств по ИПС, пенс.соглашение: 6290900
+Выплачены остатки средств по ИПС, пенс.соглашение: 5007870
+Выплачены остатки средств по ИПС, пенс.соглашение: 3305871
+Выплачены остатки средств по ИПС, пенс.соглашение: 5195558
+log_write (ERROR): Нет денег на ИПС(контрагент: 1426291, дата начисления 01.09.2018, сумма 1845.8, остаток ИПС: , пенс.соглашение: 23640295, ИПС: 12699336)
+Выплачены остатки средств по ИПС, пенс.соглашение: 5008589
+Выплачены остатки средств по ИПС, пенс.соглашение: 2850732
+Выплачены остатки средств по ИПС, пенс.соглашение: 5037472
+Выплачены остатки средств по ИПС, пенс.соглашение: 5037367
+Выплачены остатки средств по ИПС, пенс.соглашение: 5007874
+Выплачены остатки средств по ИПС, пенс.соглашение: 5008601
+Выплачены остатки средств по ИПС, пенс.соглашение: 5008614
+Выплачены остатки средств по ИПС, пенс.соглашение: 13531481
+Выплачены остатки средств по ИПС, пенс.соглашение: 13699236
+Выплачены остатки средств по ИПС, пенс.соглашение: 12194022
+Выплачены остатки средств по ИПС, пенс.соглашение: 12148393
+Выплачены остатки средств по ИПС, пенс.соглашение: 13497586
+log_write (ERROR): Нет денег на ИПС(контрагент: 1222111, дата начисления 01.09.2018, сумма 5397, остаток ИПС: , пенс.соглашение: 23518353, ИПС: 12497453)
+log_write (ERROR): Нет денег на ИПС(контрагент: 1426291, дата начисления 01.09.2018, сумма 1828.93, остаток ИПС: , пенс.соглашение: 23640265, ИПС: 12699331)
+Выплачены остатки средств по ИПС, пенс.соглашение: 6293417
+Выплачены остатки средств по ИПС, пенс.соглашение: 6293387
+Выплачены остатки средств по ИПС, пенс.соглашение: 13699214
+Выплачены остатки средств по ИПС, пенс.соглашение: 5008596
+Выплачены остатки средств по ИПС, пенс.соглашение: 5008593
+Выплачены остатки средств по ИПС, пенс.соглашение: 5008591
+Выплачены остатки средств по ИПС, пенс.соглашение: 5008599
+Выплачены остатки средств по ИПС, пенс.соглашение: 12117749
+Выплачены остатки средств по ИПС, пенс.соглашение: 13497766
+Выплачены остатки средств по ИПС, пенс.соглашение: 13469833
+Выплачены остатки средств по ИПС, пенс.соглашение: 13503108
+Выплачены остатки средств по ИПС, пенс.соглашение: 13531487
+Выплачены остатки средств по ИПС, пенс.соглашение: 13502705
+Выплачены остатки средств по ИПС, пенс.соглашение: 23280387
+Выплачены остатки средств по ИПС, пенс.соглашение: 5008602
+Выплачены остатки средств по ИПС, пенс.соглашение: 5007872
+Выплачены остатки средств по ИПС, пенс.соглашение: 5195562
+Выплачены остатки средств по ИПС, пенс.соглашение: 5008595
+Выплачены остатки средств по ИПС, пенс.соглашение: 5195561
+Выплачены остатки средств по ИПС, пенс.соглашение: 5195560
+Выплачены остатки средств по ИПС, пенс.соглашение: 5006672
+Выплачены остатки средств по ИПС, пенс.соглашение: 5008603
+Выплачены остатки средств по ИПС, пенс.соглашение: 5007975
+Выплачены остатки средств по ИПС, пенс.соглашение: 5007973
+Выплачены остатки средств по ИПС, пенс.соглашение: 5007477
+Выплачены остатки средств по ИПС, пенс.соглашение: 5007974
+calc_pension
+get_pension(5008606, 01.09.2018): 905.67
+get_pay_days(5008606, 01.09.2018): 13
+Выплачены остатки средств по ИПС, пенс.соглашение: 5008606
+calc_pension
+get_pension(5008607, 01.09.2018): 563.2
+get_pay_days(5008607, 01.09.2018): 8
+Выплачены остатки средств по ИПС, пенс.соглашение: 5008607
+Выплачены остатки средств по ИПС, пенс.соглашение: 5006679
+Выплачены остатки средств по ИПС, пенс.соглашение: 5006707
+Выплачены остатки средств по ИПС, пенс.соглашение: 13554902
+Выплачены остатки средств по ИПС, пенс.соглашение: 12181696
+Выплачены остатки средств по ИПС, пенс.соглашение: 12153882
+Выплачены остатки средств по ИПС, пенс.соглашение: 13470292
+Выплачены остатки средств по ИПС, пенс.соглашение: 13470324
+Выплачены остатки средств по ИПС, пенс.соглашение: 13498659
+Выплачены остатки средств по ИПС, пенс.соглашение: 13553932
+Выплачены остатки средств по ИПС, пенс.соглашение: 13585984
+log_write (ERROR): Нет денег на ИПС(контрагент: 1530491, дата начисления 01.09.2018, сумма 17045.7, остаток ИПС: , пенс.соглашение: 23539988, ИПС: 12498924)
+complete (at 27.09.2018 08:10:36), duration: 114 sec
+----------------------------------------
+p_pay_order_id: 23864557
+l_depth_recalc: 180
+l_filter_code:
+----------------------------------------
+with w_pay_order as ( --обрабатываемый pay_order
+  select /*+ materialize*/
+         po.fk_document,
+         po.payment_period,
+         po.operation_date,
+         po.start_month,
+         po.end_month,
+         po.start_quarter,
+         po.end_quarter,
+         po.start_halfyear,
+         po.end_half_year,
+         po.start_year,
+         po.end_year,
+         po.end_year_month
+  from   pay_order_periods_v po
+  where  po.fk_document = 23864557 --:fk_pay_order
+),
+w_months as ( --список обрабатываемых месяцев
+select /*+ materialize*/ m.month_date,
+         last_day(m.month_date) end_month_date
+  from   w_pay_order po,
+         lateral(
+              select add_months(po.end_year_month, -1 * (level - 1)) month_date
+              from   dual
+              connect by level <= 180 --:depth_recalc
+         ) m
+
+),
+w_sspv as (
+  select /*+ materialize*/
+         acc.fk_scheme,
+         acc.id fk_sspv_id
+  from   accounts acc
+  where  acc.fk_acct_type = 4
+),
+w_pension_agreements as (
+  select /*+ materialize*/
+     po.fk_document fk_pay_order,
+     pa.fk_pension_agreement,
+     pa.calc_date,
+     pa.fk_base_contract,
+     pa.state,
+     pa.period_code,
+     coalesce(ab.fk_account, sspv.fk_sspv_id, pa.fk_debit) fk_debit,
+     pa.fk_credit,
+     pa.fk_company,
+     pa.fk_scheme,
+     pa.fk_contragent,
+     pa.effective_date,
+     pa.expiration_date,
+     pa.pa_amount,
+     least(pa.last_pay_date,
+           case pa.period_code
+             when 1 then  po.end_month
+             when 3 then  po.end_quarter
+             when 6 then  po.end_half_year
+             when 12 then po.end_year
+           end
+     ) last_pay_date,
+     pa.creation_date,
+     po.payment_period,
+     case when ab.fk_account is null and sspv.fk_sspv_id is not null then 'N' else 'Y' end is_ips,
+     ab.amount account_balance,
+     case
+       when pa.fk_scheme in (1, 5, 6) then
+         'LIFE'
+       when pa.fk_scheme in (2, 7) then
+         'PERIOD'
+       when pa.fk_scheme in (3, 4) then
+         'REST'
+       else
+         'UNKNOWN'
+     end scheme_type,
+     pa.is_disabled_pa,
+     pa.date_pension_age
+ from  pension_agreement_periods_v   pa,
+       w_pay_order                   po,
+       w_sspv                        sspv,
+       accounts_balance              ab
+ where coalesce(ab.transfer_date(+), po.payment_period) >= po.payment_period
+ and   ab.fk_account(+) = pa.fk_debit
+ and   sspv.fk_scheme(+) = pa.fk_scheme
+ and    pa.effective_date <= po.end_month
+ and  (pa.calc_date <> po.payment_period
+              or pa.period_code <> 1)
+)
+select /*+ parallel(4) */
+       pa.fk_pay_order,
+       pa.fk_pension_agreement,
+       pa.fk_debit,
+       pa.fk_credit,
+       2 fk_asgmt_type,
+       pa.fk_company,
+       pa.fk_scheme,
+       pa.fk_contragent,
+       pa.paydate,
+       pa.amount,
+       pa.fk_paycode,
+       pa.paydays,
+       pa.addendum_from_date,
+       pa.last_pay_date,
+       pa.effective_date,
+       pa.expiration_date,
+       pa.account_balance,
+       case pa.is_ips
+         when 'Y' then sum(pa.amount)over(partition by pa.fk_debit order by pa.paydate)
+       end total_amount,
+       pa.pension_amount,
+       pa.is_ips,
+       pa.scheme_type
+from   (
+          select pa.fk_pay_order,
+                 pa.fk_pension_agreement,
+                 pa.fk_debit,
+                 pa.fk_credit,
+                 pa.fk_company,
+                 pa.fk_scheme,
+                 pa.fk_contragent,
+                 pa.month_date paydate,
+                 case
+                   when pa.special_calc = 'Y' then
+                     pay_gfnpo_pkg.get_pension(pa.fk_pension_agreement, pa.month_date)
+                   when pa.month_date = pa.addendum_from_date then
+                     pa.first_amount
+                   else pa.amount
+                 end amount,
+                 pa.fk_paycode,
+                 case
+                   when pa.special_calc = 'Y' then
+                     pay_gfnpo_pkg.get_pay_days(pa.fk_pension_agreement, pa.month_date)
+                   else
+                     trunc(least(pa.last_pay_date, pa.end_month_date)) - trunc(greatest(pa.month_date, pa.effective_date)) + 1
+                 end paydays,
+                 pa.addendum_from_date,
+                 pa.last_pay_date,
+                 pa.effective_date,
+                 pa.expiration_date,
+                 pa.account_balance,
+                 pa.pension_amount,
+                 pa.is_ips,
+                 pa.scheme_type
+          from   (
+                  select pa.fk_pay_order,
+                         pa.fk_pension_agreement,
+                         pa.fk_debit,
+                         pa.fk_credit,
+                         pa.fk_company,
+                         pa.fk_scheme,
+                         pa.fk_contragent,
+                         m.month_date,
+                         m.end_month_date,
+                         paa.first_amount ,
+                         paa.amount ,
+                         case
+                           when pa.is_disabled_pa = 'Y' and
+                             (pa.date_pension_age is null or pa.date_pension_age > m.month_date)
+                           then 5066
+                           else 5000
+                         end fk_paycode,
+                         paa.from_date addendum_from_date,
+                         pa.last_pay_date,
+                         pa.effective_date,
+                         pa.expiration_date,
+                         pa.account_balance,
+                         paa.amount pension_amount,
+                         pa.is_ips,
+                         pa.payment_period,
+                         pa.period_code,
+                         pa.scheme_type,
+                         case
+                           when (pa.expiration_date between m.month_date and m.end_month_date - 1)
+                             or exists(
+                                  select 1
+                                  from   pay_restrictions pr
+                                  where  greatest(m.month_date, pa.effective_date) <= coalesce(pr.expiration_date, greatest(m.month_date, pa.effective_date))
+                                  and    m.end_month_date >= pr.effective_date
+                                  and    pr.fk_document_cancel is null
+                                  and    pr.fk_doc_with_acct = pa.fk_pension_agreement
+                                ) then 'Y'
+                           else        'N'
+                         end special_calc
+                  from   w_pension_agreements          pa,
+                         w_months                      m,
+                         pension_agreement_addendums_v paa
+                  where  m.month_date between paa.from_date and paa.end_date
+                  and    paa.fk_pension_agreement = pa.fk_pension_agreement
+                  and    not exists (
+                           select 1
+                           from   assignments a
+                           where  1=1
+                           and    a.fk_paycode in (5000, 5066)
+                           and    a.fk_doc_with_acct = pa.fk_pension_agreement
+                           and    a.paydate between m.month_date and m.end_month_date
+                           and    a.fk_asgmt_type = 2
+                         )
+                  and    not exists (
+                            select 1
+                            from   pay_restrictions pr
+                            where  pr.fk_document_cancel is null
+                            and    greatest(m.month_date, pa.effective_date) >= pr.effective_date
+                            and    m.end_month_date <= coalesce(pr.expiration_date, m.end_month_date)
+                            and    pr.fk_doc_with_acct = pa.fk_pension_agreement
+                         )
+                  and    m.month_date between pa.calc_date and pa.last_pay_date
+    ) pa
+) pa
+----------------------------------------
+start insert_assignments_ (at 27.09.2018 08:10:44)... complete (at 27.09.2018 08:10:57), duration: 13 sec
+Complete at 27.09.2018 08:11:00
+ Duration: 259 sec

@@ -1,0 +1,13 @@
+connect auxiliary /
+RUN
+{
+ ALLOCATE AUXILIARY CHANNEL ch1 DEVICE TYPE DISK;
+    DUPLICATE DATABASE 'FONDDB' TO 'tstdb'
+    BACKUP LOCATION '/ora1/sav/bkup'
+    LOGFILE
+      GROUP 1 ('/ora1/dat/tstdb/redo/log01.log') SIZE 1G REUSE,
+      GROUP 2 ('/ora1/dat/tstdb/redo/log02.log') SIZE 1G REUSE,
+      GROUP 3 ('/ora1/dat/tstdb/redo/log03.log') SIZE 1G REUSE,
+      GROUP 4 ('/ora1/dat/tstdb/redo/log04.log') SIZE 1G REUSE;
+}
+exit

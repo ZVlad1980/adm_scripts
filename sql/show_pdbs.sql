@@ -1,0 +1,2 @@
+select *
+from PDB_PLUG_IN_VIOLATIONS

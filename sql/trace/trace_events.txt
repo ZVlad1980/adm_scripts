@@ -1,0 +1,113 @@
+http://citforum.ru/database/oracle/oracle_trace01/
+
+trcsess [output=<output file name >]  [session=<session ID>] [clientid=<clientid>]
+        [service=<service name>] [action=<action name>] [module=<module name>] <trace file names>
+
+output=<output file name> output destination default being standard output.
+session=<session Id> session to be traced.
+Session id is a combination of session Index & session serial number e.g. 8.13.
+clientid=<clientid> clientid to be traced.
+service=<service name> service to be traced.
+action=<action name> action to be traced.
+module=<module name> module to be traced.
+<trace_file_names> Space separated list of trace files with wild card '*' supported.
+
+
+tkprof
+Usage: tkprof tracefile outputfile [explain= ] [table= ]
+              [print= ] [insert= ] [sys= ] [sort= ]
+  table=schema.tablename   Use 'schema.tablename' with 'explain=' option.
+  explain=user/password    Connect to ORACLE and issue EXPLAIN PLAN.
+  print=integer    List only the first 'integer' SQL statements.
+  aggregate=yes|no
+  insert=filename  List SQL statements and data inside INSERT statements.
+  sys=no           TKPROF does not list SQL statements run as user SYS.
+  record=filename  Record non-recursive statements found in the trace file.
+  waits=yes|no     Record summary for any wait events found in the trace file.
+  sort=option      Set of zero or more of the following sort options:
+    prscnt  number of times parse was called
+    prscpu  cpu time parsing
+    prsela  elapsed time parsing
+    prsdsk  number of disk reads during parse
+    prsqry  number of buffers for consistent read during parse
+    prscu   number of buffers for current read during parse
+    prsmis  number of misses in library cache during parse
+    execnt  number of execute was called
+    execpu  cpu time spent executing
+    exeela  elapsed time executing
+    exedsk  number of disk reads during execute
+    exeqry  number of buffers for consistent read during execute
+    execu   number of buffers for current read during execute
+    exerow  number of rows processed during execute
+    exemis  number of library cache misses during execute
+    fchcnt  number of times fetch was called
+    fchcpu  cpu time spent fetching
+    fchela  elapsed time fetching
+    fchdsk  number of disk reads during fetch
+    fchqry  number of buffers for consistent read during fetch
+    fchcu   number of buffers for current read during fetch
+    fchrow  number of rows fetched
+    userid  userid of user that parsed the cursor
+
+
+http://www.dba-oracle.com/t_grid_rac_events_in_Oracle.htm
+EVENTS = "<trace class><event name><action><name><trace name><qualifier>"
+
+
+https://oracle-base.com/articles/misc/sql-trace-10046-trcsess-and-tkprof
+
+ALTER SESSION SET TRACEFILE_IDENTIFIER = "MY_TEST_SESSION";
+
+SELECT value FROM v$diag_info WHERE name = 'Default Trace File';
+
+
+Generating SQL Trace Files
+SQL> EXEC DBMS_MONITOR.session_trace_enable;
+SQL> EXEC DBMS_MONITOR.session_trace_enable(waits=>TRUE, binds=>FALSE);
+SQL> EXEC DBMS_MONITOR.session_trace_disable;
+
+SQL> EXEC DBMS_MONITOR.session_trace_enable(session_id=>1234, serial_num=>1234);
+SQL> EXEC DBMS_MONITOR.session_trace_enable(session_id =>1234, serial_num=>1234, waits=>TRUE, binds=>FALSE);
+SQL> EXEC DBMS_MONITOR.session_trace_disable(session_id=>1234, serial_num=>1234);
+
+SQL> EXEC DBMS_MONITOR.client_id_trace_enable(client_id=>'tim_hall');
+SQL> EXEC DBMS_MONITOR.client_id_trace_enable(client_id=>'tim_hall', waits=>TRUE, binds=>FALSE);
+SQL> EXEC DBMS_MONITOR.client_id_trace_disable(client_id=>'tim_hall');
+
+SQL> EXEC DBMS_MONITOR.serv_mod_act_trace_enable(service_name=>'db10g', module_name=>'test_api', action_name=>'running');
+SQL> EXEC DBMS_MONITOR.serv_mod_act_trace_enable(service_name=>'db10g', module_name=>'test_api', action_name=>'running', -
+> waits=>TRUE, binds=>FALSE);
+SQL> EXEC DBMS_MONITOR.serv_mod_act_trace_disable(service_name=>'db10g', module_name=>'test_api', action_name=>'running');
+
+-- All versions.
+SQL> ALTER SESSION SET sql_trace=TRUE;
+SQL> ALTER SESSION SET sql_trace=FALSE;
+
+SQL> EXEC DBMS_SESSION.set_sql_trace(sql_trace => TRUE);
+SQL> EXEC DBMS_SESSION.set_sql_trace(sql_trace => FALSE);
+
+SQL> ALTER SESSION SET EVENTS '10046 trace name context forever, level 8';
+SQL> ALTER SESSION SET EVENTS '10046 trace name context off';
+
+SQL> EXEC DBMS_SYSTEM.set_sql_trace_in_session(sid=>123, serial#=>1234, sql_trace=>TRUE);
+SQL> EXEC DBMS_SYSTEM.set_sql_trace_in_session(sid=>123, serial#=>1234, sql_trace=>FALSE);
+
+SQL> EXEC DBMS_SYSTEM.set_ev(si=>123, se=>1234, ev=>10046, le=>8, nm=>'');
+SQL> EXEC DBMS_SYSTEM.set_ev(si=>123, se=>1234, ev=>10046, le=>0, nm=>'');
+
+-- Available from SQL*Plus since 8i (commandline utility prior to this.
+SQL> CONN sys/password AS SYSDBA;  -- User must have SYSDBA.
+SQL> ORADEBUG SETMYPID;            -- Debug current session.
+SQL> ORADEBUG SETOSPID 1234;       -- Debug session with the specified OS process.
+SQL> ORADEBUG SETORAPID 123456;    -- Debug session with the specified Oracle process ID.
+
+SQL> ORADEBUG EVENT 10046 TRACE NAME CONTEXT FOREVER, LEVEL 12;
+SQL> ORADEBUG TRACEFILE_NAME;      -- Display the current trace file.
+SQL> ORADEBUG EVENT 10046 TRACE NAME CONTEXT OFF;
+ 
+-- All versions, requires DBMS_SUPPORT package to be loaded.
+SQL> EXEC DBMS_SUPPORT.start_trace(waits=>TRUE, binds=>FALSE);
+SQL> EXEC DBMS_SUPPORT.stop_trace;
+
+SQL> EXEC DBMS_SUPPORT.start_trace_in_session(sid=>123, serial=>1234, waits=>TRUE, binds=>FALSE);
+SQL> EXEC DBMS_SUPPORT.stop_trace_in_session(sid=>123, serial=>1234);

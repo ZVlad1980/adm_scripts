@@ -1,0 +1,29 @@
+﻿Диски:
+mount -v ACFS /dev/asm/asm_oradata-5 /ora1/dat          --hdisk3 hdisk4 (TSTDB + clones)
+mount -v jfs2 -o log=/dev/loglv00 /dev/lv_cdb /ora1/dat/TSTCDB                    --hdisk2, size 100G
+mount -v jfs2 -o log=/dev/loglv01 /dev/lv_pdbtmp /ora1/dat/pdbs/tempfiles         --hdisk2, size 50G
+
+Директории:
+/ora1/12_1_0         - Oracle Database
+/ora1/grid           - Oracle Grid Infrastructure (+ASM)
+/ora1/dat/TSTCDB     - контейнерная база TSTCDB (redo+undo) + PDB_ROOT
+/ora1/dat/tstdb      - основной контейнер TSTDB - PDB_NODE
+/ora1/dat/pdbs       - контейнеры-клоны
+/ora1/dat/pdbs/tmp   - tempfiles всех контейнеров (для исключения из снапшотов)
+/ora1/dat/buf        - datapump и др
+/ora1/dat/sav        - backup файлы боевой базы
+
+/ora1/dat/acfstst    - диск ACFS для экспериментов с клонированием 
+  Пример создания PDB для тестов:
+     connect / as sysdba
+     alter session set db_create_file_dest='/ora1/dat/acfstst'
+     create pluggable database tst_pdb01 admin user admin identified by admin;
+     show pdbs
+
+Информация о снапшотах:
+acfsutil snap info /ora1/dat
+
+Запуск ASMCA (управление ASM дисками):
+export DISPLAY=<свой ip>:0
+asmca
+

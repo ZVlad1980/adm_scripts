@@ -1,0 +1,3 @@
+SOURCE_PATH=$1
+TARGET_PATH=$2
+scp -c arcfour "${SRC_HOST}:${SOURCE_PATH}" "${TARGET_PATH}"

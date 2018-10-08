@@ -1,0 +1,183 @@
+﻿fdisk -l
+
+Disk /dev/sda: 102.0 GB, 101983649792 bytes, 199186816 sectors
+Units = sectors of 1 * 512 = 512 bytes
+Sector size (logical/physical): 512 bytes / 512 bytes
+I/O size (minimum/optimal): 512 bytes / 512 bytes
+Disk label type: dos
+Disk identifier: 0x000adb4b
+
+   Device Boot      Start         End      Blocks   Id  System
+/dev/sda1   *        2048     2099199     1048576   83  Linux
+/dev/sda2         2099200   192583679    95242240   8e  Linux LVM
+
+Disk /dev/sdb: 1869.2 GB, 1869169557504 bytes, 3650721792 sectors
+Units = sectors of 1 * 512 = 512 bytes
+Sector size (logical/physical): 512 bytes / 512 bytes
+I/O size (minimum/optimal): 512 bytes / 512 bytes
+
+
+Disk /dev/mapper/ol_pc169vm02-root: 53.7 GB, 53687091200 bytes, 104857600 sectors
+Units = sectors of 1 * 512 = 512 bytes
+Sector size (logical/physical): 512 bytes / 512 bytes
+I/O size (minimum/optimal): 512 bytes / 512 bytes
+
+
+Disk /dev/mapper/ol_pc169vm02-swap: 11.5 GB, 11454644224 bytes, 22372352 sectors
+Units = sectors of 1 * 512 = 512 bytes
+Sector size (logical/physical): 512 bytes / 512 bytes
+I/O size (minimum/optimal): 512 bytes / 512 bytes
+
+
+Disk /dev/sdc: 1649.3 GB, 1649267441664 bytes, 3221225472 sectors
+Units = sectors of 1 * 512 = 512 bytes
+Sector size (logical/physical): 512 bytes / 512 bytes
+I/O size (minimum/optimal): 512 bytes / 512 bytes
+
+
+Disk /dev/sdd: 1649.3 GB, 1649267441664 bytes, 3221225472 sectors
+Units = sectors of 1 * 512 = 512 bytes
+Sector size (logical/physical): 512 bytes / 512 bytes
+I/O size (minimum/optimal): 512 bytes / 512 bytes
+
+
+Disk /dev/mapper/ol_pc169vm02-home: 32.4 GB, 32380026880 bytes, 63242240 sectors
+Units = sectors of 1 * 512 = 512 bytes
+Sector size (logical/physical): 512 bytes / 512 bytes
+I/O size (minimum/optimal): 512 bytes / 512 bytes
+
+df -h
+Filesystem                     Size  Used Avail Use% Mounted on
+devtmpfs                        16G     0   16G   0% /dev
+tmpfs                           16G     0   16G   0% /dev/shm
+tmpfs                           16G  9.0M   16G   1% /run
+tmpfs                           16G     0   16G   0% /sys/fs/cgroup
+/dev/mapper/ol_pc169vm02-root   50G   30G   21G  59% /
+/dev/sda1                     1014M  275M  740M  28% /boot
+/dev/mapper/ol_pc169vm02-home   31G  126M   31G   1% /home
+tmpfs                          3.2G   12K  3.2G   1% /run/user/42
+tmpfs                          3.2G     0  3.2G   0% /run/user/0
+
+
+
+Disks:
+sdb - 1,7 TB:
+  lv_cdb,     50Gb    - CDB + PDB_ROOT
+  lv_tmp,    250Gb    - temp files of pdbs
+  lv_buf,    400Gb   - buffer, datapump, etc
+  lv_backup,   1Tb   - backup
+sdc - 1,5 TB, PDBS, mount /u01/app/oracle/oradata/evday
+sdd - 1,5 TB, PDBS, mount /u01/app/oracle/oradata/weekly
+
+
+fdisk /dev/sdb
+lvm
+vgcreate vg_cdb /dev/sdb1
+lvcreate --size 50G -n lv_cdb vg_cdb
+lvcreate --size 250G -n lv_tmp vg_cdb
+lvcreate --size 400G -n lv_buf vg_cdb
+lvcreate --size 1T -n lv_backup vg_cdb
+exit
+
+mkfs.ext4 /dev/vg_cdb/lv_cdb
+mkfs.ext4 /dev/vg_cdb/lv_tmp
+mkfs.ext4 /dev/vg_cdb/lv_buf
+mkfs.ext4 /dev/vg_cdb/lv_backup
+
+mkdir -p /u01/app/oracle/oradata/tstcdb
+mkdir -p /u01/app/oracle/oradata/tempfiles
+mkdir -p /u01/app/oracle/oradata/tempfiles/clones
+mkdir -p /u01/app/oracle/oradata/dev
+mkdir -p /u01/app/oracle/oradata/weekly
+mkdir -p /u01/app/oracle/buf
+
+chown -R oracle:oinstall /u01/app/oracle/oradata
+chmod -R 774 /u01/app/oracle/oradata
+chown -R oracle:oinstall /u01/app/oracle/buf
+chown -R oracle:oinstall /u01/app/oracle/backup
+chmod -R 774 /u01/app/oracle/buf    
+chmod -R 774 /u01/app/oracle/backup 
+
+vi /etc/fstab
+/dev/vg_cdb/lv_cdb /u01/app/oracle/oradata/tstcdb     ext4 defaults 0 2
+/dev/vg_cdb/lv_tmp /u01/app/oracle/oradata/pdbs/tempfiles ext4 defaults 0 2
+/dev/vg_cdb/lv_buf /u01/app/oracle/buf ext4 defaults 0 2
+/dev/vg_cdb/lv_backup /u01/app/oracle/backup ext4 defaults 0 2
+
+ну или разово:
+mount /dev/vg_cdb/lv_cdb /u01/app/oracle/oradata/tstcdb
+mount /dev/vg_cdb/lv_tmp /u01/app/oracle/oradata/tempfiles
+mount /dev/vg_cdb/lv_buf /u01/app/oracle/buf
+mount /dev/vg_cdb/lv_backup /u01/app/oracle/backup
+
+[root@SV084 /]# df -h
+Filesystem                     Size  Used Avail Use% Mounted on
+devtmpfs                        16G     0   16G   0% /dev
+tmpfs                           16G     0   16G   0% /dev/shm
+tmpfs                           16G  9.3M   16G   1% /run
+tmpfs                           16G     0   16G   0% /sys/fs/cgroup
+/dev/mapper/ol_pc169vm02-root   50G   30G   21G  59% /
+/dev/sda1                     1014M  275M  740M  28% /boot
+/dev/mapper/ol_pc169vm02-home   31G  126M   31G   1% /home
+tmpfs                          3.2G   12K  3.2G   1% /run/user/42
+tmpfs                          3.2G     0  3.2G   0% /run/user/0
+tmpfs                          3.2G     0  3.2G   0% /run/user/54321
+/dev/mapper/vg_cdb-lv_cdb       50G   53M   47G   1% /u01/app/oracle/oradata/tstcdb
+/dev/mapper/vg_cdb-lv_tmp      246G   61M  234G   1% /u01/app/oracle/oradata/tempfiles
+/dev/mapper/vg_cdb-lv_buf      394G   73M  374G   1% /u01/app/oracle/buf
+/dev/mapper/vg_cdb-lv_backup  1008G   77M  957G   1% /u01/app/oracle/backup
+
+
+Настройка ACFS дисков:
+fdisk /dev/sdc --n ... w
+fdisk /dev/sdd --n ... w
+
+/usr/sbin/oracleasm createdisk dev /dev/sdc1
+/usr/sbin/oracleasm createdisk weekly /dev/sdd1
+
+
+/usr/sbin/oracleasm deletedisk dev
+/usr/sbin/oracleasm deletedisk weekly
+
+[oracle@SV084 ~]$ . .grid_env
+[oracle@SV084 ~]$ vi /u01/app/oracle/product/12.2.0/grid/network/admin/listener.ora --set HOST
+
+/u01/app/oracle/product/12.2.0/grid/perl/bin/perl -I/u01/app/oracle/product/12.2.0/grid/perl/lib -I/u01/app/oracle/product/12.2.0/grid/crs/install /u01/app/oracle/product/12.2.0/grid/crs/install/roothas.pl
+
+[oracle@SV084 ~]$ cd $ORACLE_HOME/bin
+[oracle@SV084 bin]$ ./lsnrctl start
+
+Start ACFS:
+/u01/app/oracle/product/12.2.0/grid/bin/acfsload start
+
+ASMCA: config disk groups, volumes and ACFS
+
+/sbin/mkfs -t acfs /dev/asm/vol_dev-420
+/bin/mount -t acfs /dev/asm/vol_dev-420 /u01/app/oracle/oradata/dev
+/sbin/mkfs -t acfs /dev/asm/vol_weekly-82
+/bin/mount -t acfs /dev/asm/vol_weekly-82 /u01/app/oracle/oradata/weekly
+
+chown -R oracle:oinstall /u01/app/oracle/oradata/dev
+chmod -R 774 /u01/app/oracle/oradata/dev
+chown -R oracle:oinstall /u01/app/oracle/oradata/weekly
+chmod -R 774 /u01/app/oracle/oradata/weekly
+
+Удаление:
+umount /dev/vg_cdb/lv_cdb 
+umount /dev/vg_cdb/lv_tmp 
+umount /dev/vg_cdb/lv_buf 
+umount /dev/vg_cdb/lv_backup 
+lvm
+lvremove vg_cdb/lv_cdb 
+lvremove vg_cdb/lv_tmp 
+lvremove vg_cdb/lv_buf
+lvremove vg_cdb/lv_backup
+vgremove vg_cdb
+pvremove /dev/sdb1
+fdisk /dev/sdb
+d
+w
+
+
+
+lv remove vg_name/lv_name

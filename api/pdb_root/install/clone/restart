@@ -1,0 +1,46 @@
+﻿Перед выключением сервера:
+root:
+/bin/umount /u01/data
+asmca
+disable volume, dismount группу ASMDATA
+
+После загрузки:
+root
+# /u01/app/oracle/product/12.2.0/grid/bin/acfsload start
+asmca
+монтируем группу ASMDATA, Enable Volume
+root:
+# /bin/mount -t acfs /dev/asm/datavol-215 /u01/data
+
+root:
+visudo
+add
+## Allows members of the users group to mount and unmount the
+## cdrom as root
+# %users  ALL=/sbin/mount /mnt/cdrom, /sbin/umount /mnt/cdrom
+oracle ALL=/bin/mount, /bin/umount
+
+acfs_stop.sh
+sudo /bin/umount /u01/data
+asmcmd voldisable -G oradata oradatavol
+asmcmd umount oradata
+
+acfs_start.sh
+asmcmd mount data
+asmcmd volenable -G data datavol
+sudo /bin/mount -t acfs /dev/asm/datavol-215 /u01/data
+
+Монтирование шары VB:
+$ mkdir /u01/share
+$ mkdir /u01/share/gfdump
+# /bin/mount -t vboxsf gfdump /u01/share/gfdump
+# chown -R oracle:oinstall gfdump
+# chmod -R 774 gfdump
+
+На всякий:
+tail -n 30 -s 5 -f alert.log
+
+/bin/mount -t acfs /dev/asm/datavol-215 /u01/app/oracle/oradata
+/bin/mount -t acfs /dev/asm/cdb_vol-291 /u01/app/oracle/oradata/TESTCDB
+/bin/mount -t acfs /dev/asm/tempvol-292 /u01/app/oracle/oradata/pdbs/tempfiles
+/bin/mount -t acfs /dev/asm/fravol-292 /u01/app/oracle/orafra

@@ -1,0 +1,69 @@
+﻿Start:
+root:
+/u01/app/oracle/product/12.2.0/grid/bin/acfsload start
+
+oracle:
+cd
+. .grid_env
+$ORACLE_HOME/bin/lsnrctl start
+sleep 60
+$ORACLE_HOME/bin/asmcmd umount -a 
+$ORACLE_HOME/bin/asmcmd mount -a
+$ORACLE_HOME/bin/asmcmd volenable --all
+
+root:
+/bin/mount -t acfs /dev/asm/vol_dev-420 /u01/app/oracle/oradata/dev
+/bin/mount -t acfs /dev/asm/vol_weekly-82 /u01/app/oracle/oradata/weekly
+
+oracle:
+cd
+. .cdb_env
+sqlplus / as sysdba
+ > startup
+ > alter pluggable database pdb_root open;
+ > exec pdb_api.restore_open_mode;
+ > exit
+
+cd /home/oracle/projects/pdb_daemon/
+./start.sh
+
+COMPLETE
+
+
+Stop:
+oracle:
+. .cdb_env
+sqlplus / as sysdba
+shut immediate
+exit
+Проверить активность ACFS дисков:
+snapinfo
+nmon
+
+root:
+umount /u01/app/oracle/oradata/dev
+umount /u01/app/oracle/oradata/weekly
+
+oracle:
+cd
+. .grid_env
+$ORACLE_HOME/bin/asmcmd voldisable --all
+$ORACLE_HOME/bin/asmcmd umount -a
+$ORACLE_HOME/bin/lsnrctl stop
+$ORACLE_HOME/bin/srvctl stop asm
+exit
+
+root
+reboot 0
+
+
+
+Монтирование шары VB:
+$ mkdir /u01/share
+$ mkdir /u01/share/gfdump
+# /bin/mount -t vboxsf DMP /u01/app/oracle/oradata/pdbs
+# chown -R oracle:oinstall gfdump
+# chmod -R 774 gfdump
+
+На всякий:
+tail -n 30 -s 5 -f alert.log

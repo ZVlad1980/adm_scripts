@@ -1,0 +1,232 @@
+
+Recovery Manager: Release 12.1.0.1.0 - Production on Sat Sep 8 22:18:51 2018
+
+Copyright (c) 1982, 2013, Oracle and/or its affiliates.  All rights reserved.
+
+connected to target database: TSTCDB (DBID=2875423170)
+
+RMAN> RUN {
+2> convert from platform 'AIX-Based Systems (64-bit)' datafile
+3> '/u01/app/oracle/backup/aix_files/dwhdat01.dbf',
+4> '/u01/app/oracle/backup/aix_files/fnddat01.dbf',
+5> '/u01/app/oracle/backup/aix_files/fnddat02.dbf',
+6> '/u01/app/oracle/backup/aix_files/fnddat03.dbf',
+7> '/u01/app/oracle/backup/aix_files/fnddat04.dbf',
+8> '/u01/app/oracle/backup/aix_files/fnddat05.dbf',
+9> '/u01/app/oracle/backup/aix_files/fnddat06.dbf',
+10> '/u01/app/oracle/backup/aix_files/fndidx01.dbf',
+11> '/u01/app/oracle/backup/aix_files/fndidx02.dbf',
+12> '/u01/app/oracle/backup/aix_files/fndidx03.dbf',
+13> '/u01/app/oracle/backup/aix_files/fndidx04.dbf',
+14> '/u01/app/oracle/backup/aix_files/usrdat01.dbf',
+15> '/u01/app/oracle/backup/aix_files/usrdat02.dbf',
+16> '/u01/app/oracle/backup/aix_files/webdat01.dbf',
+17> '/u01/app/oracle/backup/aix_files/arhdat01.dbf',
+18> '/u01/app/oracle/backup/aix_files/mdmdat01.dbf',
+19> '/u01/app/oracle/backup/aix_files/opsdat01.dbf',
+20> '/u01/app/oracle/backup/aix_files/infdat01.dbf',
+21> '/u01/app/oracle/backup/aix_files/infdat02.dbf',
+22> '/u01/app/oracle/backup/aix_files/infdat03.dbf',
+23> '/u01/app/oracle/backup/aix_files/gf_idx01.dbf',
+24> '/u01/app/oracle/backup/aix_files/gf_idx02.dbf',
+25> '/u01/app/oracle/backup/aix_files/gf_idx03.dbf',
+26> '/u01/app/oracle/backup/aix_files/gf_idx04.dbf',
+27> '/u01/app/oracle/backup/aix_files/gf_idx05.dbf',
+28> '/u01/app/oracle/backup/aix_files/gf_idx06.dbf',
+29> '/u01/app/oracle/backup/aix_files/ctxdat01.dbf',
+30> '/u01/app/oracle/backup/aix_files/mdmdat02.dbf',
+31> '/u01/app/oracle/backup/aix_files/fiasdat01.dbf',
+32> '/u01/app/oracle/backup/aix_files/gf2dat01.dbf',
+33> '/u01/app/oracle/backup/aix_files/gf2dat02.dbf',
+34> '/u01/app/oracle/backup/aix_files/gfpndat01.dbf',
+35> '/u01/app/oracle/backup/aix_files/gfpndat02.dbf',
+36> '/u01/app/oracle/backup/aix_files/gfpndat03.dbf',
+37> '/u01/app/oracle/backup/aix_files/gfpnidx01.dbf',
+38> '/u01/app/oracle/backup/aix_files/gfpnidx02.dbf',
+39> '/u01/app/oracle/backup/aix_files/gfpnidx03.dbf',
+40> '/u01/app/oracle/backup/aix_files/smppdat01.dbf',
+41> '/u01/app/oracle/backup/aix_files/etldat01.dbf',
+42> '/u01/app/oracle/backup/aix_files/etldat02.dbf',
+43> '/u01/app/oracle/backup/aix_files/etlidx01.dbf'
+44> db_file_name_convert '/u01/app/oracle/backup/aix_files/', '/u01/app/oracle/oradata/weekly/WEEKLY_NODE/datafile/' parallelism 5;
+45> }
+46> 
+Starting conversion at target at 08-SEP-18
+using target database control file instead of recovery catalog
+allocated channel: ORA_DISK_1
+channel ORA_DISK_1: SID=10 device type=DISK
+allocated channel: ORA_DISK_2
+channel ORA_DISK_2: SID=11 device type=DISK
+allocated channel: ORA_DISK_3
+channel ORA_DISK_3: SID=772 device type=DISK
+allocated channel: ORA_DISK_4
+channel ORA_DISK_4: SID=1276 device type=DISK
+allocated channel: ORA_DISK_5
+channel ORA_DISK_5: SID=265 device type=DISK
+channel ORA_DISK_1: starting datafile conversion
+input file name=/u01/app/oracle/backup/aix_files/infdat01.dbf
+channel ORA_DISK_2: starting datafile conversion
+input file name=/u01/app/oracle/backup/aix_files/infdat02.dbf
+channel ORA_DISK_3: starting datafile conversion
+input file name=/u01/app/oracle/backup/aix_files/infdat03.dbf
+channel ORA_DISK_4: starting datafile conversion
+input file name=/u01/app/oracle/backup/aix_files/fndidx04.dbf
+channel ORA_DISK_5: starting datafile conversion
+input file name=/u01/app/oracle/backup/aix_files/gf2dat01.dbf
+converted datafile=/u01/app/oracle/oradata/weekly/WEEKLY_NODE/datafile/fndidx04.dbf
+channel ORA_DISK_4: datafile conversion complete, elapsed time: 00:55:47
+channel ORA_DISK_4: starting datafile conversion
+input file name=/u01/app/oracle/backup/aix_files/gf2dat02.dbf
+converted datafile=/u01/app/oracle/oradata/weekly/WEEKLY_NODE/datafile/gf2dat01.dbf
+channel ORA_DISK_5: datafile conversion complete, elapsed time: 00:55:57
+channel ORA_DISK_5: starting datafile conversion
+input file name=/u01/app/oracle/backup/aix_files/gfpndat01.dbf
+converted datafile=/u01/app/oracle/oradata/weekly/WEEKLY_NODE/datafile/infdat01.dbf
+channel ORA_DISK_1: datafile conversion complete, elapsed time: 01:06:15
+channel ORA_DISK_1: starting datafile conversion
+input file name=/u01/app/oracle/backup/aix_files/gfpndat02.dbf
+converted datafile=/u01/app/oracle/oradata/weekly/WEEKLY_NODE/datafile/infdat03.dbf
+channel ORA_DISK_3: datafile conversion complete, elapsed time: 01:07:52
+channel ORA_DISK_3: starting datafile conversion
+input file name=/u01/app/oracle/backup/aix_files/gfpndat03.dbf
+converted datafile=/u01/app/oracle/oradata/weekly/WEEKLY_NODE/datafile/infdat02.dbf
+channel ORA_DISK_2: datafile conversion complete, elapsed time: 01:08:12
+channel ORA_DISK_2: starting datafile conversion
+input file name=/u01/app/oracle/backup/aix_files/gfpnidx01.dbf
+converted datafile=/u01/app/oracle/oradata/weekly/WEEKLY_NODE/datafile/gf2dat02.dbf
+channel ORA_DISK_4: datafile conversion complete, elapsed time: 00:49:36
+channel ORA_DISK_4: starting datafile conversion
+input file name=/u01/app/oracle/backup/aix_files/gfpnidx02.dbf
+converted datafile=/u01/app/oracle/oradata/weekly/WEEKLY_NODE/datafile/gfpndat01.dbf
+channel ORA_DISK_5: datafile conversion complete, elapsed time: 00:53:40
+channel ORA_DISK_5: starting datafile conversion
+input file name=/u01/app/oracle/backup/aix_files/gfpnidx03.dbf
+converted datafile=/u01/app/oracle/oradata/weekly/WEEKLY_NODE/datafile/gfpnidx01.dbf
+channel ORA_DISK_2: datafile conversion complete, elapsed time: 00:54:25
+channel ORA_DISK_2: starting datafile conversion
+input file name=/u01/app/oracle/backup/aix_files/etldat01.dbf
+converted datafile=/u01/app/oracle/oradata/weekly/WEEKLY_NODE/datafile/gfpndat02.dbf
+channel ORA_DISK_1: datafile conversion complete, elapsed time: 00:57:01
+channel ORA_DISK_1: starting datafile conversion
+input file name=/u01/app/oracle/backup/aix_files/arhdat01.dbf
+converted datafile=/u01/app/oracle/oradata/weekly/WEEKLY_NODE/datafile/gfpndat03.dbf
+channel ORA_DISK_3: datafile conversion complete, elapsed time: 00:56:50
+channel ORA_DISK_3: starting datafile conversion
+input file name=/u01/app/oracle/backup/aix_files/mdmdat01.dbf
+converted datafile=/u01/app/oracle/oradata/weekly/WEEKLY_NODE/datafile/gfpnidx02.dbf
+channel ORA_DISK_4: datafile conversion complete, elapsed time: 00:59:03
+channel ORA_DISK_4: starting datafile conversion
+input file name=/u01/app/oracle/backup/aix_files/fnddat03.dbf
+converted datafile=/u01/app/oracle/oradata/weekly/WEEKLY_NODE/datafile/arhdat01.dbf
+channel ORA_DISK_1: datafile conversion complete, elapsed time: 00:45:15
+channel ORA_DISK_1: starting datafile conversion
+input file name=/u01/app/oracle/backup/aix_files/fnddat04.dbf
+converted datafile=/u01/app/oracle/oradata/weekly/WEEKLY_NODE/datafile/gfpnidx03.dbf
+channel ORA_DISK_5: datafile conversion complete, elapsed time: 00:59:43
+channel ORA_DISK_5: starting datafile conversion
+input file name=/u01/app/oracle/backup/aix_files/fnddat05.dbf
+converted datafile=/u01/app/oracle/oradata/weekly/WEEKLY_NODE/datafile/mdmdat01.dbf
+channel ORA_DISK_3: datafile conversion complete, elapsed time: 00:45:45
+channel ORA_DISK_3: starting datafile conversion
+input file name=/u01/app/oracle/backup/aix_files/fnddat06.dbf
+converted datafile=/u01/app/oracle/oradata/weekly/WEEKLY_NODE/datafile/etldat01.dbf
+channel ORA_DISK_2: datafile conversion complete, elapsed time: 01:02:30
+channel ORA_DISK_2: starting datafile conversion
+input file name=/u01/app/oracle/backup/aix_files/usrdat02.dbf
+converted datafile=/u01/app/oracle/oradata/weekly/WEEKLY_NODE/datafile/fnddat03.dbf
+channel ORA_DISK_4: datafile conversion complete, elapsed time: 00:31:29
+channel ORA_DISK_4: starting datafile conversion
+input file name=/u01/app/oracle/backup/aix_files/mdmdat02.dbf
+converted datafile=/u01/app/oracle/oradata/weekly/WEEKLY_NODE/datafile/fnddat04.dbf
+channel ORA_DISK_1: datafile conversion complete, elapsed time: 00:31:28
+channel ORA_DISK_1: starting datafile conversion
+input file name=/u01/app/oracle/backup/aix_files/etldat02.dbf
+converted datafile=/u01/app/oracle/oradata/weekly/WEEKLY_NODE/datafile/fnddat06.dbf
+channel ORA_DISK_3: datafile conversion complete, elapsed time: 00:30:38
+channel ORA_DISK_3: starting datafile conversion
+input file name=/u01/app/oracle/backup/aix_files/opsdat01.dbf
+converted datafile=/u01/app/oracle/oradata/weekly/WEEKLY_NODE/datafile/fnddat05.dbf
+channel ORA_DISK_5: datafile conversion complete, elapsed time: 00:31:48
+channel ORA_DISK_5: starting datafile conversion
+input file name=/u01/app/oracle/backup/aix_files/dwhdat01.dbf
+converted datafile=/u01/app/oracle/oradata/weekly/WEEKLY_NODE/datafile/usrdat02.dbf
+channel ORA_DISK_2: datafile conversion complete, elapsed time: 00:27:09
+channel ORA_DISK_2: starting datafile conversion
+input file name=/u01/app/oracle/backup/aix_files/fnddat01.dbf
+converted datafile=/u01/app/oracle/oradata/weekly/WEEKLY_NODE/datafile/dwhdat01.dbf
+channel ORA_DISK_5: datafile conversion complete, elapsed time: 00:13:12
+channel ORA_DISK_5: starting datafile conversion
+input file name=/u01/app/oracle/backup/aix_files/fnddat02.dbf
+converted datafile=/u01/app/oracle/oradata/weekly/WEEKLY_NODE/datafile/opsdat01.dbf
+channel ORA_DISK_3: datafile conversion complete, elapsed time: 00:21:41
+channel ORA_DISK_3: starting datafile conversion
+input file name=/u01/app/oracle/backup/aix_files/fndidx01.dbf
+converted datafile=/u01/app/oracle/oradata/weekly/WEEKLY_NODE/datafile/mdmdat02.dbf
+channel ORA_DISK_4: datafile conversion complete, elapsed time: 00:27:34
+channel ORA_DISK_4: starting datafile conversion
+input file name=/u01/app/oracle/backup/aix_files/fndidx02.dbf
+converted datafile=/u01/app/oracle/oradata/weekly/WEEKLY_NODE/datafile/fnddat01.dbf
+channel ORA_DISK_2: datafile conversion complete, elapsed time: 00:15:58
+channel ORA_DISK_2: starting datafile conversion
+input file name=/u01/app/oracle/backup/aix_files/fndidx03.dbf
+converted datafile=/u01/app/oracle/oradata/weekly/WEEKLY_NODE/datafile/etldat02.dbf
+channel ORA_DISK_1: datafile conversion complete, elapsed time: 00:29:32
+channel ORA_DISK_1: starting datafile conversion
+input file name=/u01/app/oracle/backup/aix_files/usrdat01.dbf
+converted datafile=/u01/app/oracle/oradata/weekly/WEEKLY_NODE/datafile/fnddat02.dbf
+channel ORA_DISK_5: datafile conversion complete, elapsed time: 00:15:47
+channel ORA_DISK_5: starting datafile conversion
+input file name=/u01/app/oracle/backup/aix_files/gf_idx01.dbf
+converted datafile=/u01/app/oracle/oradata/weekly/WEEKLY_NODE/datafile/fndidx01.dbf
+channel ORA_DISK_3: datafile conversion complete, elapsed time: 00:15:27
+channel ORA_DISK_3: starting datafile conversion
+input file name=/u01/app/oracle/backup/aix_files/gf_idx02.dbf
+converted datafile=/u01/app/oracle/oradata/weekly/WEEKLY_NODE/datafile/fndidx02.dbf
+channel ORA_DISK_4: datafile conversion complete, elapsed time: 00:16:28
+channel ORA_DISK_4: starting datafile conversion
+input file name=/u01/app/oracle/backup/aix_files/gf_idx03.dbf
+converted datafile=/u01/app/oracle/oradata/weekly/WEEKLY_NODE/datafile/fndidx03.dbf
+channel ORA_DISK_2: datafile conversion complete, elapsed time: 00:15:08
+channel ORA_DISK_2: starting datafile conversion
+input file name=/u01/app/oracle/backup/aix_files/gf_idx04.dbf
+converted datafile=/u01/app/oracle/oradata/weekly/WEEKLY_NODE/datafile/usrdat01.dbf
+channel ORA_DISK_1: datafile conversion complete, elapsed time: 00:15:47
+channel ORA_DISK_1: starting datafile conversion
+input file name=/u01/app/oracle/backup/aix_files/gf_idx05.dbf
+converted datafile=/u01/app/oracle/oradata/weekly/WEEKLY_NODE/datafile/gf_idx01.dbf
+channel ORA_DISK_5: datafile conversion complete, elapsed time: 00:15:35
+channel ORA_DISK_5: starting datafile conversion
+input file name=/u01/app/oracle/backup/aix_files/gf_idx06.dbf
+converted datafile=/u01/app/oracle/oradata/weekly/WEEKLY_NODE/datafile/gf_idx02.dbf
+channel ORA_DISK_3: datafile conversion complete, elapsed time: 00:15:02
+channel ORA_DISK_3: starting datafile conversion
+input file name=/u01/app/oracle/backup/aix_files/ctxdat01.dbf
+converted datafile=/u01/app/oracle/oradata/weekly/WEEKLY_NODE/datafile/gf_idx03.dbf
+channel ORA_DISK_4: datafile conversion complete, elapsed time: 00:15:23
+channel ORA_DISK_4: starting datafile conversion
+input file name=/u01/app/oracle/backup/aix_files/fiasdat01.dbf
+converted datafile=/u01/app/oracle/oradata/weekly/WEEKLY_NODE/datafile/gf_idx04.dbf
+channel ORA_DISK_2: datafile conversion complete, elapsed time: 00:15:22
+channel ORA_DISK_2: starting datafile conversion
+input file name=/u01/app/oracle/backup/aix_files/smppdat01.dbf
+converted datafile=/u01/app/oracle/oradata/weekly/WEEKLY_NODE/datafile/gf_idx05.dbf
+channel ORA_DISK_1: datafile conversion complete, elapsed time: 00:15:24
+channel ORA_DISK_1: starting datafile conversion
+input file name=/u01/app/oracle/backup/aix_files/etlidx01.dbf
+converted datafile=/u01/app/oracle/oradata/weekly/WEEKLY_NODE/datafile/gf_idx06.dbf
+channel ORA_DISK_5: datafile conversion complete, elapsed time: 00:15:56
+channel ORA_DISK_5: starting datafile conversion
+input file name=/u01/app/oracle/backup/aix_files/webdat01.dbf
+converted datafile=/u01/app/oracle/oradata/weekly/WEEKLY_NODE/datafile/webdat01.dbf
+channel ORA_DISK_5: datafile conversion complete, elapsed time: 00:02:45
+converted datafile=/u01/app/oracle/oradata/weekly/WEEKLY_NODE/datafile/ctxdat01.dbf
+channel ORA_DISK_3: datafile conversion complete, elapsed time: 00:13:06
+converted datafile=/u01/app/oracle/oradata/weekly/WEEKLY_NODE/datafile/fiasdat01.dbf
+channel ORA_DISK_4: datafile conversion complete, elapsed time: 00:12:29
+converted datafile=/u01/app/oracle/oradata/weekly/WEEKLY_NODE/datafile/smppdat01.dbf
+channel ORA_DISK_2: datafile conversion complete, elapsed time: 00:10:12
+converted datafile=/u01/app/oracle/oradata/weekly/WEEKLY_NODE/datafile/etlidx01.dbf
+channel ORA_DISK_1: datafile conversion complete, elapsed time: 00:08:33
+Finished conversion at target at 09-SEP-18
+
+Recovery Manager complete.

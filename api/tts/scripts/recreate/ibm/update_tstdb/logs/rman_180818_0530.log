@@ -1,0 +1,802 @@
+
+Recovery Manager: Release 12.1.0.1.0 - Production on Sat Aug 18 05:31:17 2018
+
+Copyright (c) 1982, 2013, Oracle and/or its affiliates.  All rights reserved.
+
+RMAN> connect auxiliary *
+2> RUN
+3> {
+4>  ALLOCATE AUXILIARY CHANNEL ch1 DEVICE TYPE DISK;
+5>     DUPLICATE DATABASE 'FONDDB' TO 'tstdb'
+6>     BACKUP LOCATION '/ora1/sav/bkup'
+7>     LOGFILE
+8>       GROUP 1 ('/ora1/dat/tstdb/redo/log01.log') SIZE 1G REUSE,
+9>       GROUP 2 ('/ora1/dat/tstdb/redo/log02.log') SIZE 1G REUSE,
+10>       GROUP 3 ('/ora1/dat/tstdb/redo/log03.log') SIZE 1G REUSE,
+11>       GROUP 4 ('/ora1/dat/tstdb/redo/log04.log') SIZE 1G REUSE;
+12> }
+13> exit
+connected to auxiliary database: TSTDB (not mounted)
+
+allocated channel: ch1
+channel ch1: SID=2647 device type=DISK
+
+Starting Duplicate Db at 18-08-2018 05:31:20
+
+contents of Memory Script:
+{
+   sql clone "create spfile from memory";
+}
+executing Memory Script
+
+sql statement: create spfile from memory
+
+contents of Memory Script:
+{
+   shutdown clone immediate;
+   startup clone nomount;
+}
+executing Memory Script
+
+Oracle instance shut down
+
+connected to auxiliary database (not started)
+Oracle instance started
+
+Total System Global Area   25654751232 bytes
+
+Fixed Size                     2767776 bytes
+Variable Size               7516193888 bytes
+Database Buffers           18052284416 bytes
+Redo Buffers                  83505152 bytes
+allocated channel: ch1
+channel ch1: SID=2647 device type=DISK
+
+contents of Memory Script:
+{
+   sql clone "alter system set  db_name = 
+ ''FONDDB'' comment=
+ ''Modified by RMAN duplicate'' scope=spfile";
+   sql clone "alter system set  db_unique_name = 
+ ''TSTDB'' comment=
+ ''Modified by RMAN duplicate'' scope=spfile";
+   shutdown clone immediate;
+   startup clone force nomount
+   restore clone primary controlfile from  '/ora1/sav/bkup/FNDDB0_h7taqrgq_1_1.bkp';
+   alter clone database mount;
+}
+executing Memory Script
+
+sql statement: alter system set  db_name =  ''FONDDB'' comment= ''Modified by RMAN duplicate'' scope=spfile
+
+sql statement: alter system set  db_unique_name =  ''TSTDB'' comment= ''Modified by RMAN duplicate'' scope=spfile
+
+Oracle instance shut down
+
+Oracle instance started
+
+Total System Global Area   25654751232 bytes
+
+Fixed Size                     2767776 bytes
+Variable Size               7516193888 bytes
+Database Buffers           18052284416 bytes
+Redo Buffers                  83505152 bytes
+allocated channel: ch1
+channel ch1: SID=2647 device type=DISK
+
+Starting restore at 18-08-2018 05:32:05
+
+channel ch1: restoring control file
+channel ch1: restore complete, elapsed time: 00:00:01
+output file name=/ora1/dat/tstdb/ctl/control01.ctl
+output file name=/ora1/dat/tstdb/ctl/control02.ctl
+output file name=/ora1/dat/tstdb/ctl/control03.ctl
+Finished restore at 18-08-2018 05:32:06
+
+database mounted
+
+contents of Memory Script:
+{
+   set until scn  62734777282;
+   set newname for datafile  1 to 
+ "/ora1/dat/tstdb/dbs/system01.dbf";
+   set newname for datafile  2 to 
+ "/ora1/dat/tstdb/dbs/undo1_01.dbf";
+   set newname for datafile  3 to 
+ "/ora1/dat/tstdb/dbs/sysaux01.dbf";
+   set newname for datafile  4 to 
+ "/ora1/dat/tstdb/dbs/dwhdat01.dbf";
+   set newname for datafile  5 to 
+ "/ora1/dat/tstdb/dbs/fnddat01.dbf";
+   set newname for datafile  6 to 
+ "/ora1/dat/tstdb/dbs/fndidx01.dbf";
+   set newname for datafile  7 to 
+ "/ora1/dat/tstdb/dbs/usrdat01.dbf";
+   set newname for datafile  8 to 
+ "/ora1/dat/tstdb/dbs/webdat01.dbf";
+   set newname for datafile  9 to 
+ "/ora1/dat/tstdb/dbs/arhdat01.dbf";
+   set newname for datafile  10 to 
+ "/ora1/dat/tstdb/dbs/mdmdat01.dbf";
+   set newname for datafile  11 to 
+ "/ora1/dat/tstdb/dbs/opsdat01.dbf";
+   set newname for datafile  12 to 
+ "/ora1/dat/tstdb/dbs/infdat01.dbf";
+   set newname for datafile  13 to 
+ "/ora1/dat/tstdb/dbs/fndidx02.dbf";
+   set newname for datafile  14 to 
+ "/ora1/dat/tstdb/dbs/fnddat02.dbf";
+   set newname for datafile  15 to 
+ "/ora1/dat/tstdb/dbs/infdat02.dbf";
+   set newname for datafile  16 to 
+ "/ora1/dat/tstdb/dbs/gf_idx01.dbf";
+   set newname for datafile  17 to 
+ "/ora1/dat/tstdb/dbs/fnddat03.dbf";
+   set newname for datafile  18 to 
+ "/ora1/dat/tstdb/dbs/fndidx03.dbf";
+   set newname for datafile  19 to 
+ "/ora1/dat/tstdb/dbs/fnddat04.dbf";
+   set newname for datafile  20 to 
+ "/ora1/dat/tstdb/dbs/fndidx04.dbf";
+   set newname for datafile  21 to 
+ "/ora1/dat/tstdb/dbs/gfpndat03.dbf";
+   set newname for datafile  22 to 
+ "/ora1/dat/tstdb/dbs/ctxdat01.dbf";
+   set newname for datafile  23 to 
+ "/ora1/dat/tstdb/dbs/smppdat01.dbf";
+   set newname for datafile  24 to 
+ "/ora1/dat/tstdb/dbs/gf_idx02.dbf";
+   set newname for datafile  25 to 
+ "/ora1/dat/tstdb/dbs/usrdat02.dbf";
+   set newname for datafile  26 to 
+ "/ora1/dat/tstdb/dbs/mdmdat02.dbf";
+   set newname for datafile  27 to 
+ "/ora1/dat/tstdb/dbs/gf2dat02.dbf";
+   set newname for datafile  28 to 
+ "/ora1/dat/tstdb/dbs/gf_idx03.dbf";
+   set newname for datafile  29 to 
+ "/ora1/dat/tstdb/dbs/gfpnidx03.dbf";
+   set newname for datafile  30 to 
+ "/ora1/dat/tstdb/dbs/gf2dat01.dbf";
+   set newname for datafile  31 to 
+ "/ora1/dat/tstdb/dbs/etldat01.dbf";
+   set newname for datafile  32 to 
+ "/ora1/dat/tstdb/dbs/etlidx01.dbf";
+   set newname for datafile  33 to 
+ "/ora1/dat/tstdb/dbs/etldat02.dbf";
+   set newname for datafile  34 to 
+ "/ora1/dat/tstdb/dbs/gf_idx04.dbf";
+   set newname for datafile  35 to 
+ "/ora1/dat/tstdb/dbs/undo1_02.dbf";
+   set newname for datafile  36 to 
+ "/ora1/dat/tstdb/dbs/fnddat05.dbf";
+   set newname for datafile  38 to 
+ "/ora1/dat/tstdb/dbs/gf_idx05.dbf";
+   set newname for datafile  40 to 
+ "/ora1/dat/tstdb/dbs/fiasdat01.dbf";
+   set newname for datafile  41 to 
+ "/ora1/dat/tstdb/dbs/gfpndat01.dbf";
+   set newname for datafile  42 to 
+ "/ora1/dat/tstdb/dbs/gfpnidx01.dbf";
+   set newname for datafile  43 to 
+ "/ora1/dat/tstdb/dbs/gfpndat02.dbf";
+   set newname for datafile  44 to 
+ "/ora1/dat/tstdb/dbs/gfpnidx02.dbf";
+   set newname for datafile  45 to 
+ "/ora1/dat/tstdb/dbs/gf_idx06.dbf";
+   set newname for datafile  46 to 
+ "/ora1/dat/tstdb/dbs/infdat03.dbf";
+   set newname for datafile  48 to 
+ "/ora1/dat/tstdb/dbs/fnddat06.dbf";
+   restore
+   clone database
+   ;
+}
+executing Memory Script
+
+executing command: SET until clause
+
+executing command: SET NEWNAME
+
+executing command: SET NEWNAME
+
+executing command: SET NEWNAME
+
+executing command: SET NEWNAME
+
+executing command: SET NEWNAME
+
+executing command: SET NEWNAME
+
+executing command: SET NEWNAME
+
+executing command: SET NEWNAME
+
+executing command: SET NEWNAME
+
+executing command: SET NEWNAME
+
+executing command: SET NEWNAME
+
+executing command: SET NEWNAME
+
+executing command: SET NEWNAME
+
+executing command: SET NEWNAME
+
+executing command: SET NEWNAME
+
+executing command: SET NEWNAME
+
+executing command: SET NEWNAME
+
+executing command: SET NEWNAME
+
+executing command: SET NEWNAME
+
+executing command: SET NEWNAME
+
+executing command: SET NEWNAME
+
+executing command: SET NEWNAME
+
+executing command: SET NEWNAME
+
+executing command: SET NEWNAME
+
+executing command: SET NEWNAME
+
+executing command: SET NEWNAME
+
+executing command: SET NEWNAME
+
+executing command: SET NEWNAME
+
+executing command: SET NEWNAME
+
+executing command: SET NEWNAME
+
+executing command: SET NEWNAME
+
+executing command: SET NEWNAME
+
+executing command: SET NEWNAME
+
+executing command: SET NEWNAME
+
+executing command: SET NEWNAME
+
+executing command: SET NEWNAME
+
+executing command: SET NEWNAME
+
+executing command: SET NEWNAME
+
+executing command: SET NEWNAME
+
+executing command: SET NEWNAME
+
+executing command: SET NEWNAME
+
+executing command: SET NEWNAME
+
+executing command: SET NEWNAME
+
+executing command: SET NEWNAME
+
+executing command: SET NEWNAME
+
+Starting restore at 18-08-2018 05:32:12
+
+channel ch1: starting datafile backup set restore
+channel ch1: specifying datafile(s) to restore from backup set
+channel ch1: restoring datafile 00001 to /ora1/dat/tstdb/dbs/system01.dbf
+channel ch1: restoring datafile 00002 to /ora1/dat/tstdb/dbs/undo1_01.dbf
+channel ch1: restoring datafile 00003 to /ora1/dat/tstdb/dbs/sysaux01.dbf
+channel ch1: restoring datafile 00004 to /ora1/dat/tstdb/dbs/dwhdat01.dbf
+channel ch1: restoring datafile 00005 to /ora1/dat/tstdb/dbs/fnddat01.dbf
+channel ch1: restoring datafile 00006 to /ora1/dat/tstdb/dbs/fndidx01.dbf
+channel ch1: restoring datafile 00007 to /ora1/dat/tstdb/dbs/usrdat01.dbf
+channel ch1: restoring datafile 00008 to /ora1/dat/tstdb/dbs/webdat01.dbf
+channel ch1: restoring datafile 00009 to /ora1/dat/tstdb/dbs/arhdat01.dbf
+channel ch1: restoring datafile 00010 to /ora1/dat/tstdb/dbs/mdmdat01.dbf
+channel ch1: restoring datafile 00011 to /ora1/dat/tstdb/dbs/opsdat01.dbf
+channel ch1: restoring datafile 00012 to /ora1/dat/tstdb/dbs/infdat01.dbf
+channel ch1: restoring datafile 00013 to /ora1/dat/tstdb/dbs/fndidx02.dbf
+channel ch1: restoring datafile 00014 to /ora1/dat/tstdb/dbs/fnddat02.dbf
+channel ch1: restoring datafile 00015 to /ora1/dat/tstdb/dbs/infdat02.dbf
+channel ch1: restoring datafile 00016 to /ora1/dat/tstdb/dbs/gf_idx01.dbf
+channel ch1: restoring datafile 00017 to /ora1/dat/tstdb/dbs/fnddat03.dbf
+channel ch1: restoring datafile 00018 to /ora1/dat/tstdb/dbs/fndidx03.dbf
+channel ch1: restoring datafile 00019 to /ora1/dat/tstdb/dbs/fnddat04.dbf
+channel ch1: restoring datafile 00020 to /ora1/dat/tstdb/dbs/fndidx04.dbf
+channel ch1: restoring datafile 00021 to /ora1/dat/tstdb/dbs/gfpndat03.dbf
+channel ch1: restoring datafile 00022 to /ora1/dat/tstdb/dbs/ctxdat01.dbf
+channel ch1: restoring datafile 00023 to /ora1/dat/tstdb/dbs/smppdat01.dbf
+channel ch1: restoring datafile 00024 to /ora1/dat/tstdb/dbs/gf_idx02.dbf
+channel ch1: restoring datafile 00025 to /ora1/dat/tstdb/dbs/usrdat02.dbf
+channel ch1: restoring datafile 00026 to /ora1/dat/tstdb/dbs/mdmdat02.dbf
+channel ch1: restoring datafile 00027 to /ora1/dat/tstdb/dbs/gf2dat02.dbf
+channel ch1: restoring datafile 00028 to /ora1/dat/tstdb/dbs/gf_idx03.dbf
+channel ch1: restoring datafile 00029 to /ora1/dat/tstdb/dbs/gfpnidx03.dbf
+channel ch1: restoring datafile 00030 to /ora1/dat/tstdb/dbs/gf2dat01.dbf
+channel ch1: restoring datafile 00031 to /ora1/dat/tstdb/dbs/etldat01.dbf
+channel ch1: restoring datafile 00032 to /ora1/dat/tstdb/dbs/etlidx01.dbf
+channel ch1: restoring datafile 00033 to /ora1/dat/tstdb/dbs/etldat02.dbf
+channel ch1: restoring datafile 00034 to /ora1/dat/tstdb/dbs/gf_idx04.dbf
+channel ch1: restoring datafile 00035 to /ora1/dat/tstdb/dbs/undo1_02.dbf
+channel ch1: restoring datafile 00036 to /ora1/dat/tstdb/dbs/fnddat05.dbf
+channel ch1: restoring datafile 00038 to /ora1/dat/tstdb/dbs/gf_idx05.dbf
+channel ch1: restoring datafile 00040 to /ora1/dat/tstdb/dbs/fiasdat01.dbf
+channel ch1: restoring datafile 00041 to /ora1/dat/tstdb/dbs/gfpndat01.dbf
+channel ch1: restoring datafile 00042 to /ora1/dat/tstdb/dbs/gfpnidx01.dbf
+channel ch1: restoring datafile 00043 to /ora1/dat/tstdb/dbs/gfpndat02.dbf
+channel ch1: restoring datafile 00044 to /ora1/dat/tstdb/dbs/gfpnidx02.dbf
+channel ch1: restoring datafile 00045 to /ora1/dat/tstdb/dbs/gf_idx06.dbf
+channel ch1: restoring datafile 00046 to /ora1/dat/tstdb/dbs/infdat03.dbf
+channel ch1: restoring datafile 00048 to /ora1/dat/tstdb/dbs/fnddat06.dbf
+channel ch1: reading from backup piece /ora1/sav/bkup/FNDDB0_h4taqn06_1_1.bkp
+channel ch1: piece handle=/ora1/sav/bkup/FNDDB0_h4taqn06_1_1.bkp tag=FONDDB_DISK0
+channel ch1: restored backup piece 1
+channel ch1: restore complete, elapsed time: 02:09:17
+Finished restore at 18-08-2018 07:41:32
+
+contents of Memory Script:
+{
+   switch clone datafile all;
+}
+executing Memory Script
+
+datafile 1 switched to datafile copy
+input datafile copy RECID=46 STAMP=984469292 file name=/ora1/dat/tstdb/dbs/system01.dbf
+datafile 2 switched to datafile copy
+input datafile copy RECID=47 STAMP=984469292 file name=/ora1/dat/tstdb/dbs/undo1_01.dbf
+datafile 3 switched to datafile copy
+input datafile copy RECID=48 STAMP=984469292 file name=/ora1/dat/tstdb/dbs/sysaux01.dbf
+datafile 4 switched to datafile copy
+input datafile copy RECID=49 STAMP=984469293 file name=/ora1/dat/tstdb/dbs/dwhdat01.dbf
+datafile 5 switched to datafile copy
+input datafile copy RECID=50 STAMP=984469293 file name=/ora1/dat/tstdb/dbs/fnddat01.dbf
+datafile 6 switched to datafile copy
+input datafile copy RECID=51 STAMP=984469293 file name=/ora1/dat/tstdb/dbs/fndidx01.dbf
+datafile 7 switched to datafile copy
+input datafile copy RECID=52 STAMP=984469293 file name=/ora1/dat/tstdb/dbs/usrdat01.dbf
+datafile 8 switched to datafile copy
+input datafile copy RECID=53 STAMP=984469293 file name=/ora1/dat/tstdb/dbs/webdat01.dbf
+datafile 9 switched to datafile copy
+input datafile copy RECID=54 STAMP=984469293 file name=/ora1/dat/tstdb/dbs/arhdat01.dbf
+datafile 10 switched to datafile copy
+input datafile copy RECID=55 STAMP=984469293 file name=/ora1/dat/tstdb/dbs/mdmdat01.dbf
+datafile 11 switched to datafile copy
+input datafile copy RECID=56 STAMP=984469293 file name=/ora1/dat/tstdb/dbs/opsdat01.dbf
+datafile 12 switched to datafile copy
+input datafile copy RECID=57 STAMP=984469293 file name=/ora1/dat/tstdb/dbs/infdat01.dbf
+datafile 13 switched to datafile copy
+input datafile copy RECID=58 STAMP=984469293 file name=/ora1/dat/tstdb/dbs/fndidx02.dbf
+datafile 14 switched to datafile copy
+input datafile copy RECID=59 STAMP=984469293 file name=/ora1/dat/tstdb/dbs/fnddat02.dbf
+datafile 15 switched to datafile copy
+input datafile copy RECID=60 STAMP=984469293 file name=/ora1/dat/tstdb/dbs/infdat02.dbf
+datafile 16 switched to datafile copy
+input datafile copy RECID=61 STAMP=984469293 file name=/ora1/dat/tstdb/dbs/gf_idx01.dbf
+datafile 17 switched to datafile copy
+input datafile copy RECID=62 STAMP=984469293 file name=/ora1/dat/tstdb/dbs/fnddat03.dbf
+datafile 18 switched to datafile copy
+input datafile copy RECID=63 STAMP=984469293 file name=/ora1/dat/tstdb/dbs/fndidx03.dbf
+datafile 19 switched to datafile copy
+input datafile copy RECID=64 STAMP=984469293 file name=/ora1/dat/tstdb/dbs/fnddat04.dbf
+datafile 20 switched to datafile copy
+input datafile copy RECID=65 STAMP=984469293 file name=/ora1/dat/tstdb/dbs/fndidx04.dbf
+datafile 21 switched to datafile copy
+input datafile copy RECID=66 STAMP=984469293 file name=/ora1/dat/tstdb/dbs/gfpndat03.dbf
+datafile 22 switched to datafile copy
+input datafile copy RECID=67 STAMP=984469293 file name=/ora1/dat/tstdb/dbs/ctxdat01.dbf
+datafile 23 switched to datafile copy
+input datafile copy RECID=68 STAMP=984469293 file name=/ora1/dat/tstdb/dbs/smppdat01.dbf
+datafile 24 switched to datafile copy
+input datafile copy RECID=69 STAMP=984469293 file name=/ora1/dat/tstdb/dbs/gf_idx02.dbf
+datafile 25 switched to datafile copy
+input datafile copy RECID=70 STAMP=984469293 file name=/ora1/dat/tstdb/dbs/usrdat02.dbf
+datafile 26 switched to datafile copy
+input datafile copy RECID=71 STAMP=984469293 file name=/ora1/dat/tstdb/dbs/mdmdat02.dbf
+datafile 27 switched to datafile copy
+input datafile copy RECID=72 STAMP=984469293 file name=/ora1/dat/tstdb/dbs/gf2dat02.dbf
+datafile 28 switched to datafile copy
+input datafile copy RECID=73 STAMP=984469293 file name=/ora1/dat/tstdb/dbs/gf_idx03.dbf
+datafile 29 switched to datafile copy
+input datafile copy RECID=74 STAMP=984469293 file name=/ora1/dat/tstdb/dbs/gfpnidx03.dbf
+datafile 30 switched to datafile copy
+input datafile copy RECID=75 STAMP=984469293 file name=/ora1/dat/tstdb/dbs/gf2dat01.dbf
+datafile 31 switched to datafile copy
+input datafile copy RECID=76 STAMP=984469293 file name=/ora1/dat/tstdb/dbs/etldat01.dbf
+datafile 32 switched to datafile copy
+input datafile copy RECID=77 STAMP=984469293 file name=/ora1/dat/tstdb/dbs/etlidx01.dbf
+datafile 33 switched to datafile copy
+input datafile copy RECID=78 STAMP=984469293 file name=/ora1/dat/tstdb/dbs/etldat02.dbf
+datafile 34 switched to datafile copy
+input datafile copy RECID=79 STAMP=984469294 file name=/ora1/dat/tstdb/dbs/gf_idx04.dbf
+datafile 35 switched to datafile copy
+input datafile copy RECID=80 STAMP=984469294 file name=/ora1/dat/tstdb/dbs/undo1_02.dbf
+datafile 36 switched to datafile copy
+input datafile copy RECID=81 STAMP=984469294 file name=/ora1/dat/tstdb/dbs/fnddat05.dbf
+datafile 38 switched to datafile copy
+input datafile copy RECID=82 STAMP=984469294 file name=/ora1/dat/tstdb/dbs/gf_idx05.dbf
+datafile 40 switched to datafile copy
+input datafile copy RECID=83 STAMP=984469294 file name=/ora1/dat/tstdb/dbs/fiasdat01.dbf
+datafile 41 switched to datafile copy
+input datafile copy RECID=84 STAMP=984469294 file name=/ora1/dat/tstdb/dbs/gfpndat01.dbf
+datafile 42 switched to datafile copy
+input datafile copy RECID=85 STAMP=984469294 file name=/ora1/dat/tstdb/dbs/gfpnidx01.dbf
+datafile 43 switched to datafile copy
+input datafile copy RECID=86 STAMP=984469294 file name=/ora1/dat/tstdb/dbs/gfpndat02.dbf
+datafile 44 switched to datafile copy
+input datafile copy RECID=87 STAMP=984469294 file name=/ora1/dat/tstdb/dbs/gfpnidx02.dbf
+datafile 45 switched to datafile copy
+input datafile copy RECID=88 STAMP=984469294 file name=/ora1/dat/tstdb/dbs/gf_idx06.dbf
+datafile 46 switched to datafile copy
+input datafile copy RECID=89 STAMP=984469294 file name=/ora1/dat/tstdb/dbs/infdat03.dbf
+datafile 48 switched to datafile copy
+input datafile copy RECID=90 STAMP=984469294 file name=/ora1/dat/tstdb/dbs/fnddat06.dbf
+
+contents of Memory Script:
+{
+   set until scn  62734777282;
+   recover
+   clone database
+    delete archivelog
+   ;
+}
+executing Memory Script
+
+executing command: SET until clause
+
+Starting recover at 18-08-2018 07:41:36
+
+starting media recovery
+
+channel ch1: starting archived log restore to default destination
+channel ch1: restoring archived log
+archived log thread=1 sequence=25693
+channel ch1: restoring archived log
+archived log thread=1 sequence=25694
+channel ch1: restoring archived log
+archived log thread=1 sequence=25695
+channel ch1: restoring archived log
+archived log thread=1 sequence=25696
+channel ch1: restoring archived log
+archived log thread=1 sequence=25697
+channel ch1: restoring archived log
+archived log thread=1 sequence=25698
+channel ch1: restoring archived log
+archived log thread=1 sequence=25699
+channel ch1: restoring archived log
+archived log thread=1 sequence=25700
+channel ch1: reading from backup piece /ora1/sav/bkup/FNDDB0_h6taqrfm_1_1.bkp
+channel ch1: piece handle=/ora1/sav/bkup/FNDDB0_h6taqrfm_1_1.bkp tag=FONDDB_DISK0
+channel ch1: restored backup piece 1
+channel ch1: restore complete, elapsed time: 00:01:35
+archived log file name=/ora1/dat/tstdb/arc/tst_1_25693_971214693.arc thread=1 sequence=25693
+channel clone_default: deleting archived log(s)
+archived log file name=/ora1/dat/tstdb/arc/tst_1_25693_971214693.arc RECID=4 STAMP=984469387
+archived log file name=/ora1/dat/tstdb/arc/tst_1_25694_971214693.arc thread=1 sequence=25694
+channel clone_default: deleting archived log(s)
+archived log file name=/ora1/dat/tstdb/arc/tst_1_25694_971214693.arc RECID=6 STAMP=984469387
+archived log file name=/ora1/dat/tstdb/arc/tst_1_25695_971214693.arc thread=1 sequence=25695
+channel clone_default: deleting archived log(s)
+archived log file name=/ora1/dat/tstdb/arc/tst_1_25695_971214693.arc RECID=7 STAMP=984469387
+archived log file name=/ora1/dat/tstdb/arc/tst_1_25696_971214693.arc thread=1 sequence=25696
+channel clone_default: deleting archived log(s)
+archived log file name=/ora1/dat/tstdb/arc/tst_1_25696_971214693.arc RECID=8 STAMP=984469387
+archived log file name=/ora1/dat/tstdb/arc/tst_1_25697_971214693.arc thread=1 sequence=25697
+channel clone_default: deleting archived log(s)
+archived log file name=/ora1/dat/tstdb/arc/tst_1_25697_971214693.arc RECID=2 STAMP=984469387
+archived log file name=/ora1/dat/tstdb/arc/tst_1_25698_971214693.arc thread=1 sequence=25698
+channel clone_default: deleting archived log(s)
+archived log file name=/ora1/dat/tstdb/arc/tst_1_25698_971214693.arc RECID=5 STAMP=984469387
+archived log file name=/ora1/dat/tstdb/arc/tst_1_25699_971214693.arc thread=1 sequence=25699
+channel clone_default: deleting archived log(s)
+archived log file name=/ora1/dat/tstdb/arc/tst_1_25699_971214693.arc RECID=3 STAMP=984469387
+archived log file name=/ora1/dat/tstdb/arc/tst_1_25700_971214693.arc thread=1 sequence=25700
+channel clone_default: deleting archived log(s)
+archived log file name=/ora1/dat/tstdb/arc/tst_1_25700_971214693.arc RECID=1 STAMP=984469300
+media recovery complete, elapsed time: 00:06:30
+Finished recover at 18-08-2018 07:49:44
+Oracle instance started
+
+Total System Global Area   25654751232 bytes
+
+Fixed Size                     2767776 bytes
+Variable Size               7516193888 bytes
+Database Buffers           18052284416 bytes
+Redo Buffers                  83505152 bytes
+
+contents of Memory Script:
+{
+   sql clone "alter system set  db_name = 
+ ''TSTDB'' comment=
+ ''Reset to original value by RMAN'' scope=spfile";
+   sql clone "alter system reset  db_unique_name scope=spfile";
+}
+executing Memory Script
+
+sql statement: alter system set  db_name =  ''TSTDB'' comment= ''Reset to original value by RMAN'' scope=spfile
+
+sql statement: alter system reset  db_unique_name scope=spfile
+Oracle instance started
+
+Total System Global Area   25654751232 bytes
+
+Fixed Size                     2767776 bytes
+Variable Size               7516193888 bytes
+Database Buffers           18052284416 bytes
+Redo Buffers                  83505152 bytes
+sql statement: CREATE CONTROLFILE REUSE SET DATABASE "TSTDB" RESETLOGS ARCHIVELOG 
+  MAXLOGFILES     32
+  MAXLOGMEMBERS      4
+  MAXDATAFILES     1000
+  MAXINSTANCES     1
+  MAXLOGHISTORY    10516
+ LOGFILE
+  GROUP   1 ( '/ora1/dat/tstdb/redo/log01.log' ) SIZE 1 G  REUSE,
+  GROUP   2 ( '/ora1/dat/tstdb/redo/log02.log' ) SIZE 1 G  REUSE,
+  GROUP   3 ( '/ora1/dat/tstdb/redo/log03.log' ) SIZE 1 G  REUSE,
+  GROUP   4 ( '/ora1/dat/tstdb/redo/log04.log' ) SIZE 1 G  REUSE
+ DATAFILE
+  '/ora1/dat/tstdb/dbs/system01.dbf'
+ CHARACTER SET CL8MSWIN1251
+
+
+contents of Memory Script:
+{
+   set newname for tempfile  1 to 
+ "/ora1/dat/tstdb/dbs/temp__01.dbf";
+   set newname for tempfile  2 to 
+ "/ora1/dat/tstdb/dbs/temp__02.dbf";
+   switch clone tempfile all;
+   catalog clone datafilecopy  "/ora1/dat/tstdb/dbs/undo1_01.dbf", 
+ "/ora1/dat/tstdb/dbs/sysaux01.dbf", 
+ "/ora1/dat/tstdb/dbs/dwhdat01.dbf", 
+ "/ora1/dat/tstdb/dbs/fnddat01.dbf", 
+ "/ora1/dat/tstdb/dbs/fndidx01.dbf", 
+ "/ora1/dat/tstdb/dbs/usrdat01.dbf", 
+ "/ora1/dat/tstdb/dbs/webdat01.dbf", 
+ "/ora1/dat/tstdb/dbs/arhdat01.dbf", 
+ "/ora1/dat/tstdb/dbs/mdmdat01.dbf", 
+ "/ora1/dat/tstdb/dbs/opsdat01.dbf", 
+ "/ora1/dat/tstdb/dbs/infdat01.dbf", 
+ "/ora1/dat/tstdb/dbs/fndidx02.dbf", 
+ "/ora1/dat/tstdb/dbs/fnddat02.dbf", 
+ "/ora1/dat/tstdb/dbs/infdat02.dbf", 
+ "/ora1/dat/tstdb/dbs/gf_idx01.dbf", 
+ "/ora1/dat/tstdb/dbs/fnddat03.dbf", 
+ "/ora1/dat/tstdb/dbs/fndidx03.dbf", 
+ "/ora1/dat/tstdb/dbs/fnddat04.dbf", 
+ "/ora1/dat/tstdb/dbs/fndidx04.dbf", 
+ "/ora1/dat/tstdb/dbs/gfpndat03.dbf", 
+ "/ora1/dat/tstdb/dbs/ctxdat01.dbf", 
+ "/ora1/dat/tstdb/dbs/smppdat01.dbf", 
+ "/ora1/dat/tstdb/dbs/gf_idx02.dbf", 
+ "/ora1/dat/tstdb/dbs/usrdat02.dbf", 
+ "/ora1/dat/tstdb/dbs/mdmdat02.dbf", 
+ "/ora1/dat/tstdb/dbs/gf2dat02.dbf", 
+ "/ora1/dat/tstdb/dbs/gf_idx03.dbf", 
+ "/ora1/dat/tstdb/dbs/gfpnidx03.dbf", 
+ "/ora1/dat/tstdb/dbs/gf2dat01.dbf", 
+ "/ora1/dat/tstdb/dbs/etldat01.dbf", 
+ "/ora1/dat/tstdb/dbs/etlidx01.dbf", 
+ "/ora1/dat/tstdb/dbs/etldat02.dbf", 
+ "/ora1/dat/tstdb/dbs/gf_idx04.dbf", 
+ "/ora1/dat/tstdb/dbs/undo1_02.dbf", 
+ "/ora1/dat/tstdb/dbs/fnddat05.dbf", 
+ "/ora1/dat/tstdb/dbs/gf_idx05.dbf", 
+ "/ora1/dat/tstdb/dbs/fiasdat01.dbf", 
+ "/ora1/dat/tstdb/dbs/gfpndat01.dbf", 
+ "/ora1/dat/tstdb/dbs/gfpnidx01.dbf", 
+ "/ora1/dat/tstdb/dbs/gfpndat02.dbf", 
+ "/ora1/dat/tstdb/dbs/gfpnidx02.dbf", 
+ "/ora1/dat/tstdb/dbs/gf_idx06.dbf", 
+ "/ora1/dat/tstdb/dbs/infdat03.dbf", 
+ "/ora1/dat/tstdb/dbs/fnddat06.dbf";
+   switch clone datafile all;
+}
+executing Memory Script
+
+executing command: SET NEWNAME
+
+executing command: SET NEWNAME
+
+renamed tempfile 1 to /ora1/dat/tstdb/dbs/temp__01.dbf in control file
+renamed tempfile 2 to /ora1/dat/tstdb/dbs/temp__02.dbf in control file
+
+cataloged datafile copy
+datafile copy file name=/ora1/dat/tstdb/dbs/undo1_01.dbf RECID=1 STAMP=984469822
+cataloged datafile copy
+datafile copy file name=/ora1/dat/tstdb/dbs/sysaux01.dbf RECID=2 STAMP=984469822
+cataloged datafile copy
+datafile copy file name=/ora1/dat/tstdb/dbs/dwhdat01.dbf RECID=3 STAMP=984469822
+cataloged datafile copy
+datafile copy file name=/ora1/dat/tstdb/dbs/fnddat01.dbf RECID=4 STAMP=984469822
+cataloged datafile copy
+datafile copy file name=/ora1/dat/tstdb/dbs/fndidx01.dbf RECID=5 STAMP=984469822
+cataloged datafile copy
+datafile copy file name=/ora1/dat/tstdb/dbs/usrdat01.dbf RECID=6 STAMP=984469822
+cataloged datafile copy
+datafile copy file name=/ora1/dat/tstdb/dbs/webdat01.dbf RECID=7 STAMP=984469823
+cataloged datafile copy
+datafile copy file name=/ora1/dat/tstdb/dbs/arhdat01.dbf RECID=8 STAMP=984469823
+cataloged datafile copy
+datafile copy file name=/ora1/dat/tstdb/dbs/mdmdat01.dbf RECID=9 STAMP=984469823
+cataloged datafile copy
+datafile copy file name=/ora1/dat/tstdb/dbs/opsdat01.dbf RECID=10 STAMP=984469823
+cataloged datafile copy
+datafile copy file name=/ora1/dat/tstdb/dbs/infdat01.dbf RECID=11 STAMP=984469823
+cataloged datafile copy
+datafile copy file name=/ora1/dat/tstdb/dbs/fndidx02.dbf RECID=12 STAMP=984469823
+cataloged datafile copy
+datafile copy file name=/ora1/dat/tstdb/dbs/fnddat02.dbf RECID=13 STAMP=984469823
+cataloged datafile copy
+datafile copy file name=/ora1/dat/tstdb/dbs/infdat02.dbf RECID=14 STAMP=984469823
+cataloged datafile copy
+datafile copy file name=/ora1/dat/tstdb/dbs/gf_idx01.dbf RECID=15 STAMP=984469823
+cataloged datafile copy
+datafile copy file name=/ora1/dat/tstdb/dbs/fnddat03.dbf RECID=16 STAMP=984469823
+cataloged datafile copy
+datafile copy file name=/ora1/dat/tstdb/dbs/fndidx03.dbf RECID=17 STAMP=984469823
+cataloged datafile copy
+datafile copy file name=/ora1/dat/tstdb/dbs/fnddat04.dbf RECID=18 STAMP=984469823
+cataloged datafile copy
+datafile copy file name=/ora1/dat/tstdb/dbs/fndidx04.dbf RECID=19 STAMP=984469823
+cataloged datafile copy
+datafile copy file name=/ora1/dat/tstdb/dbs/gfpndat03.dbf RECID=20 STAMP=984469823
+cataloged datafile copy
+datafile copy file name=/ora1/dat/tstdb/dbs/ctxdat01.dbf RECID=21 STAMP=984469823
+cataloged datafile copy
+datafile copy file name=/ora1/dat/tstdb/dbs/smppdat01.dbf RECID=22 STAMP=984469823
+cataloged datafile copy
+datafile copy file name=/ora1/dat/tstdb/dbs/gf_idx02.dbf RECID=23 STAMP=984469823
+cataloged datafile copy
+datafile copy file name=/ora1/dat/tstdb/dbs/usrdat02.dbf RECID=24 STAMP=984469823
+cataloged datafile copy
+datafile copy file name=/ora1/dat/tstdb/dbs/mdmdat02.dbf RECID=25 STAMP=984469823
+cataloged datafile copy
+datafile copy file name=/ora1/dat/tstdb/dbs/gf2dat02.dbf RECID=26 STAMP=984469823
+cataloged datafile copy
+datafile copy file name=/ora1/dat/tstdb/dbs/gf_idx03.dbf RECID=27 STAMP=984469823
+cataloged datafile copy
+datafile copy file name=/ora1/dat/tstdb/dbs/gfpnidx03.dbf RECID=28 STAMP=984469823
+cataloged datafile copy
+datafile copy file name=/ora1/dat/tstdb/dbs/gf2dat01.dbf RECID=29 STAMP=984469823
+cataloged datafile copy
+datafile copy file name=/ora1/dat/tstdb/dbs/etldat01.dbf RECID=30 STAMP=984469823
+cataloged datafile copy
+datafile copy file name=/ora1/dat/tstdb/dbs/etlidx01.dbf RECID=31 STAMP=984469823
+cataloged datafile copy
+datafile copy file name=/ora1/dat/tstdb/dbs/etldat02.dbf RECID=32 STAMP=984469823
+cataloged datafile copy
+datafile copy file name=/ora1/dat/tstdb/dbs/gf_idx04.dbf RECID=33 STAMP=984469823
+cataloged datafile copy
+datafile copy file name=/ora1/dat/tstdb/dbs/undo1_02.dbf RECID=34 STAMP=984469823
+cataloged datafile copy
+datafile copy file name=/ora1/dat/tstdb/dbs/fnddat05.dbf RECID=35 STAMP=984469823
+cataloged datafile copy
+datafile copy file name=/ora1/dat/tstdb/dbs/gf_idx05.dbf RECID=36 STAMP=984469823
+cataloged datafile copy
+datafile copy file name=/ora1/dat/tstdb/dbs/fiasdat01.dbf RECID=37 STAMP=984469823
+cataloged datafile copy
+datafile copy file name=/ora1/dat/tstdb/dbs/gfpndat01.dbf RECID=38 STAMP=984469823
+cataloged datafile copy
+datafile copy file name=/ora1/dat/tstdb/dbs/gfpnidx01.dbf RECID=39 STAMP=984469823
+cataloged datafile copy
+datafile copy file name=/ora1/dat/tstdb/dbs/gfpndat02.dbf RECID=40 STAMP=984469823
+cataloged datafile copy
+datafile copy file name=/ora1/dat/tstdb/dbs/gfpnidx02.dbf RECID=41 STAMP=984469823
+cataloged datafile copy
+datafile copy file name=/ora1/dat/tstdb/dbs/gf_idx06.dbf RECID=42 STAMP=984469823
+cataloged datafile copy
+datafile copy file name=/ora1/dat/tstdb/dbs/infdat03.dbf RECID=43 STAMP=984469823
+cataloged datafile copy
+datafile copy file name=/ora1/dat/tstdb/dbs/fnddat06.dbf RECID=44 STAMP=984469823
+
+datafile 2 switched to datafile copy
+input datafile copy RECID=1 STAMP=984469822 file name=/ora1/dat/tstdb/dbs/undo1_01.dbf
+datafile 3 switched to datafile copy
+input datafile copy RECID=2 STAMP=984469822 file name=/ora1/dat/tstdb/dbs/sysaux01.dbf
+datafile 4 switched to datafile copy
+input datafile copy RECID=3 STAMP=984469822 file name=/ora1/dat/tstdb/dbs/dwhdat01.dbf
+datafile 5 switched to datafile copy
+input datafile copy RECID=4 STAMP=984469822 file name=/ora1/dat/tstdb/dbs/fnddat01.dbf
+datafile 6 switched to datafile copy
+input datafile copy RECID=5 STAMP=984469822 file name=/ora1/dat/tstdb/dbs/fndidx01.dbf
+datafile 7 switched to datafile copy
+input datafile copy RECID=6 STAMP=984469822 file name=/ora1/dat/tstdb/dbs/usrdat01.dbf
+datafile 8 switched to datafile copy
+input datafile copy RECID=7 STAMP=984469823 file name=/ora1/dat/tstdb/dbs/webdat01.dbf
+datafile 9 switched to datafile copy
+input datafile copy RECID=8 STAMP=984469823 file name=/ora1/dat/tstdb/dbs/arhdat01.dbf
+datafile 10 switched to datafile copy
+input datafile copy RECID=9 STAMP=984469823 file name=/ora1/dat/tstdb/dbs/mdmdat01.dbf
+datafile 11 switched to datafile copy
+input datafile copy RECID=10 STAMP=984469823 file name=/ora1/dat/tstdb/dbs/opsdat01.dbf
+datafile 12 switched to datafile copy
+input datafile copy RECID=11 STAMP=984469823 file name=/ora1/dat/tstdb/dbs/infdat01.dbf
+datafile 13 switched to datafile copy
+input datafile copy RECID=12 STAMP=984469823 file name=/ora1/dat/tstdb/dbs/fndidx02.dbf
+datafile 14 switched to datafile copy
+input datafile copy RECID=13 STAMP=984469823 file name=/ora1/dat/tstdb/dbs/fnddat02.dbf
+datafile 15 switched to datafile copy
+input datafile copy RECID=14 STAMP=984469823 file name=/ora1/dat/tstdb/dbs/infdat02.dbf
+datafile 16 switched to datafile copy
+input datafile copy RECID=15 STAMP=984469823 file name=/ora1/dat/tstdb/dbs/gf_idx01.dbf
+datafile 17 switched to datafile copy
+input datafile copy RECID=16 STAMP=984469823 file name=/ora1/dat/tstdb/dbs/fnddat03.dbf
+datafile 18 switched to datafile copy
+input datafile copy RECID=17 STAMP=984469823 file name=/ora1/dat/tstdb/dbs/fndidx03.dbf
+datafile 19 switched to datafile copy
+input datafile copy RECID=18 STAMP=984469823 file name=/ora1/dat/tstdb/dbs/fnddat04.dbf
+datafile 20 switched to datafile copy
+input datafile copy RECID=19 STAMP=984469823 file name=/ora1/dat/tstdb/dbs/fndidx04.dbf
+datafile 21 switched to datafile copy
+input datafile copy RECID=20 STAMP=984469823 file name=/ora1/dat/tstdb/dbs/gfpndat03.dbf
+datafile 22 switched to datafile copy
+input datafile copy RECID=21 STAMP=984469823 file name=/ora1/dat/tstdb/dbs/ctxdat01.dbf
+datafile 23 switched to datafile copy
+input datafile copy RECID=22 STAMP=984469823 file name=/ora1/dat/tstdb/dbs/smppdat01.dbf
+datafile 24 switched to datafile copy
+input datafile copy RECID=23 STAMP=984469823 file name=/ora1/dat/tstdb/dbs/gf_idx02.dbf
+datafile 25 switched to datafile copy
+input datafile copy RECID=24 STAMP=984469823 file name=/ora1/dat/tstdb/dbs/usrdat02.dbf
+datafile 26 switched to datafile copy
+input datafile copy RECID=25 STAMP=984469823 file name=/ora1/dat/tstdb/dbs/mdmdat02.dbf
+datafile 27 switched to datafile copy
+input datafile copy RECID=26 STAMP=984469823 file name=/ora1/dat/tstdb/dbs/gf2dat02.dbf
+datafile 28 switched to datafile copy
+input datafile copy RECID=27 STAMP=984469823 file name=/ora1/dat/tstdb/dbs/gf_idx03.dbf
+datafile 29 switched to datafile copy
+input datafile copy RECID=28 STAMP=984469823 file name=/ora1/dat/tstdb/dbs/gfpnidx03.dbf
+datafile 30 switched to datafile copy
+input datafile copy RECID=29 STAMP=984469823 file name=/ora1/dat/tstdb/dbs/gf2dat01.dbf
+datafile 31 switched to datafile copy
+input datafile copy RECID=30 STAMP=984469823 file name=/ora1/dat/tstdb/dbs/etldat01.dbf
+datafile 32 switched to datafile copy
+input datafile copy RECID=31 STAMP=984469823 file name=/ora1/dat/tstdb/dbs/etlidx01.dbf
+datafile 33 switched to datafile copy
+input datafile copy RECID=32 STAMP=984469823 file name=/ora1/dat/tstdb/dbs/etldat02.dbf
+datafile 34 switched to datafile copy
+input datafile copy RECID=33 STAMP=984469823 file name=/ora1/dat/tstdb/dbs/gf_idx04.dbf
+datafile 35 switched to datafile copy
+input datafile copy RECID=34 STAMP=984469823 file name=/ora1/dat/tstdb/dbs/undo1_02.dbf
+datafile 36 switched to datafile copy
+input datafile copy RECID=35 STAMP=984469823 file name=/ora1/dat/tstdb/dbs/fnddat05.dbf
+datafile 38 switched to datafile copy
+input datafile copy RECID=36 STAMP=984469823 file name=/ora1/dat/tstdb/dbs/gf_idx05.dbf
+datafile 40 switched to datafile copy
+input datafile copy RECID=37 STAMP=984469823 file name=/ora1/dat/tstdb/dbs/fiasdat01.dbf
+datafile 41 switched to datafile copy
+input datafile copy RECID=38 STAMP=984469823 file name=/ora1/dat/tstdb/dbs/gfpndat01.dbf
+datafile 42 switched to datafile copy
+input datafile copy RECID=39 STAMP=984469823 file name=/ora1/dat/tstdb/dbs/gfpnidx01.dbf
+datafile 43 switched to datafile copy
+input datafile copy RECID=40 STAMP=984469823 file name=/ora1/dat/tstdb/dbs/gfpndat02.dbf
+datafile 44 switched to datafile copy
+input datafile copy RECID=41 STAMP=984469823 file name=/ora1/dat/tstdb/dbs/gfpnidx02.dbf
+datafile 45 switched to datafile copy
+input datafile copy RECID=42 STAMP=984469823 file name=/ora1/dat/tstdb/dbs/gf_idx06.dbf
+datafile 46 switched to datafile copy
+input datafile copy RECID=43 STAMP=984469823 file name=/ora1/dat/tstdb/dbs/infdat03.dbf
+datafile 48 switched to datafile copy
+input datafile copy RECID=44 STAMP=984469823 file name=/ora1/dat/tstdb/dbs/fnddat06.dbf
+Reenabling controlfile options for auxiliary database
+Executing: alter database add supplemental log data
+Executing: alter database force logging
+
+contents of Memory Script:
+{
+   Alter clone database open resetlogs;
+}
+executing Memory Script
+
+database opened
+Cannot remove created server parameter file
+Finished Duplicate Db at 18-08-2018 07:51:15
+
+Recovery Manager complete.

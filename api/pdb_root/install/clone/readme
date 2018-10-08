@@ -1,0 +1,199 @@
+﻿Тестовое окружение для отработки обновления через rman catalog:
+testcdb
+  pdb_catalog - каталог rman
+
+testdb - БД источник
+
+testdb_dbl - БД дубликат testdb
+
+/u01/app/oracle/product/12.2.0/grid/bin/acfsload start
+
+/u01/app/oracle/oradata
+/u01/app/oracle/orafra
+
+/bin/mount -t acfs /dev/asm/datavol-215 /u01/app/oracle/oradata
+/bin/mount -t acfs /dev/asm/fravol-292 /u01/app/oracle/orafra
+
+chown oracle:oinstall /u01/app/oracle/oradata/
+chown oracle:oinstall /u01/app/oracle/orafra/
+
+oracle
+. db_env
+sqlplus sys@testdb as sysdba
+
+alter system set log_archive_dest = '/u01/app/oracle/orafra/testdb' scope=spfile;
+
+shutdown immediate
+
+startup mount
+
+alter database archivelog;
+
+alter database open;
+
+
+Create recovery catalog as PDB (https://community.oracle.com/thread/4114353)
+
+create pluggable database rman admin user rman identified by rman;
+
+alter session set container = rman;
+
+alter database open;
+
+ 
+
+conn sys@RMAN as sysdba
+
+create tablespace CAT_TBS;
+
+grant recovery_catalog_owner to rman;
+
+alter user rman default tablespace cat_tbs;
+
+alter user rman quota unlimited on CAT_TBS;
+
+ 
+
+$ rman catalog rman/rman@RMAN
+
+RMAN> CREATE CATALOG;
+RMAN> exit;
+
+rman target / catalog rman/rman@rman
+
+RMAN> register database;
+
+RMAN> report schema;
+
+Report of database schema for database with db_unique_name TESTDB
+
+List of Permanent Datafiles
+===========================
+File Size(MB) Tablespace           RB segs Datafile Name
+---- -------- -------------------- ------- ------------------------
+1    700      SYSTEM               YES     /u01/app/oracle/oradata/TESTDB/datafile/o1_mf_system_ff11w2o8_.dbf
+2    550      SYSAUX               NO      /u01/app/oracle/oradata/TESTDB/datafile/o1_mf_sysaux_ff11wkpj_.dbf
+3    310      UNDOTBS1             YES     /u01/app/oracle/oradata/TESTDB/datafile/o1_mf_undotbs1_ff11wxso_.dbf
+4    5        USERS                NO      /u01/app/oracle/oradata/TESTDB/datafile/o1_mf_users_ff11xf7m_.dbf
+5    100      GFNDDATA             NO      /u01/app/oracle/oradata/TESTDB/datafile/o1_mf_gfnddata_fgogczl9_.dbf
+
+List of Temporary Files
+=======================
+File Size(MB) Tablespace           Maxsize(MB) Tempfile Name
+---- -------- -------------------- ----------- --------------------
+1    3888     TEMP                 65535       /u01/app/oracle/oradata/TESTDB/datafile/o1_mf_temp_ff11x29k_.tmp
+
+RMAN> exit;
+
+
+
+Create duplicate TESTDB: TESTDUP
+
+Create backup TESTDB:
+BACKUP AS BACKUPSET DEVICE TYPE DISK FORMAT "/u01/app/oracle/backup/tstdb/backup_%U" DATABASE include current controlfile plus archivelog not backed up delete input;
+
+cp ~/clone/inittstdup.ora $ORACLE_HOME/dbs
+cp ~/clone/orapwtestdup $ORACLE_HOME/dbs
+
+. dbdup_env
+sqlplus / as sysdba
+startup nomount;
+exit
+cd ~/clone
+rman auxiliary /
+@clonedb.rman
+
+COMPLETE
+
+NonCDB to PDB, destroy and update
+testdup:
+sqlplus / as sysdba
+
+shut immediate
+startup mount
+alter database open read only;
+exec DBMS_PDB.DESCRIBE('/home/oracle/tstcdb/tstdb.xml');
+
+shutdown immediate;
+exit
+. cdb_env
+sqlplus / as sysdba
+startup 
+
+SET SERVEROUTPUT ON
+DECLARE
+  compatible CONSTANT VARCHAR2(3) := CASE DBMS_PDB.CHECK_PLUG_COMPATIBILITY(
+            pdb_descr_file => '/home/oracle/tstcdb/tstdb.xml',
+            pdb_name       => 'tstdb')
+     WHEN TRUE THEN 'YES'
+     ELSE 'NO'
+ END;
+ BEGIN
+  DBMS_OUTPUT.PUT_LINE(compatible);
+END;
+/
+YES!!!
+
+CREATE PLUGGABLE DATABASE testdb using '/home/oracle/tstcdb/tstdb.xml' nocopy tempfile reuse;
+
+ALTER SESSION SET CONTAINER=testdb;
+
+@$ORACLE_HOME/rdbms/admin/noncdb_to_pdb.sql
+
+Check:
+SELECT name, network_name 
+FROM   dba_services
+ORDER BY name
+/
+begin
+  DBMS_SERVICE.DELETE_SERVICE('TESTDB');
+end;
+/
+
+alter pluggable database testdb open;
+
+connect system@testdb
+
+alter tablespace temp add tempfile '/u01/app/oracle/oradata/pdbs/tempfiles/pdb_clone01_temp01.dbf' size 100M reuse autoextend on next 100M maxsize 500M;
+alter tablespace temp drop tempfile '/u01/app/oracle/oradata/TESTCDB/6BEBA6538ADE176AE055E371072A900A/datafile/o1_mf_temp_fhbr38o6_.dbf';
+
+alter session set db_create_file_dest=/u01/app/oracle/oradata/pdbs
+create pluggable database pdb_clone01 from testdb snapshot copy file_name_convert=('/u01/app/oracle/oradata/TESTDUP', '/u01/app/oracle/oradata/pdbs/pdb_clone01', '/u01/app/oracle/oradata/pdbs/tempfiles/testdb_temp01.dbf', '/u01/app/oracle/oradata/pdbs/tempfiles/pdb_clone01_temp01.dbf');
+
+create pluggable database pdb_clone03 from testdb snapshot copy file_name_convert=('/u01/app/oracle/oradata/TESTDUP', '/u01/app/oracle/oradata/pdbs/pdb_clone03', '/u01/app/oracle/oradata/pdbs/tempfiles/testdb_temp01.dbf', '/u01/app/oracle/oradata/pdbs/tempfiles/pdb_clone03_temp01.dbf');
+
+create pluggable database pdb_clone03 from testdb snapshot copy file_name_convert=('/u01', 'u01', '/u01/app/oracle/oradata/pdbs/tempfiles/testdb_temp01.dbf', '/u01/app/oracle/oradata/pdbs/tempfiles/pdb_clone03_temp01.dbf');
+
+
+Пересоздание PDB_TESTDUP
+
+alter pluggable database testdup close;
+drop pluggable database testdup including datafiles;
+alter pluggable database pdb_testdup close;
+drop pluggable database pdb_testdup including datafiles;
+exit;
+
+du -ha $ORACLE_BASE/oradata/TESTDUP
+11M     /u01/app/oracle/oradata/TESTDUP/controlfile/o1_mf_fgrbnzd8_.ctl
+11M     /u01/app/oracle/oradata/TESTDUP/controlfile
+52K     /u01/app/oracle/oradata/TESTDUP/datafile
+101M    /u01/app/oracle/oradata/TESTDUP/onlinelog/o1_mf_1_fh06xf88_.log
+101M    /u01/app/oracle/oradata/TESTDUP/onlinelog/o1_mf_2_fh06xf97_.log
+101M    /u01/app/oracle/oradata/TESTDUP/onlinelog/o1_mf_3_fh06xfb9_.log
+301M    /u01/app/oracle/oradata/TESTDUP/onlinelog
+311M    /u01/app/oracle/oradata/TESTDUP
+
+rm -fr /u01/app/oracle/oradata/TESTDUP/controlfile/o1_mf_fgrbnzd8_.ctl
+rm -fr /u01/app/oracle/oradata/TESTDUP/onlinelog/o1_mf*
+
+. dbdup_env
+sqlplus / as sysdba
+startup nomount;
+exit
+cd ~/clone
+rman auxiliary /
+@clonedb.rman
+
+
+
+COMPLETE

@@ -1,0 +1,34 @@
+Start duplicate DB at Thu Jul 12 11:16:47 MSK 2018
+Prepare complete at Thu Jul 12 11:16:47 MSK 2018
+Create duplicate complete at Thu Jul 12 11:16:47 MSK 2018
+Post duplicate complete at Thu Jul 12 11:16:47 MSK 2018
+Plugin TSTDB to TSTCDB
+
+SQL*Plus: Release 12.1.0.1.0 Production on Thu Jul 12 11:16:47 2018
+
+Copyright (c) 1982, 2013, Oracle.  All rights reserved.
+
+Connected.
+Database closed.
+Database dismounted.
+ORACLE instance shut down.
+ORACLE instance started.
+
+Total System Global Area 2,5655E+10 bytes
+Fixed Size		    2767776 bytes
+Variable Size		 7516193888 bytes
+Database Buffers	 1,8052E+10 bytes
+Redo Buffers		   83505152 bytes
+Database mounted.
+
+Database altered.
+
+
+PL/SQL procedure successfully completed.
+
+Database closed.
+Database dismounted.
+ORACLE instance shut down.
+Disconnected from Oracle Database 12c Enterprise Edition Release 12.1.0.1.0 - 64bit Production
+With the Partitioning, OLAP, Advanced Analytics and Real Application Testing options
+Plugin complete at Thu Jul 12 11:18:05 MSK 2018

@@ -1,0 +1,24 @@
+NPDB_ROOT=
+  (DESCRIPTION=
+    (ADDRESS=
+      (PROTOCOL=TCP)
+      (HOST=10.1.1.159)
+      (PORT=1521)
+    )
+    (CONNECT_DATA=
+      (SERVER=dedicated)
+      (SERVICE_NAME=PDB_ROOT)
+    )
+  )
+
+DEV=
+  (DESCRIPTION=
+    (ADDRESS=
+      (PROTOCOL=TCP)
+      (HOST=10.1.1.159)
+      (PORT=1521)
+    )
+    (CONNECT_DATA=
+      (SERVICE_NAME=DEV)
+    )
+  )

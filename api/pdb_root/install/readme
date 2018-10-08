@@ -1,0 +1,79 @@
+﻿API PDB_ROOT - управление клонированием контейнерных БД
+
+Состав:
+PDB: PDB_ROOT
+USER: PDB_ROOT
+COMMON USER: C##PDBROOT
+
+Описание C##PDBROOT.PDB_DAEMON
+Точка входа: c##pdbroot.PDB_DAEMON.start_daemon
+Программа обрабатывает команды, содержащиеся в таблице, на которую ссылается синоним PDB_ACTIONS
+Основной цикл:
+  Проверка наличия блокировки PDB_DAEMON_STOP (dbms_lock), если блокировка установлена - завершить работу (полная остановка демона)
+  Проверка статуса текущего процесса в pdm_daemon.state:
+    = STOP  - завершение работы
+    = PAUSE - команды не обрабатываются
+    = START - запускается обработка команд в статусе NEW:
+      Считать команду из таблицы PDB_ACTIONS_T в статусе NEW с самой ранней датой создания и исполнения (CREATED_AT, PLANED_AT):
+        команда найдена - выполнить команду, результат записать в таблицу PDB_ACTIONS (STATUS и RESULT).
+        команда не найдена - пауза на GC_TIMEOUT сек
+      Если в процессе выполнения команды возникнет критическая ошибка (например, при выполнении действий с контейнером):
+        установить статус текущего процесса в PAUSE, состояние в CRITICAL
+
+Shell скрипты для запуска PDB Daemon на IBM02:
+.\scripts\ibm_shell\
+start.sh - запускает PDB_DAEMON. После запуска, сессию терминала можно завершить. Процесс останется работать
+stop.sh  - завершает работу PDB_DAEMON
+
+PDB_ROOT.PDB_API
+Пакет с основным API по управлению контейнерами. 
+Назначение:
+Ведение списка контейнеров клонов (таблица CLONE_PDBS_T)
+Формирование команд в таблице PDB_ACTIONS_T
+
+PDB_ROOT.PDB_PUB
+Обвертка для PDB_API.
+
+Пример создания клона:
+
+sqlplus pdb_root/pdb_root@10.1.1.108:1521/pdb_root
+
+exec pdb_pub.clone('VBZ','PDB002');
+
+select pdb_name, status from pdb_actions_v order by created_at desc fetch next 10 rows only;
+
+select pdb_name, open_mode from pdb_clones_v;
+
+
+Thin CloneOfClone
+В 12.1.0.1 создание тонкого клона от клона не работает, не корректно формируются символические ссылки на snapshot срез.
+Создание клона реализовано обходным способом:
+На уровне ОС:
+1. Утилитой ACFSUTIL создается snapshot от snapshot'a исходного клона
+2. Создается директория для файлов БД, в которой создаются символические ссылки перенаправляются на файлы snapshot'а, созданного на первом шаге
+3. Создается копия файла tmp с именем целевого клона
+В БД:
+1. Формируется файл с описанием исходного клона (dbms_pdb.describe)
+2. В файле исправляются пути к файлам БД
+3. Создается новая PDB по исправленному файлу описания, как клон, без копирования.
+
+Реализация
+Вся логика реализована в C##PDBROOT.pdb_daemon_api
+
+BASH скрипты \sql\BashScripts\ (cp $ORACLE_BASE/dat/pdbs/tempfiles/clones)
+  files_pdb.sh - возвращает список файлов БД
+  clone_pdb.sh - запускной скрипт для клонирования
+Во время клонирования создаются файлы:
+  pdb_clone.conf       - конфиг клонирования (исходная, целевая, файл описания и т.д.)
+  create_db_files.cmd  - команды подготовки ФС для нового клона
+  clone_pdb.xml        - XML описание создаваемого клона
+
+Пример создания клона:
+
+sqlplus pdb_root/pdb_root@10.1.1.108:1521/pdb_root
+
+exec pdb_pub.clone(p_source_pdb => 'VBZ_PDB001', p_target_pdb => 'VBZ_PDB002');
+
+select pdb_name, status from pdb_actions_v order by created_at desc fetch next 10 rows only;
+
+select pdb_name, open_mode from pdb_clones_v;

@@ -1,0 +1,118 @@
+
+http://gahcep.github.io/blog/2012/08/14/using-cntlm-http-proxy/
+cntlm.exe -I -M http://google.com
+
+config:
+cntlm.exe -I -M http://google.com
+
+on docker-toolbox
+
+/s/cntlm/install_docker.sh
+
+
+ps aux | grep cntlm
+
+sudo vi /var/lib/boot2docker/profile
+  add this lines
+    export HTTP_PROXY=http://127.0.0.1:1128
+    export HTTPS_PROXY=http://127.0.0.1:1128
+
+sudo /etc/init.d/docker restart
+eval $(docker-machine env default)
+
+
+Toolbox config:
+sudo rpm -i /distrib/cntlm/cntlm-0.92.3-1.x86_64.rpm
+sudo cp /distrib/cntlm/cntlm.conf /etc/cntlm.conf 
+sudo cntlm -c /etc/cntlm.conf
+ps aux | grep cntlm
+
+Docker config:
+https://stackoverflow.com/questions/36844213/how-to-set-proxy-in-docker-toolbox
+
+sudo vi /var/lib/boot2docker/profile
+
+add this lines
+
+export HTTP_PROXY=http://127.0.0.1:1128
+export HTTPS_PROXY=http://127.0.0.1:1128
+
+
+
+Toolbox config:
+sudo rpm -i /distrib/cntlm/cntlm-0.92.3-1.x86_64.rpm
+sudo cp /distrib/cntlm/cntlm.conf /etc/cntlm.conf 
+sudo cntlm -c /etc/cntlm.conf
+ps aux | grep cntlm
+
+install cntlm: http://www.toms-blog.com/post/linux-behind-ntlm-authentication-proxy-using-cntlm/
+
+config cntlm:
+
+Username	v.zhuravov
+Domain		gazfond
+PassNTLMv2      0B5FBF37142001A85733CC363124DACA
+Proxy		10.1.1.90:3128
+Listen		127.0.0.1:1128
+
+after:
+restart cntlm
+ps aux | grep cntlm
+sudo kill -9
+
+sudo cntlm -c /etc/cntlm.conf
+
+git proxy
+git config --global https.proxy https://127.0.0.1:1128
+git config --global http.proxy http://127.0.0.1:1128
+vi ~/.gitconfig:
+  [http]
+  proxy = http://127.0.0.1:1128
+
+
+wget:proxy
+https://stackoverflow.com/questions/11211705/setting-proxy-in-wget
+
+vi ~/.wgetrc file:
+
+use_proxy=yes
+http_proxy=127.0.0.1:1128
+https_proxy=127.0.0.1:1128
+
+or via -e options placed after the URL:
+
+wget ... -e use_proxy=yes -e http_proxy=127.0.0.1:8080 ...
+
+example:
+wget http://yum.oracle.com/public-yum-ol7.repo -e use_proxy=yes -e http_proxy=127.0.0.1:1128
+
+yum proxy set (https://www.centos.org/docs/5/html/yum/sn-yum-proxy-server.html):
+sudo vi /etc/yum.conf
+
+install docker:
+https://blogs.oracle.com/hlsu/install-docker-on-oracle-linux-7
+
+docker conf proxy:
+https://docs.docker.com/engine/admin/systemd/#httphttps-proxy
+
+sudo vi /etc/systemd/system/docker.service.d/http-proxy.conf
+[Service]
+Environment="HTTP_PROXY=http://127.0.0.1:1128/"
+
+sudo vi /etc/systemd/system/docker.service.d/https-proxy.conf
+[Service]
+Environment="HTTPS_PROXY=http://127.0.0.1:1128/"
+
+Apply:
+sudo systemctl daemon-reload
+sudo systemctl restart docker
+
+Show changes:
+systemctl show --property=Environment docker
+
+curl
+alias curl="curl -x 127.0.0.1:1128"
+
+
+npm config set proxy http://127.0.0.1:1128
+npm config set https-proxy http://127.0.0.1:1128

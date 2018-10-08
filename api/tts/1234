@@ -1,0 +1,4 @@
+. ${DIR}/copy_scp.sh /ora1/buf/datapump/expdat.dmp /u01/app/oracle/buf/datapump/
+
+
+scp -c arcfour oracle@10.1.1.108:/ora1/buf/datapump/expdat.dmp /u01/app/oracle/buf/datapump/

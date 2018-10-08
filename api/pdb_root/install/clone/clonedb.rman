@@ -1,0 +1,6 @@
+RUN
+{
+ ALLOCATE AUXILIARY CHANNEL disk1 DEVICE TYPE DISK;
+    DUPLICATE DATABASE testdb TO testdup
+    BACKUP LOCATION '/u01/app/oracle/orafra/testdb/backup' NOREDO;
+}

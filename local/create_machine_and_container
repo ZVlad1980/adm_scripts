@@ -1,0 +1,67 @@
+docker-machine create -d virtualbox \
+--virtualbox-disk-size 350000 \
+--virtualbox-memory 4024 \
+--virtualbox-cpu-count 2 \
+--engine-insecure-registry teamcity:8083 \
+--virtualbox-share-folder D:\DOCKER_SHARE:s \
+--virtualbox-share-folder C:\ORADATA:d \
+default
+
+docker load -i /s/images/oracle-12201-ee-image.docker
+
+docker run -d \
+--network host \
+-p 1521:1521 \
+-p 5500:5500 \
+-v /dump/:/opt/oracle/oradata/ \
+-v /data/:/home/oracle/oradump/ \
+--name ora \
+--privileged \
+--shm-size 3096MB \
+teamcity:8083/ospos/db:12.2.0.1-ee
+
+vladimirzhuravov/oracle:12.2
+ora_work
+teamcity:8083/ospos/db:12.2.0.1-ee 
+
+docker run -d \
+--network host \
+-p 1521:1521 \
+-p 5500:5500 \
+-v /oradata/:/opt/oracle/oradata/ \
+-v /s/oradump/:/home/oracle/oradump/ \
+--name ora_test \
+--privileged \
+ora_work
+
+
+--ora_work - настроенный образ
+
+mount -t tmpfs shmfs -o size=3000m /dev/shm
+
+docker login -u docker-user -p d0cker teamcity:8083
+
+docker logs -tf --tail 100 ora
+docker exec -it ora bash
+
+sudo /etc/init.d/docker restart
+
+sudo vi /var/lib/boot2docker/profile
+
+eval $(docker-machine env default)
+
+
+
+oracle:
+
+export ORACLE_SID=ORCLCDB
+sqlplus / as sysdba
+
+alter database set time_zone='Europe/Moscow'; 
+alter user system identified by passwd;
+shutdown 
+startup
+
+
+config container:
+/var/lib/docker/containers/CONTAINER_ID/config.json

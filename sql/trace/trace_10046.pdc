@@ -1,0 +1,17 @@
+exec dbms_application_info.set_module('SQLPLUS', 'TABLE_SCAN');
+ALTER SESSION SET TRACEFILE_IDENTIFIER = "MY_TEST_SESSION";
+ALTER SESSION SET EVENTS '10046 trace name context forever, level 12';
+select d.id, d.wtf, l id,
+       fnd.fld('BARCODE_ID;DOC_ID;SFL_ID;DATA_ZAPOLNEN;', l) name,
+       nvl(short_descr, name) descr,
+       type,
+       descr long_descr,
+       d.*
+from   (select level - 1 l
+        from   dual
+        connect by level < 5),
+       fnd.urmp_field_def d
+where  fnd.fld('BARCODE_ID;DOC_ID;SFL_ID;DATA_ZAPOLNEN;', l) = d.name
+order  by l
+;
+ALTER SESSION SET EVENTS '10046 trace name context off';

@@ -1,0 +1,118 @@
+SQL> @postclon
+Connected.
+
+
+-- RESET DUMP DESTS:
+
+System altered.
+
+
+System altered.
+
+
+System altered.
+
+
+-- SHUTDOWN:
+
+User altered.
+
+
+User altered.
+
+Database closed.
+Database dismounted.
+ORACLE instance shut down.
+
+-- STARTUP NOMOUNT:
+ORACLE instance started.
+
+Total System Global Area 2,5655E+10 bytes                                       
+Fixed Size                  2767776 bytes                                       
+Variable Size            7516193888 bytes                                       
+Database Buffers         1,8052E+10 bytes                                       
+Redo Buffers               83505152 bytes                                       
+Database mounted.
+
+-- NOARCHIVELOG:
+
+Database altered.
+
+
+-- RESTART::
+ORA-01109: database not open 
+
+
+Database dismounted.
+ORACLE instance shut down.
+ORACLE instance started.
+
+Total System Global Area 2,5655E+10 bytes                                       
+Fixed Size                  2767776 bytes                                       
+Variable Size            7516193888 bytes                                       
+Database Buffers         1,8052E+10 bytes                                       
+Redo Buffers               83505152 bytes                                       
+Database mounted.
+Database opened.
+
+-- CHANGE EXPORT DIRECTORIES:
+
+Directory created.
+
+
+Directory created.
+
+
+Directory created.
+
+
+Grant succeeded.
+
+
+System altered.
+
+
+System altered.
+
+
+System altered.
+
+
+-- CHANGE GAZFOND PROPERTIES:
+
+1 row updated.
+
+
+User altered.
+
+
+-- ADD PRIVS FOR RLS:
+
+Grant succeeded.
+
+
+Grant succeeded.
+
+
+-- CREATE LOGON TRIGGER:
+
+Trigger created.
+
+
+-- CHANGE GAZFOND_PN PROPERTIES:
+
+1 row updated.
+
+
+-- ADD PRIVS FOR RLS:
+
+Grant succeeded.
+
+
+Grant succeeded.
+
+
+-- CREATE LOGON TRIGGER:
+
+Trigger created.
+

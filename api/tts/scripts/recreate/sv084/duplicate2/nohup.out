@@ -1,0 +1,1185 @@
+
+Import: Release 12.1.0.1.0 - Production on Mon Sep 10 08:26:32 2018
+
+Copyright (c) 1982, 2013, Oracle and/or its affiliates.  All rights reserved.
+
+Connected to: Oracle Database 12c Enterprise Edition Release 12.1.0.1.0 - 64bit Production
+With the Partitioning, OLAP, Advanced Analytics and Real Application Testing options
+Master table "SYSTEM"."SYS_IMPORT_FULL_01" successfully loaded/unloaded
+Starting "SYSTEM"."SYS_IMPORT_FULL_01":  system/********@WEEKLY_NODE parfile=/home/oracle/scripts/duplicate2/imp_WEEKLY_NODE.par logfile=import_WEEKLY_NODE.log 
+Processing object type DATABASE_EXPORT/PRE_SYSTEM_IMPCALLOUT/MARKER
+Processing object type DATABASE_EXPORT/PRE_INSTANCE_IMPCALLOUT/MARKER
+Processing object type DATABASE_EXPORT/PLUGTS_FULL/PLUGTS_BLK
+Processing object type DATABASE_EXPORT/TABLESPACE
+ORA-31684: Object type TABLESPACE:"TEMP" already exists
+Processing object type DATABASE_EXPORT/PASSWORD_VERIFY_FUNCTION
+ORA-39082: Object type PASSWORD_VERIFY_FUNCTION created with compilation warnings
+Processing object type DATABASE_EXPORT/PROFILE
+ORA-39083: Object type PROFILE:"USR_PROF1" failed to create with error:
+ORA-07443: function VRF_FUNC_12C not found
+Failing sql is:
+ CREATE PROFILE "USR_PROF1" LIMIT COMPOSITE_LIMIT DEFAULT SESSIONS_PER_USER DEFAULT CPU_PER_SESSION DEFAULT CPU_PER_CALL DEFAULT LOGICAL_READS_PER_SESSION DEFAULT LOGICAL_READS_PER_CALL DEFAULT IDLE_TIME DEFAULT CONNECT_TIME DEFAULT PRIVATE_SGA DEFAULT FAILED_LOGIN_ATTEMPTS 10 PASSWORD_LIFE_TIME DEFAULT PASSWORD_REUSE_TIME DEFAULT PASSWORD_REUSE_MAX DEFAULT PASSWORD_VERIFY_FUNCT
+Processing object type DATABASE_EXPORT/SYS_USER/USER
+Processing object type DATABASE_EXPORT/SCHEMA/USER
+ORA-31684: Object type USER:"OUTLN" already exists
+ORA-31684: Object type USER:"ADMIN" already exists
+ORA-39083: Object type USER:"C##PDBROOT" failed to create with error:
+ORA-65094: invalid local user or role name
+Failing sql is:
+ CREATE USER "C##PDBROOT" IDENTIFIED BY VALUES 'S:6A03878CB26A947E978C5DAAB08DADD1BA3D15CBBAB3FCD5A1F7F41FAB86;H:1B65917909A7C7118283FE4D55A6539B;2816F97078FB54C0' TEMPORARY TABLESPACE "TEMP"
+Processing object type DATABASE_EXPORT/ROLE
+Processing object type DATABASE_EXPORT/RADM_FPTM
+ORA-39083: Object type RADM_FPTM failed to create with error:
+ORA-01843: not a valid month
+Failing sql is:
+BEGIN DELETE FROM "SYS"."RADM_FPTM$" WHERE FPVER=1; 
+INSERT INTO "SYS"."RADM_FPTM$" ("NUMBERCOL", "BINFLOATCOL", "BINDOUBLECOL", "CHARCOL", "VARCHARCOL", "NCHARCOL", "NVARCHARCOL", "DATECOL", "TS_COL", "TSWTZ_COL", "FPVER") VALUES (0,0.000000,0.000000,' ',' ',' ',' ','01-01-2001 00:00:00','01.01.01 01:00:00.000000','01.01.01 01:00:00.000000 +00:00',1);END;
+Processing object type DATABASE_EXPORT/GRANT/SYSTEM_GRANT/PROC_SYSTEM_GRANT
+Processing object type DATABASE_EXPORT/SCHEMA/GRANT/SYSTEM_GRANT
+Processing object type DATABASE_EXPORT/SCHEMA/ROLE_GRANT
+Processing object type DATABASE_EXPORT/SCHEMA/DEFAULT_ROLE
+Processing object type DATABASE_EXPORT/SCHEMA/ON_USER_GRANT
+Processing object type DATABASE_EXPORT/SCHEMA/TABLESPACE_QUOTA
+Processing object type DATABASE_EXPORT/RESOURCE_COST
+Processing object type DATABASE_EXPORT/SCHEMA/DB_LINK
+Processing object type DATABASE_EXPORT/TRUSTED_DB_LINK
+Processing object type DATABASE_EXPORT/SCHEMA/SEQUENCE/SEQUENCE
+Processing object type DATABASE_EXPORT/SCHEMA/SEQUENCE/GRANT/OWNER_GRANT/OBJECT_GRANT
+Processing object type DATABASE_EXPORT/DIRECTORY/DIRECTORY
+ORA-31684: Object type DIRECTORY:"DATA_DUMP_DIR" already exists
+Processing object type DATABASE_EXPORT/DIRECTORY/GRANT/OWNER_GRANT/OBJECT_GRANT
+Processing object type DATABASE_EXPORT/DIRECTORY/GRANT/CROSS_SCHEMA/OBJECT_GRANT
+Processing object type DATABASE_EXPORT/CONTEXT
+Processing object type DATABASE_EXPORT/SCHEMA/PUBLIC_SYNONYM/SYNONYM
+Processing object type DATABASE_EXPORT/SCHEMA/SYNONYM
+Processing object type DATABASE_EXPORT/SCHEMA/TYPE/INC_TYPE
+Processing object type DATABASE_EXPORT/SCHEMA/TYPE/TYPE_SPEC
+Processing object type DATABASE_EXPORT/SCHEMA/TYPE/GRANT/OWNER_GRANT/OBJECT_GRANT
+Processing object type DATABASE_EXPORT/SYSTEM_PROCOBJACT/PRE_SYSTEM_ACTIONS/PROCACT_SYSTEM
+Processing object type DATABASE_EXPORT/SYSTEM_PROCOBJACT/PROCOBJ
+Processing object type DATABASE_EXPORT/SYSTEM_PROCOBJACT/POST_SYSTEM_ACTIONS/PROCACT_SYSTEM
+ORA-39083: Object type PROCACT_SYSTEM failed to create with error:
+ORA-29364: plan directive SYSTEM_PLAN, SYS_GROUP already exists
+Failing sql is:
+BEGIN 
+dbms_resource_manager.create_plan_directive(plan => 'SYSTEM_PLAN', group_or_subplan => 'SYS_GROUP', comment => 'System sessions at high priority', mgmt_p1 => 75);COMMIT; END; 
+Processing object type DATABASE_EXPORT/SCHEMA/PROCACT_SCHEMA
+Processing object type DATABASE_EXPORT/EARLY_OPTIONS/VIEWS_AS_TABLES/TABLE
+Processing object type DATABASE_EXPORT/EARLY_OPTIONS/VIEWS_AS_TABLES/TABLE_DATA
+. . imported "SYS"."KU$_EXPORT_USER_MAP"                 10.56 KB     400 rows
+Processing object type DATABASE_EXPORT/EARLY_POST_INSTANCE_IMPCALLOUT/MARKER
+Processing object type DATABASE_EXPORT/NORMAL_OPTIONS/TABLE
+Processing object type DATABASE_EXPORT/NORMAL_OPTIONS/TABLE_DATA
+. . imported "SYS"."AMGT$DP$AUD$"                        1.580 GB 9997610 rows
+. . imported "WMSYS"."E$ENV_VARS$"                       6.062 KB       5 rows
+. . imported "WMSYS"."E$EVENTS_INFO$"                    5.796 KB      12 rows
+. . imported "WMSYS"."E$HINT_TABLE$"                     9.445 KB      75 rows
+. . imported "WMSYS"."E$NEXTVER_TABLE$"                  6.359 KB       1 rows
+. . imported "WMSYS"."E$VERSION_HIERARCHY_TABLE$"        5.968 KB       1 rows
+. . imported "WMSYS"."E$WORKSPACES_TABLE$"               12.10 KB       1 rows
+. . imported "WMSYS"."E$WORKSPACE_PRIV_TABLE$"           6.554 KB       8 rows
+. . imported "SYS"."AMGT$DP$DAM_CONFIG_PARAM$"           6.523 KB      14 rows
+. . imported "SYS"."DP$TSDP_PARAMETER$"                  5.937 KB       1 rows
+. . imported "SYS"."DP$TSDP_POLICY$"                     5.906 KB       1 rows
+. . imported "SYS"."DP$TSDP_SUBPOL$"                     6.320 KB       1 rows
+. . imported "SYS"."AMGT$DP$DAM_CLEANUP_EVENTS$"             0 KB       0 rows
+. . imported "SYS"."AMGT$DP$DAM_CLEANUP_JOBS$"               0 KB       0 rows
+. . imported "SYS"."DP$TSDP_ASSOCIATION$"                    0 KB       0 rows
+. . imported "SYS"."DP$TSDP_CONDITION$"                      0 KB       0 rows
+. . imported "SYS"."DP$TSDP_FEATURE_POLICY$"                 0 KB       0 rows
+. . imported "SYS"."DP$TSDP_PROTECTION$"                     0 KB       0 rows
+. . imported "SYS"."DP$TSDP_SENSITIVE_DATA$"                 0 KB       0 rows
+. . imported "SYS"."DP$TSDP_SENSITIVE_TYPE$"                 0 KB       0 rows
+. . imported "SYS"."DP$TSDP_SOURCE$"                         0 KB       0 rows
+. . imported "SYSTEM"."REDO_DB_TMP"                          0 KB       0 rows
+. . imported "SYSTEM"."REDO_LOG_TMP"                         0 KB       0 rows
+. . imported "WMSYS"."E$BATCH_COMPRESSIBLE_TABLES$"          0 KB       0 rows
+. . imported "WMSYS"."E$CONSTRAINTS_TABLE$"                  0 KB       0 rows
+. . imported "WMSYS"."E$CONS_COLUMNS$"                       0 KB       0 rows
+. . imported "WMSYS"."E$LOCKROWS_INFO$"                      0 KB       0 rows
+. . imported "WMSYS"."E$MODIFIED_TABLES$"                    0 KB       0 rows
+. . imported "WMSYS"."E$MP_GRAPH_WORKSPACES_TABLE$"          0 KB       0 rows
+. . imported "WMSYS"."E$MP_PARENT_WORKSPACES_TABLE$"         0 KB       0 rows
+. . imported "WMSYS"."E$NESTED_COLUMNS_TABLE$"               0 KB       0 rows
+. . imported "WMSYS"."E$REMOVED_WORKSPACES_TABLE$"           0 KB       0 rows
+. . imported "WMSYS"."E$RESOLVE_WORKSPACES_TABLE$"           0 KB       0 rows
+. . imported "WMSYS"."E$RIC_LOCKING_TABLE$"                  0 KB       0 rows
+. . imported "WMSYS"."E$RIC_TABLE$"                          0 KB       0 rows
+. . imported "WMSYS"."E$RIC_TRIGGERS_TABLE$"                 0 KB       0 rows
+. . imported "WMSYS"."E$UDTRIG_DISPATCH_PROCS$"              0 KB       0 rows
+. . imported "WMSYS"."E$UDTRIG_INFO$"                        0 KB       0 rows
+. . imported "WMSYS"."E$VERSION_TABLE$"                      0 KB       0 rows
+. . imported "WMSYS"."E$VT_ERRORS_TABLE$"                    0 KB       0 rows
+. . imported "WMSYS"."E$WORKSPACE_SAVEPOINTS_TABLE$"         0 KB       0 rows
+Processing object type DATABASE_EXPORT/NORMAL_OPTIONS/VIEWS_AS_TABLES/TABLE
+Processing object type DATABASE_EXPORT/NORMAL_OPTIONS/VIEWS_AS_TABLES/TABLE_DATA
+. . imported "WMSYS"."E$EXP_MAP"                         7.703 KB       3 rows
+. . imported "SYSTEM"."SCHEDULER_PROGRAM_ARGS_TMP"         9.5 KB      12 rows
+. . imported "SYS"."AMGT$DP$AUDTAB$TBS$FOR_EXPORT"       5.937 KB       2 rows
+. . imported "SYS"."NACL$_ACE_IMP"                       10.98 KB      11 rows
+. . imported "SYS"."NACL$_HOST_IMP"                      7.156 KB       5 rows
+. . imported "SYS"."DP$DBA_SENSITIVE_DATA"                   0 KB       0 rows
+. . imported "SYS"."DP$DBA_TSDP_POLICY_PROTECTION"           0 KB       0 rows
+. . imported "SYS"."AMGT$DP$FGA_LOG$FOR_EXPORT"              0 KB       0 rows
+. . imported "SYS"."NACL$_WALLET_IMP"                        0 KB       0 rows
+. . imported "SYSTEM"."SCHEDULER_JOB_ARGS_TMP"               0 KB       0 rows
+Processing object type DATABASE_EXPORT/NORMAL_POST_INSTANCE_IMPCALLOU/MARKER
+Processing object type DATABASE_EXPORT/SCHEMA/TABLE/PROCACT_INSTANCE
+Processing object type DATABASE_EXPORT/SCHEMA/TABLE/TABLE
+Processing object type DATABASE_EXPORT/SCHEMA/TABLE/TABLE_DATA
+. . imported "SYSTEM"."SYS_EXPORT_SCHEMA_01"             3.982 MB    4746 rows
+. . imported "SYSTEM"."SYS_EXPORT_SCHEMA_02"             3.990 MB    4788 rows
+. . imported "SYSTEM"."SYS_EXPORT_SCHEMA_03"             3.990 MB    4788 rows
+. . imported "SYSTEM"."SYS_EXPORT_SCHEMA_05"             3.982 MB    4746 rows
+. . imported "SYSTEM"."SYS_EXPORT_SCHEMA_04"             867.6 KB    1799 rows
+. . imported "SYSTEM"."PLAN_TABLE"                       35.82 KB      30 rows
+. . imported "SYSTEM"."TTTNAM"                           40.07 KB    2363 rows
+. . imported "SYSTEM"."EPG$_AUTH"                            0 KB       0 rows
+Processing object type DATABASE_EXPORT/SCHEMA/TABLE/GRANT/OWNER_GRANT/OBJECT_GRANT
+Processing object type DATABASE_EXPORT/SCHEMA/TABLE/GRANT/CROSS_SCHEMA/OBJECT_GRANT
+Processing object type DATABASE_EXPORT/SCHEMA/TABLE/COMMENT
+Processing object type DATABASE_EXPORT/SCHEMA/TABLE/IDENTITY_COLUMN
+ORA-39083: Object type IDENTITY_COLUMN:"GAZFOND_PN" failed to create with error:
+ORA-01722: invalid number
+Failing sql is:
+ALTER TABLE "GAZFOND_PN"."BIN$YDTcW3sLAWTgUwoBAXWeQA==$0" MODIFY ("ID" GENERATED BY DEFAULT ON NULL AS IDENTITY MINVALUE  MAXVALUE  INCREMENT BY  START WITH  LIMIT VALUE  CACHE  NOORDER  NOCYCLE )
+ORA-39083: Object type IDENTITY_COLUMN:"VBZ" failed to create with error:
+ORA-00905: missing keyword
+Failing sql is:
+ALTER TABLE "VBZ"."BIN$dVbss+DyAFjgUwoBAWyamw==$0" MODIFY ( GENERATED ALWAYS AS IDENTITY MINVALUE 1 MAXVALUE 9999999999999999999999999999 INCREMENT BY 1 START WITH  LIMIT VALUE  CACHE 20 NOORDER  NOCYCLE )
+Processing object type DATABASE_EXPORT/SCHEMA/PACKAGE/PACKAGE_SPEC
+Processing object type DATABASE_EXPORT/SCHEMA/PACKAGE/GRANT/OWNER_GRANT/OBJECT_GRANT
+Processing object type DATABASE_EXPORT/SCHEMA/PACKAGE/GRANT/CROSS_SCHEMA/OBJECT_GRANT
+Processing object type DATABASE_EXPORT/SCHEMA/FUNCTION/FUNCTION
+Processing object type DATABASE_EXPORT/SCHEMA/FUNCTION/GRANT/OWNER_GRANT/OBJECT_GRANT
+Processing object type DATABASE_EXPORT/SCHEMA/PROCEDURE/PROCEDURE
+Processing object type DATABASE_EXPORT/SCHEMA/PROCEDURE/GRANT/OWNER_GRANT/OBJECT_GRANT
+Processing object type DATABASE_EXPORT/SCHEMA/PACKAGE/COMPILE_PACKAGE/PACKAGE_SPEC/ALTER_PACKAGE_SPEC
+Processing object type DATABASE_EXPORT/SCHEMA/FUNCTION/ALTER_FUNCTION
+Processing object type DATABASE_EXPORT/SCHEMA/PROCEDURE/ALTER_PROCEDURE
+ORA-39083: Object type ALTER_PROCEDURE:"FND"."WEBNPO_EXPORT_WORKPLACES" failed to create with error:
+ORA-04052: error occurred when looking up remote object WNPO.A_CONTRAGENTS@WEBNPOSYNC
+ORA-00604: error occurred at recursive SQL level 3
+ORA-12154: TNS:could not resolve the connect identifier specified
+Failing sql is:
+
+ALTER PROCEDURE "FND"."WEBNPO_EXPORT_WORKPLACES"   COMPILE     PLSQL_OPTIMIZE_LEVEL=  2    PLSQL_CODE_TYPE=  INTERPRETED    PLSQL_DEBUG=  TRUE    PLSCOPE_SETTINGS=  'IDENTIFIERS:NONE' REUSE S
+Processing object type DATABASE_EXPORT/SCHEMA/TABLE/INDEX/INDEX
+Processing object type DATABASE_EXPORT/SCHEMA/TABLE/INDEX/FUNCTIONAL_INDEX/INDEX
+ORA-39083: Object type INDEX:"GAZFOND"."DOCUMENT_TRANC_DATE" failed to create with error:
+ORA-00001: unique constraint (SYS.I_COL1) violated
+Failing sql is:
+CREATE INDEX "GAZFOND"."DOCUMENT_TRANC_DATE" ON "GAZFOND"."DOCUMENTS" (TRUNC("DOC_DATE")) PCTFREE 10 INITRANS 2 MAXTRANS 255  STORAGE(SEG_FILE 45 SEG_BLOCK 197338 OBJNO_REUSE 788886 INITIAL 65536 NEXT 1048576 MINEXTENTS 1 MAXEXTENTS 2147483645 PCTINCREASE 0 FREELISTS 1 FREELIST GROUPS 1 BUFFER_POOL DEFAULT FLASH_CACHE DEFAULT CELL_FLASH_CACHE DEFAULT) T
+Processing object type DATABASE_EXPORT/SCHEMA/TABLE/CONSTRAINT/CONSTRAINT
+Processing object type DATABASE_EXPORT/SCHEMA/TABLE/INDEX/STATISTICS/INDEX_STATISTICS
+Processing object type DATABASE_EXPORT/SCHEMA/TABLE/INDEX/STATISTICS/FUNCTIONAL_INDEX/INDEX_STATISTICS
+Processing object type DATABASE_EXPORT/SCHEMA/VIEW/VIEW
+Processing object type DATABASE_EXPORT/SCHEMA/VIEW/CONSTRAINT
+Processing object type DATABASE_EXPORT/SCHEMA/VIEW/GRANT/OWNER_GRANT/OBJECT_GRANT
+Processing object type DATABASE_EXPORT/SCHEMA/VIEW/GRANT/CROSS_SCHEMA/OBJECT_GRANT
+Processing object type DATABASE_EXPORT/SCHEMA/VIEW/COMMENT
+Processing object type DATABASE_EXPORT/SCHEMA/PACKAGE_BODIES/PACKAGE/PACKAGE_BODY
+Processing object type DATABASE_EXPORT/SCHEMA/TYPE/TYPE_BODY
+ORA-39082: Object type TYPE_BODY:"GAZFOND"."SMEV_MVD_P001_TYPE" created with compilation warnings
+ORA-39082: Object type TYPE_BODY:"GAZFOND"."SMEV_MVD_P001_TYPE" created with compilation warnings
+Processing object type DATABASE_EXPORT/SCHEMA/JAVA_SOURCE/JAVA_SOURCE
+Processing object type DATABASE_EXPORT/SCHEMA/JAVA_CLASS/JAVA_CLASS
+Processing object type DATABASE_EXPORT/SCHEMA/JAVA_RESOURCE/JAVA_RESOURCE
+Processing object type DATABASE_EXPORT/SCHEMA/TABLE/CONSTRAINT/REF_CONSTRAINT
+Processing object type DATABASE_EXPORT/SCHEMA/TABLE/INDEX/BITMAP_INDEX/INDEX
+Processing object type DATABASE_EXPORT/SCHEMA/TABLE/INDEX/STATISTICS/BITMAP_INDEX/INDEX_STATISTICS
+Processing object type DATABASE_EXPORT/SCHEMA/TABLE/STATISTICS/TABLE_STATISTICS
+Processing object type DATABASE_EXPORT/STATISTICS/MARKER
+FND.DV_SR_LSPV : sqlerrm = ORA-20008: Number of extensions in table FND.DV_SR_LSPV already reaches the upper limit (20)
+FND.DV_SR_SFPV : sqlerrm = ORA-20008: Number of extensions in table FND.DV_SR_SFPV already reaches the upper limit (20)
+FND.F2NDFL_LOAD_SPRAVKI : sqlerrm = ORA-20008: Number of extensions in table FND.F2NDFL_LOAD_SPRAVKI already reaches the upper limit (20)
+FND.OPS_REESTR : sqlerrm = ORA-20008: Number of extensions in table FND.OPS_REESTR already reaches the upper limit (20)
+FND.PAYMENT_ORDERS_OUT : sqlerrm = ORA-20008: Number of extensions in table FND.PAYMENT_ORDERS_OUT already reaches the upper limit (20)
+FND.SP_FIZ_LITS : sqlerrm = ORA-20008: Number of extensions in table FND.SP_FIZ_LITS already reaches the upper limit (20)
+FND.SP_IPS : sqlerrm = ORA-20008: Number of extensions in table FND.SP_IPS already reaches the upper limit (20)
+FND.UGM_TMP : sqlerrm = ORA-20008: Number of extensions in table FND.UGM_TMP already reaches the upper limit (20)
+FND.VYPLACH_POSOB : sqlerrm = ORA-20008: Number of extensions in table FND.VYPLACH_POSOB already reaches the upper limit (20)
+GAZFOND.ASSIGNMENTS : sqlerrm = ORA-20008: Number of extensions in table GAZFOND.ASSIGNMENTS already reaches the upper limit (20)
+GAZFOND.CASHFLOW : sqlerrm = ORA-20008: Number of extensions in table GAZFOND.CASHFLOW already reaches the upper limit (20)
+GAZFOND.CONTRACTS : sqlerrm = ORA-20008: Number of extensions in table GAZFOND.CONTRACTS already reaches the upper limit (20)
+GAZFOND.DISPATCHES : sqlerrm = ORA-20008: Number of extensions in table GAZFOND.DISPATCHES already reaches the upper limit (20)
+GAZFOND.PEOPLE : sqlerrm = ORA-20008: Number of extensions in table GAZFOND.PEOPLE already reaches the upper limit (20)
+GAZFOND_PN.CASHFLOW : sqlerrm = ORA-20008: Number of extensions in table GAZFOND_PN.CASHFLOW already reaches the upper limit (20)
+GAZFOND_PN.CONTRACTS : sqlerrm = ORA-20008: Number of extensions in table GAZFOND_PN.CONTRACTS already reaches the upper limit (20)
+RFM_NPF.DATAMART : sqlerrm = ORA-20008: Number of extensions in table RFM_NPF.DATAMART already reaches the upper limit (20)
+Importing statistics failed for 17 object(s); 
+Processing object type DATABASE_EXPORT/SCHEMA/TABLE/INDEX/DOMAIN_INDEX/SECONDARY_TABLE/TABLE
+Processing object type DATABASE_EXPORT/SCHEMA/TABLE/INDEX/DOMAIN_INDEX/SECONDARY_TABLE/INDEX/INDEX
+Processing object type DATABASE_EXPORT/SCHEMA/TABLE/INDEX/DOMAIN_INDEX/INDEX
+Processing object type DATABASE_EXPORT/SCHEMA/TABLE/POST_TABLE_ACTION
+Processing object type DATABASE_EXPORT/SCHEMA/TABLE/TRIGGER
+Processing object type DATABASE_EXPORT/SCHEMA/VIEW/TRIGGER
+Processing object type DATABASE_EXPORT/SCHEMA/EVENT/TRIGGER
+Processing object type DATABASE_EXPORT/SCHEMA/MATERIALIZED_VIEW
+Processing object type DATABASE_EXPORT/SCHEMA/TABLE/MATERIALIZED_VIEW_LOG
+ORA-39083: Object type MATERIALIZED_VIEW_LOG failed to create with error:
+ORA-00372: file 325 cannot be modified at this time
+ORA-01110: data file 325: '/u01/app/oracle/oradata/weekly/WEEKLY_NODE/datafile/gf2dat01.dbf'
+Failing sql is:
+CREATE MATERIALIZED VIEW LOG ON "GAZFOND"."PDP_FORMS" WITH ROWID USING ("MLOG$_PDP_FORMS", (10, 'TSTDB', 270369, '2018-09-04 18:08:29', '4000-01-01 00:00:00', '2017-10-10 13:08:13', '4000-01-01 00:00:00', '4000-01-01 00:00:00', '4000-01-01 00:00:00', 0, 1, 764, '2018-09-04 18:
+Processing object type DATABASE_EXPORT/SCHEMA/JOB
+Processing object type DATABASE_EXPORT/SCHEMA/REFRESH_GROUP
+ORA-39083: Object type REFRESH_GROUP:"GAZFOND"."MV_DOCUMENTS_REFRESH" failed to create with error:
+ORA-01843: not a valid month
+Failing sql is:
+ BEGIN dbms_refresh.make('"GAZFOND"."MV_DOCUMENTS_REFRESH"',list=>null,next_date=>'01-01-4000 00:00:00',interval=>'/*5:Mins*/ SYSDATE + 5/(60*24)',implicit_destroy=>FALSE,lax=>FALSE,job=>821,rollback_seg=>NULL,push_deferred_rpc=>TRUE,refresh_after_errors=>TRUE,purge_option=>1,parallelism=>0,heap_size=>0); END; 
+Processing object type DATABASE_EXPORT/SCHEMA/DIMENSION
+Processing object type DATABASE_EXPORT/END_PLUGTS_BLK
+Processing object type DATABASE_EXPORT/FINAL_POST_INSTANCE_IMPCALLOUT/MARKER
+Processing object type DATABASE_EXPORT/SCHEMA/TABLE/POST_INSTANCE/PROCACT_INSTANCE
+Processing object type DATABASE_EXPORT/SCHEMA/TABLE/POST_INSTANCE/PROCDEPOBJ
+Processing object type DATABASE_EXPORT/SCHEMA/POST_SCHEMA/PROCOBJ
+Processing object type DATABASE_EXPORT/SCHEMA/POST_SCHEMA/PROCACT_SCHEMA
+Processing object type DATABASE_EXPORT/AUDIT
+Processing object type DATABASE_EXPORT/POST_SYSTEM_IMPCALLOUT/MARKER
+ORA-39082: Object type FUNCTION:"SYSTEM"."GET_SQL" created with compilation warnings
+ORA-39082: Object type FUNCTION:"SYSTEM"."GS1" created with compilation warnings
+ORA-39082: Object type FUNCTION:"SYSTEM"."USER_XML_PARTITIONED_TABLE_OK" created with compilation warnings
+ORA-39082: Object type FUNCTION:"UGM"."GET_LASTDOGOVOR" created with compilation warnings
+ORA-39082: Object type FUNCTION:"UMG"."SH1_RASCHET_IPS" created with compilation warnings
+ORA-39082: Object type FUNCTION:"UMG"."SH1_RASCHET_UPDATE" created with compilation warnings
+ORA-39082: Object type FUNCTION:"UMG"."VZNOS_ZACH_SH1_FUNC" created with compilation warnings
+ORA-39082: Object type FUNCTION:"FND"."COUNTPN1_98" created with compilation warnings
+ORA-39082: Object type FUNCTION:"FND"."DOC_GET_CHILD_COUNT" created with compilation warnings
+ORA-39082: Object type FUNCTION:"FND"."DOC_NEW_MVM" created with compilation warnings
+ORA-39082: Object type FUNCTION:"FND"."DOREGDOCOPS" created with compilation warnings
+ORA-39082: Object type FUNCTION:"FND"."GETSUM_IPS" created with compilation warnings
+ORA-39082: Object type FUNCTION:"FND"."GET_OLEG_AKCIO" created with compilation warnings
+ORA-39082: Object type FUNCTION:"FND"."GET_VYPLAT_DATE" created with compilation warnings
+ORA-39082: Object type FUNCTION:"FND"."INF_GET_CLIENT_CODEWORD" created with compilation warnings
+ORA-39082: Object type FUNCTION:"FND"."INF_GET_CLIENT_CODEWORD_2" created with compilation warnings
+ORA-39082: Object type FUNCTION:"FND"."INF_GET_CLIENT_CODEWORD_3" created with compilation warnings
+ORA-39082: Object type FUNCTION:"FND"."IZM_GET_OPS_RESH" created with compilation warnings
+ORA-39082: Object type FUNCTION:"FND"."IZM_GET_OPS_RESH_2" created with compilation warnings
+ORA-39082: Object type FUNCTION:"FND"."IZM_IND_SFL" created with compilation warnings
+ORA-39082: Object type FUNCTION:"FND"."IZM_OPS_RESH_INS_2" created with compilation warnings
+ORA-39082: Object type FUNCTION:"FND"."IZM_PEN_DOG_IND_LSPV" created with compilation warnings
+ORA-39082: Object type FUNCTION:"FND"."MV_TAB_DATA" created with compilation warnings
+ORA-39082: Object type FUNCTION:"FND"."QUEST_SL_REPOS_SAVE" created with compilation warnings
+ORA-39082: Object type FUNCTION:"FND"."RA_GET_ULISTR_SOKR" created with compilation warnings
+ORA-39082: Object type FUNCTION:"FND"."REG_ADD_TMP_FOLDER" created with compilation warnings
+ORA-39082: Object type FUNCTION:"FND"."REG_CREATE_TEMP_FOLDER" created with compilation warnings
+ORA-39082: Object type FUNCTION:"FND"."TEST_OPS_RESH_UPDT" created with compilation warnings
+ORA-39082: Object type FUNCTION:"FND"."UVED_DATA_CHNGD" created with compilation warnings
+ORA-39082: Object type FUNCTION:"FND"."UVED_PENS_CHNGD" created with compilation warnings
+ORA-39082: Object type FUNCTION:"FND"."VYPL_NEW_OGR_PV" created with compilation warnings
+ORA-39082: Object type FUNCTION:"FND"."WEB_GET_STAT_COEF" created with compilation warnings
+ORA-39082: Object type FUNCTION:"FWEB"."GET_NASL_SUMM" created with compilation warnings
+ORA-39082: Object type FUNCTION:"BNA"."FL_OPS_GET_ADR_FL" created with compilation warnings
+ORA-39082: Object type FUNCTION:"BNA"."J" created with compilation warnings
+ORA-39082: Object type FUNCTION:"BNA"."KPP_ADD_VISITER" created with compilation warnings
+ORA-39082: Object type FUNCTION:"BNA"."KPP_GET_TYPE_DESKR" created with compilation warnings
+ORA-39082: Object type FUNCTION:"BNA"."RA_OPS_GET_ADR" created with compilation warnings
+ORA-39082: Object type FUNCTION:"BNA"."RA_OPS_GET_ADRSTR" created with compilation warnings
+ORA-39082: Object type FUNCTION:"ALEX"."EV_1_CHECK" created with compilation warnings
+ORA-39082: Object type FUNCTION:"ALEX"."TAA_TEST_FUNC" created with compilation warnings
+ORA-39082: Object type FUNCTION:"ALEX"."XML_TEST" created with compilation warnings
+ORA-39082: Object type FUNCTION:"OLEG"."A_RES_ADR" created with compilation warnings
+ORA-39082: Object type FUNCTION:"OLEG"."A_RES_ADRRUS" created with compilation warnings
+ORA-39082: Object type FUNCTION:"OLEG"."GET_PASS" created with compilation warnings
+ORA-39082: Object type FUNCTION:"OLEG"."GET_PASS_STR" created with compilation warnings
+ORA-39082: Object type FUNCTION:"OLEG"."GET_TAB_TF" created with compilation warnings
+ORA-39082: Object type FUNCTION:"OLEG"."IZM_DATA_ROJD" created with compilation warnings
+ORA-39082: Object type FUNCTION:"OLEG"."NALOG_GET_DOX_KOD_2004" created with compilation warnings
+ORA-39082: Object type FUNCTION:"OLEG"."NALOG_GET_DOX_MES_2004" created with compilation warnings
+ORA-39082: Object type FUNCTION:"OLEG"."NALOG_GET_DOX_VIDK_2004" created with compilation warnings
+ORA-39082: Object type FUNCTION:"OLEG"."NALOG_GET_DOX_VID_2004" created with compilation warnings
+ORA-39082: Object type FUNCTION:"OLEG"."NALOG_GET_VUCHET_2004" created with compilation warnings
+ORA-39082: Object type FUNCTION:"OLEG"."TESTF" created with compilation warnings
+ORA-39082: Object type FUNCTION:"GAZFOND"."AAA_MERGECANPO" created with compilation warnings
+ORA-39082: Object type FUNCTION:"GAZFOND"."GET_ACCOUNT_PROPORTION_SPV" created with compilation warnings
+ORA-39082: Object type FUNCTION:"PDN"."BNA_RPO2DISP_CERT" created with compilation warnings
+ORA-39082: Object type FUNCTION:"PDN"."BNA_RPO2DISP_CERT2" created with compilation warnings
+ORA-39082: Object type FUNCTION:"PDN"."ORA_ASPNET_PROF_DELETEINACTPF" created with compilation warnings
+ORA-39082: Object type FUNCTION:"PDN"."ORA_ASPNET_PROF_DELETEPROFILES" created with compilation warnings
+ORA-39082: Object type FUNCTION:"PDN"."ORA_ASPNET_PROF_GETNOFINACTPF" created with compilation warnings
+ORA-39082: Object type FUNCTION:"PDN"."ORA_ASPNET_PROF_GETPROFILES" created with compilation warnings
+ORA-39082: Object type FUNCTION:"PDN"."ORA_ASPNET_PROF_GETPROPERTIES" created with compilation warnings
+ORA-39082: Object type FUNCTION:"PDN"."ORA_ASPNET_PROF_SETPROPERTIES" created with compilation warnings
+ORA-39082: Object type FUNCTION:"PDN"."ORA_ASPNET_ROLES_CREATEROLE" created with compilation warnings
+ORA-39082: Object type FUNCTION:"PDN"."ORA_ASPNET_ROLES_DELETEROLE" created with compilation warnings
+ORA-39082: Object type FUNCTION:"PDN"."ORA_ASPNET_ROLES_GETALLROLES" created with compilation warnings
+ORA-39082: Object type FUNCTION:"PDN"."ORA_ASPNET_ROLES_ROLEEXISTS" created with compilation warnings
+ORA-39082: Object type FUNCTION:"PDN"."ORA_ASPNET_SESSNAPP_GETAPPID" created with compilation warnings
+ORA-39082: Object type FUNCTION:"PDN"."ORA_ASPNET_SESSN_GETSTATEITEM" created with compilation warnings
+ORA-39082: Object type FUNCTION:"PDN"."ORA_ASPNET_SESSN_GETSTATEITMEX" created with compilation warnings
+ORA-39082: Object type FUNCTION:"PDN"."ORA_ASPNET_SESSN_INSSTATEITEM" created with compilation warnings
+ORA-39082: Object type FUNCTION:"PDN"."ORA_ASPNET_SESSN_INSUNINITITEM" created with compilation warnings
+ORA-39082: Object type FUNCTION:"PDN"."ORA_ASPNET_SESSN_RELSTATEITMEX" created with compilation warnings
+ORA-39082: Object type FUNCTION:"PDN"."ORA_ASPNET_SESSN_RESETTIMEOUT" created with compilation warnings
+ORA-39082: Object type FUNCTION:"PDN"."ORA_ASPNET_SESSN_RMSTATEITEM" created with compilation warnings
+ORA-39082: Object type FUNCTION:"PDN"."ORA_ASPNET_SESSN_UPDSTATEITEM" created with compilation warnings
+ORA-39082: Object type FUNCTION:"PDN"."ORA_ASPNET_UIR_ADDUSERSTOROLES" created with compilation warnings
+ORA-39082: Object type FUNCTION:"PDN"."ORA_ASPNET_UIR_FINDUSERSINROLE" created with compilation warnings
+ORA-39082: Object type FUNCTION:"PDN"."ORA_ASPNET_UIR_GETROLESFORUSER" created with compilation warnings
+ORA-39082: Object type FUNCTION:"PDN"."ORA_ASPNET_UIR_GETUSERSINROLES" created with compilation warnings
+ORA-39082: Object type FUNCTION:"PDN"."ORA_ASPNET_UIR_ISUSERINROLE" created with compilation warnings
+ORA-39082: Object type FUNCTION:"PDN"."ORA_ASPNET_UIR_REMUSERSFMROLES" created with compilation warnings
+ORA-39082: Object type FUNCTION:"MDM"."GETFNDBYDPO" created with compilation warnings
+ORA-39082: Object type FUNCTION:"MDM"."GETPROPERTYVALUE" created with compilation warnings
+ORA-39082: Object type FUNCTION:"OPS"."AGENTWORKPLACES" created with compilation warnings
+ORA-39082: Object type FUNCTION:"OPS"."AGENTWORKPLACES_NEW" created with compilation warnings
+ORA-39082: Object type FUNCTION:"OPS"."CODELIST2STR" created with compilation warnings
+ORA-39082: Object type FUNCTION:"OPS"."GETBEGDATEFORWP" created with compilation warnings
+ORA-39082: Object type FUNCTION:"OPS"."GETCONTRACTIDBYDATE" created with compilation warnings
+ORA-39082: Object type FUNCTION:"OPS"."GETENDDATEFORWP" created with compilation warnings
+ORA-39082: Object type FUNCTION:"OPS"."OPS_WRK_ALL" created with compilation warnings
+ORA-39082: Object type FUNCTION:"OPS"."TMP_OPS_NUM_ALL" created with compilation warnings
+ORA-39082: Object type FUNCTION:"OPS"."TMP_OPS_WRK_ALL" created with compilation warnings
+ORA-39082: Object type FUNCTION:"INF"."FORMAT_PHONE" created with compilation warnings
+ORA-39082: Object type FUNCTION:"INF"."PREPPHONE" created with compilation warnings
+ORA-39082: Object type FUNCTION:"KOLICH"."Y2N" created with compilation warnings
+ORA-39082: Object type FUNCTION:"U2R"."TESTFUN" created with compilation warnings
+ORA-39082: Object type FUNCTION:"FIAS"."GET_TAB_ADR" created with compilation warnings
+ORA-39082: Object type FUNCTION:"INF_PN"."PREPPHONE" created with compilation warnings
+ORA-39082: Object type FUNCTION:"GAZFOND_PN"."GET_ACCOUNT_PROPORTION_SPV" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"UMG"."VZNOS_ZACH_SH1" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"FND"."AUDIT_UNDO_INSERT" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"FND"."DB_MAIN_PROC" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"FND"."DOC_DOCUMENT_SAVE" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"FND"."DOC_REESTR_ADD" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"FND"."DOC_REESTR_DELETE" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"FND"."DOC_REESTR_GET" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"FND"."DOC_REESTR_SEND" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"FND"."F2" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"FND"."FND_STATS_OPER" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"FND"."IZM_VKL_IMPORT" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"FND"."OPS_PFR_DATA_IMP_DOUBLE" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"FND"."OPS_PFR_DATA_IMP_ERRORS" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"FND"."OPS_PFR_DATA_IMP_OK" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"FND"."RAS_218_GET_DATA" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"FND"."RAS_HOME_SENDING" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"FND"."REG_REGISTER_PP_JOB" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"FND"."RPV_MK_QR" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"FND"."RUN_STATS" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"FND"."RZRB_COPY_FORM" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"FND"."RZSP_CHKDATE" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"FND"."RZSP_CHKDOLJ" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"FND"."RZSP_CHKFIO" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"FND"."RZSP_CHKPENVOZR" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"FND"."RZSP_CHKPOL" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"FND"."RZSP_CHKSTAJ" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"FND"."RZSP_CHKTABNO" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"FND"."RZSP_CHKVHALL" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"FND"."RZSP_CHKZARPL" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"FND"."RZSP_CHKZASL" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"FND"."RZSP_LOADPRSPISOK" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"FND"."RZTB_COPY_FORM" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"FND"."SETDOLG" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"FND"."SETZVAN" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"FND"."STAT_DB_SCHEMA_SIZE" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"FND"."TPS_CHKDATE" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"FND"."TPS_CHKDOLJ" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"FND"."TPS_CHKPENV" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"FND"."TPS_CHKPOL" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"FND"."TPS_CHKSTAJ" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"FND"."TPS_CHKTABNO" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"FND"."TPS_CHKVHALL" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"FND"."TPS_CHKZARPL" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"FND"."TPS_CHKZASL" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"FND"."TPS_CLROSHI" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"FND"."TPS_CLROSHI1" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"FND"."TPS_EXISTFI" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"FND"."TST_PERIOD" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"FND"."UPDATE_DATA_OPS_2013" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"FND"."UPDATE_DATA_OPS_2014" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"FND"."UPDATE_DATA_UVOL" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"FND"."UPDATE_DATE_UVOL" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"FND"."URMP_UPDATE_QR_BAD" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"FND"."VYPL_VOZVRAT" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"FND"."WEBNPO_EXPORT_WORKPLACES" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"FND"."WEB_INS_ASN" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"FND"."WEB_INS_STAT" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"FND"."WEB_INS_Z2_STAT" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"FND"."X#$$MZI_MONI" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"FWEB"."LOAD_TMP_NS" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"FWEB"."TESTIN" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"BNA"."DT_SETPROPERTYBYID" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"BNA"."OPS_SMS_ADD" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"BNA"."SPR_ADD" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"BNA"."UPDATE_DATA_OPSSMS_2014" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"BNA"."UPDATE_DATA_OPS_2010" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"ALEX"."CAPTIURE_TRACE_FILES_PRC" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"ALEX"."RADIO_LABA" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"ALEX"."TAA_TEST_PROC" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"OLEG"."A_GET_DOM" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"OLEG"."A_KLDR_TEST" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"OLEG"."A_SET_PASPORT" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"OLEG"."A_SET_PASPORT_SSSR" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"OLEG"."CREATE_FORM_010" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"OLEG"."FILL_AKCIO" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"OLEG"."GET_AND_SET_PINDEX" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"OLEG"."RENUM_NPP" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"OLEG"."SET_KODZL_2007" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"OLEG"."TEST_PRIV" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"OLEG"."UPDT_OPIS_DATA" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"WEB_INF_T"."ETL_PROCESSENDJOB" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"GAZFOND"."COPY_EMAILS_BIT_TO_FOND" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"GAZFOND"."COPY_EMAILS_BIT_TO_FOND_TEST" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"GAZFOND"."SMEV_MVD_P001_DISPATCHER" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"GAZFOND"."TEMP_OLEG_PHONE" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"PDN"."AAA_TEST" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"PDN"."BNA_CERT_INTO_DATA" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"PDN"."BNA_CERT_INTO_REER" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"PDN"."DBG1" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"PDN"."GET_OPERATOR_BY_ID" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"PDN"."LOAD_CHECK" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"PDN"."ORA_ASPNET_CREATEPAGE" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"PDN"."ORA_ASPNET_GETSITEMAPDATA" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"PDN"."ORA_ASPNET_LOGWEBEVENTS" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"PDN"."ORA_ASPNET_PAU_GETPGSETTINGS" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"PDN"."ORA_ASPNET_PAU_RESETPGSETTINGS" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"PDN"."ORA_ASPNET_PAU_SETPGSETTINGS" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"PDN"."ORA_ASPNET_PA_FINDSTATE" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"PDN"."ORA_ASPNET_PA_GETCOUNTOFSTATE" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"PDN"."ORA_ASPNET_PA_RESETSHAREDSTATE" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"PDN"."ORA_ASPNET_PA_RESETUSERSTATE" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"PDN"."ORA_ASPNET_PPU_GETPGSETTINGS" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"PDN"."ORA_ASPNET_PPU_RESETPGSETTINGS" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"PDN"."ORA_ASPNET_PPU_SETPGSETTINGS" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"PDN"."T1" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"MPA"."TESTERR" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"MPA"."TESTINOUT" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"ARCH"."ARCH_IMPORT_ZAYAV_LIST" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"ARCH"."WF_MCS_LOGON" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"ARCH"."WF_MCS_LOGON_FORWARD" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"MDM"."CONTRAGENT1C_EDIT" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"MDM"."CONTRAGENTDPO_EDIT" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"MDM"."CONTRAGENTFND_EDIT" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"MDM"."CONTRAGENT_1C_UPDATE" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"MDM"."CONTRAGENT_DPO_UPDATE" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"MDM"."CONTRAGENT_EDIT" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"MDM"."CONTRAGENT_FND_UPDATE" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"MDM"."FL_ZAYAVKA_UPDATED" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"MDM"."INDICATOR_EDIT" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"MDM"."LOADFROMFNDTOMDMANDARCH" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"MDM"."UPDATE_PARTICIPANT" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"MDM"."UPDATE_PARTICIPANT2" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"MDM"."UPDATE_PARTICIPANT_COPY" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"OPS"."EXPORT_FUND_TO_MDM" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"OPS"."LOAD_SHOPS_FROM_XLS" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"OPS"."LOAD_SYNDICS_FROM_XLS" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"OPS"."OPS_REESTR_POST" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"OPS"."PDPO_ACT_EDIT" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"OPS"."PDPO_CALC_TEMPLATE_EDIT" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"OPS"."PRE_LOAD_RST" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"OPS"."PROXY_EDIT" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"WEB_INF"."ETL_PROCESSENDJOB" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"INF"."ADM_PARAMS_EDIT" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"INF"."ADM_ROLES_POST" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"INF"."ADM_SET_GLOBAL" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"INF"."ADM_USER_ACCOUNT_ACTION" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"INF"."ADM_USER_CHANGE_PASSWORD_ACT" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"INF"."ADM_USER_PROFILE_ACTION" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"INF"."APPLICATIONS_REQUESTS_EDIT" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"INF"."CDPHONES_REG" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"INF"."CD_ARCH" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"INF"."CD_C_GPS" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"INF"."CLIENTS_FND_UPDATE" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"INF"."CLIENTS_MERGE" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"INF"."CLIENTS_STATUS" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"INF"."CLIENT_CTRL_CHANGE_DOC_ATTACH" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"INF"."CLIENT_CTRL_CLIENT_LOCK" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"INF"."CLIENT_CTRL_DOC_CHK_EDIT" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"INF"."CLIENT_CTRL_NOTIFICATION_LOCK" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"INF"."CLIENT_CTRL_PHONE_LOCK" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"INF"."CLIENT_DOCS_REFRESH" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"INF"."CLIENT_FILE_EDIT" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"INF"."COMMENTS_EDIT" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"INF"."COMMENT_EDIT" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"INF"."IMPORT_CLIENT_DATA" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"INF"."JOB_FND_IMP_76" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"INF"."JOB_IOPSD_IMP" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"INF"."MENU_EDIT" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"INF"."OPER_EDIT" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"INF"."SEND_WF_MESS" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"INF"."SRC_STATUS_EDIT" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"INF"."TST_LOG_ADD" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"INF"."UPDATE_CLIENT_DOC_PHONES" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"INF"."WF_FORM_CHECK" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"INF"."WF_LOGON" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"ITG"."UR_DATA_REFRESH" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"LEV"."TRY2" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"U2R"."UPD_TEST" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"DPO"."MESSAGE_EDIT" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"INF_PN"."ADM_PARAMS_EDIT" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"INF_PN"."ADM_ROLES_POST" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"INF_PN"."ADM_SET_GLOBAL" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"INF_PN"."ADM_USER_ACCOUNT_ACTION" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"INF_PN"."ADM_USER_CHANGE_PASSWORD_ACT" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"INF_PN"."ADM_USER_PROFILE_ACTION" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"INF_PN"."APPLICATIONS_REQUESTS_EDIT" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"INF_PN"."CD_ARCH" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"INF_PN"."CD_C_GPS" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"INF_PN"."CLIENTS_FND_UPDATE" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"INF_PN"."CLIENTS_MERGE" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"INF_PN"."CLIENT_CTRL_CHANGE_DOC_ATTACH" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"INF_PN"."CLIENT_CTRL_CLIENT_LOCK" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"INF_PN"."CLIENT_CTRL_DOC_CHK_EDIT" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"INF_PN"."CLIENT_CTRL_PHONE_LOCK" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"INF_PN"."CLIENT_FILE_EDIT" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"INF_PN"."COMMENTS_EDIT" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"INF_PN"."COMMENT_EDIT" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"INF_PN"."JOB_FND_IMP_34" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"INF_PN"."JOB_IOPSD_IMP" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"INF_PN"."MENU_EDIT" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"INF_PN"."OPER_EDIT" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"INF_PN"."SEND_WF_MESS" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"INF_PN"."SRC_STATUS_EDIT" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"INF_PN"."UPDATE_CLIENT_DOC_PHONES" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"INF_PN"."WF_FORM_CHECK" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"INF_PN"."WF_LOGON" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"GAZFOND_PN"."COPY_EMAILS_BIT_TO_FOND" created with compilation warnings
+ORA-39082: Object type FUNCTION:"FND"."COUNTPN1_98" created with compilation warnings
+ORA-39082: Object type FUNCTION:"FND"."GET_OLEG_AKCIO" created with compilation warnings
+ORA-39082: Object type FUNCTION:"FND"."GETSUM_IPS" created with compilation warnings
+ORA-39082: Object type FUNCTION:"FND"."IZM_IND_SFL" created with compilation warnings
+ORA-39082: Object type FUNCTION:"FND"."REG_ADD_TMP_FOLDER" created with compilation warnings
+ORA-39082: Object type FUNCTION:"FND"."REG_CREATE_TEMP_FOLDER" created with compilation warnings
+ORA-39082: Object type FUNCTION:"FND"."IZM_PEN_DOG_IND_LSPV" created with compilation warnings
+ORA-39082: Object type FUNCTION:"FND"."DOC_GET_CHILD_COUNT" created with compilation warnings
+ORA-39082: Object type FUNCTION:"FND"."DOC_NEW_MVM" created with compilation warnings
+ORA-39082: Object type FUNCTION:"FND"."GET_VYPLAT_DATE" created with compilation warnings
+ORA-39082: Object type FUNCTION:"FND"."UVED_DATA_CHNGD" created with compilation warnings
+ORA-39082: Object type FUNCTION:"FND"."UVED_PENS_CHNGD" created with compilation warnings
+ORA-39082: Object type FUNCTION:"FND"."VYPL_NEW_OGR_PV" created with compilation warnings
+ORA-39082: Object type FUNCTION:"FND"."WEB_GET_STAT_COEF" created with compilation warnings
+ORA-39082: Object type FUNCTION:"FND"."QUEST_SL_REPOS_SAVE" created with compilation warnings
+ORA-39082: Object type FUNCTION:"FND"."DOREGDOCOPS" created with compilation warnings
+ORA-39082: Object type FUNCTION:"FWEB"."GET_NASL_SUMM" created with compilation warnings
+ORA-39082: Object type FUNCTION:"UMG"."SH1_RASCHET_IPS" created with compilation warnings
+ORA-39082: Object type FUNCTION:"UMG"."SH1_RASCHET_UPDATE" created with compilation warnings
+ORA-39082: Object type FUNCTION:"UMG"."VZNOS_ZACH_SH1_FUNC" created with compilation warnings
+ORA-39082: Object type FUNCTION:"BNA"."J" created with compilation warnings
+ORA-39082: Object type FUNCTION:"BNA"."RA_OPS_GET_ADR" created with compilation warnings
+ORA-39082: Object type FUNCTION:"BNA"."RA_OPS_GET_ADRSTR" created with compilation warnings
+ORA-39082: Object type FUNCTION:"BNA"."KPP_GET_TYPE_DESKR" created with compilation warnings
+ORA-39082: Object type FUNCTION:"BNA"."KPP_ADD_VISITER" created with compilation warnings
+ORA-39082: Object type FUNCTION:"BNA"."FL_OPS_GET_ADR_FL" created with compilation warnings
+ORA-39082: Object type FUNCTION:"ALEX"."TAA_TEST_FUNC" created with compilation warnings
+ORA-39082: Object type FUNCTION:"ALEX"."EV_1_CHECK" created with compilation warnings
+ORA-39082: Object type FUNCTION:"OLEG"."NALOG_GET_VUCHET_2004" created with compilation warnings
+ORA-39082: Object type FUNCTION:"OLEG"."A_RES_ADR" created with compilation warnings
+ORA-39082: Object type FUNCTION:"OLEG"."NALOG_GET_DOX_MES_2004" created with compilation warnings
+ORA-39082: Object type FUNCTION:"OLEG"."GET_PASS_STR" created with compilation warnings
+ORA-39082: Object type FUNCTION:"OLEG"."GET_PASS" created with compilation warnings
+ORA-39082: Object type FUNCTION:"OLEG"."A_RES_ADRRUS" created with compilation warnings
+ORA-39082: Object type FUNCTION:"OLEG"."NALOG_GET_DOX_VID_2004" created with compilation warnings
+ORA-39082: Object type FUNCTION:"OLEG"."NALOG_GET_DOX_KOD_2004" created with compilation warnings
+ORA-39082: Object type FUNCTION:"OLEG"."NALOG_GET_DOX_VIDK_2004" created with compilation warnings
+ORA-39082: Object type FUNCTION:"UGM"."GET_LASTDOGOVOR" created with compilation warnings
+ORA-39082: Object type FUNCTION:"OLEG"."IZM_DATA_ROJD" created with compilation warnings
+ORA-39082: Object type FUNCTION:"FND"."RA_GET_ULISTR_SOKR" created with compilation warnings
+ORA-39082: Object type FUNCTION:"ALEX"."XML_TEST" created with compilation warnings
+ORA-39082: Object type FUNCTION:"SYSTEM"."USER_XML_PARTITIONED_TABLE_OK" created with compilation warnings
+ORA-39082: Object type FUNCTION:"MDM"."GETPROPERTYVALUE" created with compilation warnings
+ORA-39082: Object type FUNCTION:"MDM"."GETFNDBYDPO" created with compilation warnings
+ORA-39082: Object type FUNCTION:"OPS"."GETBEGDATEFORWP" created with compilation warnings
+ORA-39082: Object type FUNCTION:"OPS"."GETENDDATEFORWP" created with compilation warnings
+ORA-39082: Object type FUNCTION:"OPS"."OPS_WRK_ALL" created with compilation warnings
+ORA-39082: Object type FUNCTION:"OPS"."CODELIST2STR" created with compilation warnings
+ORA-39082: Object type FUNCTION:"OPS"."AGENTWORKPLACES" created with compilation warnings
+ORA-39082: Object type FUNCTION:"OPS"."AGENTWORKPLACES_NEW" created with compilation warnings
+ORA-39082: Object type FUNCTION:"SYSTEM"."GET_SQL" created with compilation warnings
+ORA-39082: Object type FUNCTION:"SYSTEM"."GS1" created with compilation warnings
+ORA-39082: Object type FUNCTION:"KOLICH"."Y2N" created with compilation warnings
+ORA-39082: Object type FUNCTION:"OPS"."GETCONTRACTIDBYDATE" created with compilation warnings
+ORA-39082: Object type FUNCTION:"PDN"."BNA_RPO2DISP_CERT" created with compilation warnings
+ORA-39082: Object type FUNCTION:"PDN"."BNA_RPO2DISP_CERT2" created with compilation warnings
+ORA-39082: Object type FUNCTION:"PDN"."ORA_ASPNET_PROF_DELETEINACTPF" created with compilation warnings
+ORA-39082: Object type FUNCTION:"PDN"."ORA_ASPNET_PROF_DELETEPROFILES" created with compilation warnings
+ORA-39082: Object type FUNCTION:"PDN"."ORA_ASPNET_PROF_GETNOFINACTPF" created with compilation warnings
+ORA-39082: Object type FUNCTION:"PDN"."ORA_ASPNET_PROF_GETPROFILES" created with compilation warnings
+ORA-39082: Object type FUNCTION:"PDN"."ORA_ASPNET_PROF_GETPROPERTIES" created with compilation warnings
+ORA-39082: Object type FUNCTION:"PDN"."ORA_ASPNET_PROF_SETPROPERTIES" created with compilation warnings
+ORA-39082: Object type FUNCTION:"PDN"."ORA_ASPNET_ROLES_CREATEROLE" created with compilation warnings
+ORA-39082: Object type FUNCTION:"PDN"."ORA_ASPNET_ROLES_DELETEROLE" created with compilation warnings
+ORA-39082: Object type FUNCTION:"PDN"."ORA_ASPNET_ROLES_GETALLROLES" created with compilation warnings
+ORA-39082: Object type FUNCTION:"PDN"."ORA_ASPNET_ROLES_ROLEEXISTS" created with compilation warnings
+ORA-39082: Object type FUNCTION:"PDN"."ORA_ASPNET_SESSNAPP_GETAPPID" created with compilation warnings
+ORA-39082: Object type FUNCTION:"PDN"."ORA_ASPNET_SESSN_GETSTATEITEM" created with compilation warnings
+ORA-39082: Object type FUNCTION:"PDN"."ORA_ASPNET_SESSN_GETSTATEITMEX" created with compilation warnings
+ORA-39082: Object type FUNCTION:"PDN"."ORA_ASPNET_SESSN_INSSTATEITEM" created with compilation warnings
+ORA-39082: Object type FUNCTION:"PDN"."ORA_ASPNET_SESSN_INSUNINITITEM" created with compilation warnings
+ORA-39082: Object type FUNCTION:"PDN"."ORA_ASPNET_SESSN_RELSTATEITMEX" created with compilation warnings
+ORA-39082: Object type FUNCTION:"PDN"."ORA_ASPNET_SESSN_RESETTIMEOUT" created with compilation warnings
+ORA-39082: Object type FUNCTION:"PDN"."ORA_ASPNET_SESSN_RMSTATEITEM" created with compilation warnings
+ORA-39082: Object type FUNCTION:"PDN"."ORA_ASPNET_SESSN_UPDSTATEITEM" created with compilation warnings
+ORA-39082: Object type FUNCTION:"PDN"."ORA_ASPNET_UIR_ADDUSERSTOROLES" created with compilation warnings
+ORA-39082: Object type FUNCTION:"PDN"."ORA_ASPNET_UIR_FINDUSERSINROLE" created with compilation warnings
+ORA-39082: Object type FUNCTION:"PDN"."ORA_ASPNET_UIR_GETROLESFORUSER" created with compilation warnings
+ORA-39082: Object type FUNCTION:"PDN"."ORA_ASPNET_UIR_GETUSERSINROLES" created with compilation warnings
+ORA-39082: Object type FUNCTION:"PDN"."ORA_ASPNET_UIR_ISUSERINROLE" created with compilation warnings
+ORA-39082: Object type FUNCTION:"PDN"."ORA_ASPNET_UIR_REMUSERSFMROLES" created with compilation warnings
+ORA-39082: Object type FUNCTION:"U2R"."TESTFUN" created with compilation warnings
+ORA-39082: Object type FUNCTION:"OPS"."TMP_OPS_WRK_ALL" created with compilation warnings
+ORA-39082: Object type FUNCTION:"OPS"."TMP_OPS_NUM_ALL" created with compilation warnings
+ORA-39082: Object type FUNCTION:"FND"."IZM_GET_OPS_RESH" created with compilation warnings
+ORA-39082: Object type FUNCTION:"FND"."IZM_OPS_RESH_INS_2" created with compilation warnings
+ORA-39082: Object type FUNCTION:"FND"."IZM_GET_OPS_RESH_2" created with compilation warnings
+ORA-39082: Object type FUNCTION:"FND"."INF_GET_CLIENT_CODEWORD" created with compilation warnings
+ORA-39082: Object type FUNCTION:"FND"."INF_GET_CLIENT_CODEWORD_2" created with compilation warnings
+ORA-39082: Object type FUNCTION:"FND"."INF_GET_CLIENT_CODEWORD_3" created with compilation warnings
+ORA-39082: Object type FUNCTION:"FND"."TEST_OPS_RESH_UPDT" created with compilation warnings
+ORA-39082: Object type FUNCTION:"INF"."PREPPHONE" created with compilation warnings
+ORA-39082: Object type FUNCTION:"GAZFOND"."AAA_MERGECANPO" created with compilation warnings
+ORA-39082: Object type FUNCTION:"GAZFOND"."GET_ACCOUNT_PROPORTION_SPV" created with compilation warnings
+ORA-39082: Object type FUNCTION:"FIAS"."GET_TAB_ADR" created with compilation warnings
+ORA-39082: Object type FUNCTION:"INF_PN"."PREPPHONE" created with compilation warnings
+ORA-39082: Object type FUNCTION:"GAZFOND_PN"."GET_ACCOUNT_PROPORTION_SPV" created with compilation warnings
+ORA-39082: Object type FUNCTION:"FND"."MV_TAB_DATA" created with compilation warnings
+ORA-39082: Object type FUNCTION:"OLEG"."TESTF" created with compilation warnings
+ORA-39082: Object type FUNCTION:"OLEG"."GET_TAB_TF" created with compilation warnings
+ORA-39082: Object type FUNCTION:"INF"."FORMAT_PHONE" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"FND"."DOC_REESTR_DELETE" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"FND"."F2" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"FND"."RAS_HOME_SENDING" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"FND"."TPS_EXISTFI" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"FND"."TST_PERIOD" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"FND"."UPDATE_DATA_UVOL" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"FND"."UPDATE_DATE_UVOL" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"FND"."WEB_INS_ASN" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"FND"."WEB_INS_STAT" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"FND"."WEB_INS_Z2_STAT" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"FND"."RZSP_CHKDATE" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"FND"."RZSP_CHKDOLJ" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"FND"."RZSP_CHKFIO" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"FND"."RZSP_CHKPENVOZR" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"FND"."RZSP_CHKPOL" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"FND"."RZSP_CHKSTAJ" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"FND"."RZSP_CHKTABNO" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"FND"."RZSP_CHKVHALL" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"FND"."RZSP_CHKZASL" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"FND"."RZSP_CHKZARPL" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"FND"."RZSP_LOADPRSPISOK" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"FND"."SETDOLG" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"FND"."SETZVAN" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"FND"."IZM_VKL_IMPORT" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"FND"."RUN_STATS" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"FND"."X#$$MZI_MONI" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"FND"."FND_STATS_OPER" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"FND"."DOC_DOCUMENT_SAVE" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"FND"."DOC_REESTR_ADD" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"FND"."TPS_CHKDATE" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"FND"."TPS_CHKDOLJ" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"FND"."TPS_CHKPENV" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"FND"."TPS_CHKPOL" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"FND"."TPS_CHKSTAJ" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"FND"."TPS_CHKTABNO" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"FND"."TPS_CHKVHALL" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"FND"."TPS_CHKZASL" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"FND"."TPS_CHKZARPL" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"FND"."TPS_CLROSHI" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"FND"."TPS_CLROSHI1" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"FND"."REG_REGISTER_PP_JOB" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"FND"."RPV_MK_QR" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"FND"."DOC_REESTR_GET" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"FND"."DOC_REESTR_SEND" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"FND"."DB_MAIN_PROC" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"FWEB"."TESTIN" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"FWEB"."LOAD_TMP_NS" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"UMG"."VZNOS_ZACH_SH1" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"BNA"."DT_SETPROPERTYBYID" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"ALEX"."CAPTIURE_TRACE_FILES_PRC" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"ALEX"."RADIO_LABA" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"ALEX"."TAA_TEST_PROC" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"OLEG"."A_GET_DOM" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"OLEG"."A_KLDR_TEST" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"OLEG"."A_SET_PASPORT_SSSR" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"OLEG"."GET_AND_SET_PINDEX" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"OLEG"."FILL_AKCIO" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"OLEG"."SET_KODZL_2007" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"OLEG"."RENUM_NPP" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"OLEG"."A_SET_PASPORT" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"OLEG"."UPDT_OPIS_DATA" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"FND"."VYPL_VOZVRAT" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"ARCH"."ARCH_IMPORT_ZAYAV_LIST" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"MDM"."CONTRAGENT_1C_UPDATE" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"MDM"."CONTRAGENT_DPO_UPDATE" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"MDM"."CONTRAGENT_FND_UPDATE" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"MDM"."CONTRAGENT_EDIT" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"MDM"."CONTRAGENTDPO_EDIT" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"MDM"."CONTRAGENTFND_EDIT" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"MDM"."FL_ZAYAVKA_UPDATED" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"MDM"."CONTRAGENT1C_EDIT" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"OPS"."PROXY_EDIT" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"OPS"."EXPORT_FUND_TO_MDM" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"OPS"."OPS_REESTR_POST" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"MDM"."UPDATE_PARTICIPANT" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"OPS"."LOAD_SHOPS_FROM_XLS" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"OPS"."LOAD_SYNDICS_FROM_XLS" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"FND"."OPS_PFR_DATA_IMP_OK" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"FND"."OPS_PFR_DATA_IMP_DOUBLE" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"FND"."OPS_PFR_DATA_IMP_ERRORS" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"OPS"."PDPO_CALC_TEMPLATE_EDIT" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"OPS"."PDPO_ACT_EDIT" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"BNA"."UPDATE_DATA_OPS_2010" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"WEB_INF"."ETL_PROCESSENDJOB" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"MDM"."UPDATE_PARTICIPANT2" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"FND"."RAS_218_GET_DATA" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"MDM"."LOADFROMFNDTOMDMANDARCH" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"OPS"."PRE_LOAD_RST" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"WEB_INF_T"."ETL_PROCESSENDJOB" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"PDN"."AAA_TEST" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"PDN"."BNA_CERT_INTO_DATA" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"PDN"."BNA_CERT_INTO_REER" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"PDN"."DBG1" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"PDN"."GET_OPERATOR_BY_ID" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"PDN"."LOAD_CHECK" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"PDN"."ORA_ASPNET_CREATEPAGE" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"PDN"."ORA_ASPNET_GETSITEMAPDATA" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"PDN"."ORA_ASPNET_LOGWEBEVENTS" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"PDN"."ORA_ASPNET_PAU_GETPGSETTINGS" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"PDN"."ORA_ASPNET_PAU_RESETPGSETTINGS" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"PDN"."ORA_ASPNET_PAU_SETPGSETTINGS" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"PDN"."ORA_ASPNET_PA_FINDSTATE" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"PDN"."ORA_ASPNET_PA_GETCOUNTOFSTATE" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"PDN"."ORA_ASPNET_PA_RESETSHAREDSTATE" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"PDN"."ORA_ASPNET_PA_RESETUSERSTATE" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"PDN"."ORA_ASPNET_PPU_GETPGSETTINGS" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"PDN"."ORA_ASPNET_PPU_RESETPGSETTINGS" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"PDN"."ORA_ASPNET_PPU_SETPGSETTINGS" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"PDN"."T1" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"MPA"."TESTINOUT" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"MPA"."TESTERR" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"ARCH"."WF_MCS_LOGON" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"ARCH"."WF_MCS_LOGON_FORWARD" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"FND"."RZRB_COPY_FORM" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"FND"."RZTB_COPY_FORM" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"FND"."UPDATE_DATA_OPS_2013" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"FND"."URMP_UPDATE_QR_BAD" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"MDM"."UPDATE_PARTICIPANT_COPY" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"FND"."UPDATE_DATA_OPS_2014" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"INF"."SRC_STATUS_EDIT" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"INF"."CLIENT_CTRL_DOC_CHK_EDIT" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"INF"."CLIENTS_STATUS" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"INF"."OPER_EDIT" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"INF"."ADM_ROLES_POST" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"INF"."CLIENTS_FND_UPDATE" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"INF"."CLIENT_FILE_EDIT" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"INF"."WF_LOGON" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"INF"."WF_FORM_CHECK" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"INF"."ADM_USER_CHANGE_PASSWORD_ACT" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"INF"."ADM_USER_ACCOUNT_ACTION" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"INF"."CLIENT_CTRL_CHANGE_DOC_ATTACH" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"INF"."CDPHONES_REG" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"INF"."CLIENTS_MERGE" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"INF"."MENU_EDIT" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"INF"."ADM_USER_PROFILE_ACTION" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"INF"."CD_ARCH" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"INF"."CD_C_GPS" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"BNA"."OPS_SMS_ADD" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"BNA"."UPDATE_DATA_OPSSMS_2014" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"OLEG"."TEST_PRIV" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"BNA"."SPR_ADD" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"INF"."ADM_SET_GLOBAL" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"OLEG"."CREATE_FORM_010" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"MDM"."INDICATOR_EDIT" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"LEV"."TRY2" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"INF_PN"."ADM_ROLES_POST" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"INF_PN"."ADM_SET_GLOBAL" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"INF_PN"."ADM_USER_ACCOUNT_ACTION" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"INF_PN"."ADM_USER_CHANGE_PASSWORD_ACT" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"INF_PN"."ADM_USER_PROFILE_ACTION" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"INF_PN"."CD_ARCH" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"INF_PN"."CD_C_GPS" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"INF_PN"."CLIENTS_FND_UPDATE" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"INF_PN"."CLIENTS_MERGE" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"INF_PN"."CLIENT_CTRL_CHANGE_DOC_ATTACH" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"INF_PN"."CLIENT_CTRL_DOC_CHK_EDIT" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"INF_PN"."CLIENT_FILE_EDIT" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"INF_PN"."MENU_EDIT" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"INF_PN"."OPER_EDIT" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"INF_PN"."SRC_STATUS_EDIT" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"INF_PN"."WF_FORM_CHECK" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"INF_PN"."WF_LOGON" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"INF_PN"."CLIENT_CTRL_CLIENT_LOCK" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"INF_PN"."CLIENT_CTRL_PHONE_LOCK" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"INF_PN"."COMMENTS_EDIT" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"INF"."CLIENT_CTRL_CLIENT_LOCK" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"INF"."CLIENT_CTRL_PHONE_LOCK" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"INF"."COMMENTS_EDIT" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"INF"."UPDATE_CLIENT_DOC_PHONES" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"INF_PN"."UPDATE_CLIENT_DOC_PHONES" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"INF"."ADM_PARAMS_EDIT" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"INF_PN"."ADM_PARAMS_EDIT" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"INF"."TST_LOG_ADD" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"INF_PN"."JOB_FND_IMP_34" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"INF"."JOB_FND_IMP_76" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"INF_PN"."JOB_IOPSD_IMP" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"U2R"."UPD_TEST" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"INF"."JOB_IOPSD_IMP" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"ITG"."UR_DATA_REFRESH" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"INF"."COMMENT_EDIT" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"INF_PN"."COMMENT_EDIT" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"INF"."APPLICATIONS_REQUESTS_EDIT" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"INF_PN"."APPLICATIONS_REQUESTS_EDIT" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"GAZFOND"."COPY_EMAILS_BIT_TO_FOND" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"INF"."SEND_WF_MESS" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"INF_PN"."SEND_WF_MESS" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"INF"."CLIENT_DOCS_REFRESH" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"FND"."STAT_DB_SCHEMA_SIZE" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"DPO"."MESSAGE_EDIT" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"INF"."CLIENT_CTRL_NOTIFICATION_LOCK" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"GAZFOND_PN"."COPY_EMAILS_BIT_TO_FOND" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"FND"."AUDIT_UNDO_INSERT" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"GAZFOND"."TEMP_OLEG_PHONE" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"INF"."IMPORT_CLIENT_DATA" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"GAZFOND"."COPY_EMAILS_BIT_TO_FOND_TEST" created with compilation warnings
+ORA-39082: Object type PROCEDURE:"GAZFOND"."SMEV_MVD_P001_DISPATCHER" created with compilation warnings
+ORA-39082: Object type VIEW:"FND"."SMP_UPDATESERVICES_CALLED" created with compilation warnings
+ORA-39082: Object type VIEW:"FND"."SMP_SERVICE_ITEM" created with compilation warnings
+ORA-39082: Object type VIEW:"FND"."SMP_SERVICE_GROUP_DEFN" created with compilation warnings
+ORA-39082: Object type VIEW:"FND"."SMP_AD_NODES" created with compilation warnings
+ORA-39082: Object type VIEW:"FND"."SMP_AD_ADDRESSES" created with compilation warnings
+ORA-39082: Object type VIEW:"FND"."SMP_AUTO_DISCOVERY_ITEM" created with compilation warnings
+ORA-39082: Object type VIEW:"FND"."SMP_JOB" created with compilation warnings
+ORA-39082: Object type VIEW:"FND"."SMP_JOB_INSTANCE" created with compilation warnings
+ORA-39082: Object type VIEW:"FND"."SMP_JOB_LIBRARY" created with compilation warnings
+ORA-39082: Object type VIEW:"FND"."SMP_JOB_TASK_INSTANCE" created with compilation warnings
+ORA-39082: Object type VIEW:"FND"."SMCLIENT_INSTALLATION_V" created with compilation warnings
+ORA-39082: Object type VIEW:"FND"."SMCLIENT_V" created with compilation warnings
+ORA-39082: Object type VIEW:"FND"."SMINSTALLED_PRODUCT_V" created with compilation warnings
+ORA-39082: Object type VIEW:"FND"."SMINSTALLATION_V" created with compilation warnings
+ORA-39082: Object type VIEW:"FND"."SMPRODUCT_V" created with compilation warnings
+ORA-39082: Object type VIEW:"FND"."SMHOST_V" created with compilation warnings
+ORA-39082: Object type VIEW:"FND"."SMP_LONG_TEXT" created with compilation warnings
+ORA-39082: Object type VIEW:"FND"."SMP_BLOB" created with compilation warnings
+ORA-39082: Object type VIEW:"FND"."SMP_VAB_ACTIVE_JOB" created with compilation warnings
+ORA-39082: Object type VIEW:"FND"."SMP_BRM_SAVED_JOB" created with compilation warnings
+ORA-39082: Object type VIEW:"FND"."SMP_BRM_ACTIVE_JOB" created with compilation warnings
+ORA-39082: Object type VIEW:"FND"."SMP_BRM_TEMP_SCRIPTS" created with compilation warnings
+ORA-39082: Object type VIEW:"FND"."SMP_BRM_RC_CONNECT_STRING" created with compilation warnings
+ORA-39082: Object type VIEW:"FND"."SMP_BRM_DEFAULT_CHANNEL" created with compilation warnings
+ORA-39082: Object type VIEW:"FND"."SMP_BRM_CHANNEL_DEVICE" created with compilation warnings
+ORA-39082: Object type VIEW:"FND"."SMP_SERVICE_DATA" created with compilation warnings
+ORA-39082: Object type VIEW:"FND"."SMP_EBU_SAVED_JOB" created with compilation warnings
+ORA-39082: Object type VIEW:"FND"."RZTB_SVV" created with compilation warnings
+ORA-39082: Object type VIEW:"FND"."REER_LTT_RETURN" created with compilation warnings
+ORA-39082: Object type VIEW:"FND"."SMP_EBU_ACTIVE_JOB" created with compilation warnings
+ORA-39082: Object type VIEW:"FND"."SMP_VAB_SAVED_JOB" created with compilation warnings
+ORA-39082: Object type VIEW:"FND"."RZVW_CHKTABDUP" created with compilation warnings
+ORA-39082: Object type VIEW:"FND"."SMCLIENT_ONLY_FOLDER_V" created with compilation warnings
+ORA-39082: Object type VIEW:"FND"."SMHOST_ONLY_FOLDER_V" created with compilation warnings
+ORA-39082: Object type VIEW:"FND"."SMFOLDER_V" created with compilation warnings
+ORA-39082: Object type VIEW:"FND"."SMP_CREDENTIALS" created with compilation warnings
+ORA-39082: Object type VIEW:"FND"."SMP_JOB_HISTORY" created with compilation warnings
+ORA-39082: Object type VIEW:"FND"."SMP_AUTO_DISCOVERY_PARMS" created with compilation warnings
+ORA-39082: Object type VIEW:"FND"."SMP_AD_PARMS" created with compilation warnings
+ORA-39082: Object type VIEW:"FND"."SMP_AD_DISCOVERED_NODES" created with compilation warnings
+ORA-39082: Object type VIEW:"FND"."SMP_SERVICE_GROUP_ITEM" created with compilation warnings
+ORA-39082: Object type VIEW:"FND"."RAS_11" created with compilation warnings
+ORA-39082: Object type VIEW:"FND"."RAS_16" created with compilation warnings
+ORA-39082: Object type VIEW:"FND"."RAS_16A" created with compilation warnings
+ORA-39082: Object type VIEW:"FND"."UMG_DOP_VPL_FULL" created with compilation warnings
+ORA-39082: Object type VIEW:"FND"."TAX_PAYMENT_2" created with compilation warnings
+ORA-39082: Object type VIEW:"FND"."UMG_PLAN_STATISTIC" created with compilation warnings
+ORA-39082: Object type VIEW:"FND"."SMHOST_FOLDER_MAP_V" created with compilation warnings
+ORA-39082: Object type VIEW:"FND"."SMCLIENT_FOLDER_MAP_V" created with compilation warnings
+ORA-39082: Object type VIEW:"FND"."RAS_16B" created with compilation warnings
+ORA-39082: Object type VIEW:"FND"."RAS_16C" created with compilation warnings
+ORA-39082: Object type VIEW:"FND"."VW_FL_ACCESS" created with compilation warnings
+ORA-39082: Object type VIEW:"FND"."VW_FL_WEB" created with compilation warnings
+ORA-39082: Object type VIEW:"UMG"."V_STATS_IP" created with compilation warnings
+ORA-39082: Object type VIEW:"UMG"."VW_SUTFINAL" created with compilation warnings
+ORA-39082: Object type VIEW:"UMG"."VW_SUT_DWN" created with compilation warnings
+ORA-39082: Object type VIEW:"UMG"."VW_ASOIU_REGUSR" created with compilation warnings
+ORA-39082: Object type VIEW:"UMG"."VW_ASOIU_REGUSR_OLD" created with compilation warnings
+ORA-39082: Object type VIEW:"UMG"."ADM1" created with compilation warnings
+ORA-39082: Object type VIEW:"UMG"."VW_DWH_NV_SH2_UR_VIP_AUTO" created with compilation warnings
+ORA-39082: Object type VIEW:"UMG"."VW_DWH_NV_SH2_GF_VIP_AUTO" created with compilation warnings
+ORA-39082: Object type VIEW:"UMG"."VW_DWH_NV_SH2_UR_VIP_FULL" created with compilation warnings
+ORA-39082: Object type VIEW:"UMG"."V_STATS" created with compilation warnings
+ORA-39082: Object type VIEW:"UMG"."VW_SUT_DOGPOSTREG" created with compilation warnings
+ORA-39082: Object type VIEW:"UMG"."VW_FL_ACCESS" created with compilation warnings
+ORA-39082: Object type VIEW:"UMG"."VW_SUT_DOGINSZ" created with compilation warnings
+ORA-39082: Object type VIEW:"BNA"."PASS_" created with compilation warnings
+ORA-39082: Object type VIEW:"BNA"."PASS_OLD" created with compilation warnings
+ORA-39082: Object type VIEW:"BNA"."PASS_NEW" created with compilation warnings
+ORA-39082: Object type VIEW:"BNA"."VW_SH2_VIPISKA" created with compilation warnings
+ORA-39082: Object type VIEW:"BNA"."VI_139" created with compilation warnings
+ORA-39082: Object type VIEW:"BNA"."ADRESA_DEPT_16" created with compilation warnings
+ORA-39082: Object type VIEW:"ALEX"."PTSQL_AUTH" created with compilation warnings
+ORA-39082: Object type VIEW:"ALEX"."PTSQL_PACK_PUBLIC_REFERENCES" created with compilation warnings
+ORA-39082: Object type VIEW:"ALEX"."PTSQL_USERS" created with compilation warnings
+ORA-39082: Object type VIEW:"ALEX"."PTSQL_ROLES" created with compilation warnings
+ORA-39082: Object type VIEW:"ALEX"."PTSQL_ROLE_SYS_PRIVS" created with compilation warnings
+ORA-39082: Object type VIEW:"ALEX"."PTSQL_USER_SYS_PRIVS" created with compilation warnings
+ORA-39082: Object type VIEW:"ALEX"."PTSQL_GRANTED_ROLES" created with compilation warnings
+ORA-39082: Object type VIEW:"ALEX"."PTSQL_TRIGGERS" created with compilation warnings
+ORA-39082: Object type VIEW:"ALEX"."PTSQL_OBJECT_ATTRS" created with compilation warnings
+ORA-39082: Object type VIEW:"ALEX"."PTSQL_OBJECT_TABLES" created with compilation warnings
+ORA-39082: Object type VIEW:"ALEX"."PTSQL_OBJECT_OWNERS" created with compilation warnings
+ORA-39082: Object type VIEW:"ALEX"."DYN_PLAN_TABLE" created with compilation warnings
+ORA-39082: Object type VIEW:"ALEX"."SESSION_TRACE_FILE_NAME" created with compilation warnings
+ORA-39082: Object type VIEW:"ALEX"."PTSQL_DBA_PRIVS" created with compilation warnings
+ORA-39082: Object type VIEW:"ALEX"."PTSQL_TABLES" created with compilation warnings
+ORA-39082: Object type VIEW:"ALEX"."PTSQL_TAB_COLUMNS" created with compilation warnings
+ORA-39082: Object type VIEW:"ALEX"."PTSQL_CLU_COLUMNS" created with compilation warnings
+ORA-39082: Object type VIEW:"ALEX"."PTSQL_CONSTRDATA" created with compilation warnings
+ORA-39082: Object type VIEW:"ALEX"."PTSQL_FUNCTION_ARGS" created with compilation warnings
+ORA-39082: Object type VIEW:"ALEX"."PTSQL_PACKAGE_ARGS" created with compilation warnings
+ORA-39082: Object type VIEW:"ALEX"."PTSQL_PROCEDURE_ARGS" created with compilation warnings
+ORA-39082: Object type VIEW:"ALEX"."PTSQL_PROCEDURE_ARGS1" created with compilation warnings
+ORA-39082: Object type VIEW:"ALEX"."PTSQL_FUNCTION_ARGS1" created with compilation warnings
+ORA-39082: Object type VIEW:"ALEX"."PTSQL_PACKAGE_ARGS1" created with compilation warnings
+ORA-39082: Object type VIEW:"ALEX"."PTSQL_TYPE_ARGS" created with compilation warnings
+ORA-39082: Object type VIEW:"ALEX"."PTSQL_TBL_REFERENCES_OBJS" created with compilation warnings
+ORA-39082: Object type VIEW:"ALEX"."PTSQL_OBJS_REFERENCES_TBL" created with compilation warnings
+ORA-39082: Object type VIEW:"ALEX"."PTSQL_VIEW_REFERENCES_OBJS" created with compilation warnings
+ORA-39082: Object type VIEW:"ALEX"."PTSQL_OBJS_REFERENCES_VIEW" created with compilation warnings
+ORA-39082: Object type VIEW:"ALEX"."PTSQL_FUNC_REFERENCES_OBJS" created with compilation warnings
+ORA-39082: Object type VIEW:"ALEX"."PTSQL_TRIG_REFERENCES_OBJS" created with compilation warnings
+ORA-39082: Object type VIEW:"ALEX"."PTSQL_OBJS_REFERENCES_FUNC" created with compilation warnings
+ORA-39082: Object type VIEW:"ALEX"."PTSQL_PACK_REFERENCES_OBJS" created with compilation warnings
+ORA-39082: Object type VIEW:"ALEX"."PTSQL_OBJS_REFERENCES_PACK" created with compilation warnings
+ORA-39082: Object type VIEW:"ALEX"."PTSQL_PROC_REFERENCES_OBJS" created with compilation warnings
+ORA-39082: Object type VIEW:"ALEX"."PTSQL_OBJS_REFERENCES_PROC" created with compilation warnings
+ORA-39082: Object type VIEW:"ALEX"."PTSQL_OBJS_REFERENCES_TYPE" created with compilation warnings
+ORA-39082: Object type VIEW:"ALEX"."PTSQL_TYPE_REFERENCES_OBJS" created with compilation warnings
+ORA-39082: Object type VIEW:"ALEX"."PTSQL_OBJS_REFERENCES_SEQ" created with compilation warnings
+ORA-39082: Object type VIEW:"ALEX"."PTSQL_CLASS_REFERENCES_OBJS" created with compilation warnings
+ORA-39082: Object type VIEW:"ALEX"."PTSQL_OBJS_REFERENCES_CLASS" created with compilation warnings
+ORA-39082: Object type VIEW:"ALEX"."PTSQL_INDEXES" created with compilation warnings
+ORA-39082: Object type VIEW:"ALEX"."PTSQL_INDEXES1" created with compilation warnings
+ORA-39082: Object type VIEW:"ALEX"."PTSQL_CLUSTERS" created with compilation warnings
+ORA-39082: Object type VIEW:"ALEX"."PTSQL_DBG_SESSION" created with compilation warnings
+ORA-39082: Object type VIEW:"ALEX"."PTSQL_SYNONYM_REFERENCES_OBJS" created with compilation warnings
+ORA-39082: Object type VIEW:"ALEX"."PTSQL_OBJS_REFERENCES_SYNONYM" created with compilation warnings
+ORA-39082: Object type VIEW:"ALEX"."PTSQL_SOURCE" created with compilation warnings
+ORA-39082: Object type VIEW:"ALEX"."PTSQL_SNAPSHOTS" created with compilation warnings
+ORA-39082: Object type VIEW:"ALEX"."PTSQL_SNAPSHOT_LOGS" created with compilation warnings
+ORA-39082: Object type VIEW:"ALEX"."PTSQL_ROLLBACKS" created with compilation warnings
+ORA-39082: Object type VIEW:"ALEX"."PTSQL_TABLESPACES" created with compilation warnings
+ORA-39082: Object type VIEW:"ALEX"."PTSQL_OBJECTS" created with compilation warnings
+ORA-39082: Object type VIEW:"ALEX"."PTSQL_UD_TYPES" created with compilation warnings
+ORA-39082: Object type VIEW:"ALEX"."PTSQL_MY_SID" created with compilation warnings
+ORA-39082: Object type VIEW:"ALEX"."PTSQL_CODE_SIZE" created with compilation warnings
+ORA-39082: Object type VIEW:"ALEX"."PTSQL_TABLE_EXTENTS" created with compilation warnings
+ORA-39082: Object type VIEW:"ALEX"."PTSQL_CLUSTER_EXTENTS" created with compilation warnings
+ORA-39082: Object type VIEW:"ALEX"."PTSQL_INDEX_EXTENTS" created with compilation warnings
+ORA-39082: Object type VIEW:"ALEX"."PTSQL_PROBE" created with compilation warnings
+ORA-39082: Object type VIEW:"ALEX"."PTSQL_DB_LINKS" created with compilation warnings
+ORA-39082: Object type VIEW:"ALEX"."PTSQL_DEBUG_OBJECTS" created with compilation warnings
+ORA-39082: Object type VIEW:"ALEX"."PTSQL_SESSION_STATS" created with compilation warnings
+ORA-39082: Object type VIEW:"ALEX"."PTSQL_EXTENTS" created with compilation warnings
+ORA-39082: Object type VIEW:"DWH"."VW_DWN_VAL" created with compilation warnings
+ORA-39082: Object type VIEW:"DWH"."VW_DWN_TMP" created with compilation warnings
+ORA-39082: Object type VIEW:"DWH"."VW_DWN_BO2" created with compilation warnings
+ORA-39082: Object type VIEW:"OLEG"."SPR_DOX_VIEW2004" created with compilation warnings
+ORA-39082: Object type VIEW:"OLEG"."AV_KLD_REGION" created with compilation warnings
+ORA-39082: Object type VIEW:"OLEG"."AV_KLD_RAYON" created with compilation warnings
+ORA-39082: Object type VIEW:"OLEG"."AV_KLD_GOROD" created with compilation warnings
+ORA-39082: Object type VIEW:"OLEG"."AV_KLD_PUNKT" created with compilation warnings
+ORA-39082: Object type VIEW:"OLEG"."OPS_REESTR_VIEW" created with compilation warnings
+ORA-39082: Object type VIEW:"UGM"."V_STATS_IP" created with compilation warnings
+ORA-39082: Object type VIEW:"UGM"."VW_IZM_DEVUSHKI" created with compilation warnings
+ORA-39082: Object type VIEW:"UGM"."VW_ASOIU_STATISTICS" created with compilation warnings
+ORA-39082: Object type VIEW:"UGM"."VW_DOGS_ARH" created with compilation warnings
+ORA-39082: Object type VIEW:"UGM"."VW_DOGS_ARH_TMP" created with compilation warnings
+ORA-39082: Object type VIEW:"UGM"."VW_VIEW_PEN_MOVE" created with compilation warnings
+ORA-39082: Object type VIEW:"UGM"."VW_VIEW_DOGS_PECH" created with compilation warnings
+ORA-39082: Object type VIEW:"UGM"."VW_APP_VKL" created with compilation warnings
+ORA-39082: Object type VIEW:"UGM"."VW_APP_STRANA" created with compilation warnings
+ORA-39082: Object type VIEW:"UGM"."VW_APP_REGION" created with compilation warnings
+ORA-39082: Object type VIEW:"UGM"."VW_APP_TIPDOC" created with compilation warnings
+ORA-39082: Object type VIEW:"UGM"."VW_APP_SPR_SOKR" created with compilation warnings
+ORA-39082: Object type VIEW:"UGM"."VW_APP_UNSIGNFILES" created with compilation warnings
+ORA-39082: Object type VIEW:"UGM"."VW_APP_RECOGNIZE" created with compilation warnings
+ORA-39082: Object type VIEW:"UGM"."VW_ASOUI_TEST" created with compilation warnings
+ORA-39082: Object type VIEW:"UGM"."VW_SUTFINAL" created with compilation warnings
+ORA-39082: Object type VIEW:"UGM"."VW_DWH_SH2" created with compilation warnings
+ORA-39082: Object type VIEW:"UGM"."VW_DWH_SH2_SSYLKA" created with compilation warnings
+ORA-39082: Object type VIEW:"UGM"."VW_APP_CHECK_ZL" created with compilation warnings
+ORA-39082: Object type VIEW:"UGM"."VW_APP_PODPIS" created with compilation warnings
+ORA-39082: Object type VIEW:"UGM"."SUT_DATA" created with compilation warnings
+ORA-39082: Object type VIEW:"UGM"."VW_APP_RASSILKA_BNA" created with compilation warnings
+ORA-39082: Object type VIEW:"UGM"."V_STATS" created with compilation warnings
+ORA-39082: Object type VIEW:"UGM"."VW_IZM_DEVUSHKI_COUNT" created with compilation warnings
+ORA-39082: Object type VIEW:"UGM"."VW_ASOIU_OUTPUTREP" created with compilation warnings
+ORA-39082: Object type VIEW:"UGM"."VW_FOND_PENIZM" created with compilation warnings
+ORA-39082: Object type VIEW:"UGM"."VW_FOND" created with compilation warnings
+ORA-39082: Object type VIEW:"UGM"."VW_VIEW_DOGS_COUNT" created with compilation warnings
+ORA-39082: Object type VIEW:"UGM"."VW_VIEW_DOGS_OFORM" created with compilation warnings
+ORA-39082: Object type VIEW:"UGM"."VW_APP_ACCESS" created with compilation warnings
+ORA-39082: Object type VIEW:"UGM"."VW_ASOIU_OUT" created with compilation warnings
+ORA-39082: Object type VIEW:"UGM"."VW_DWH_SH2_VMEN" created with compilation warnings
+ORA-39082: Object type VIEW:"UGM"."VW_DWH_SH2_VVZR" created with compilation warnings
+ORA-39082: Object type VIEW:"UGM"."VW_APP_RAZBOR_ADRES_REG" created with compilation warnings
+ORA-39082: Object type VIEW:"UGM"."VW_APP_RAZBOR_ADRES_FACT" created with compilation warnings
+ORA-39082: Object type VIEW:"UGM"."VW_VIEW_RSP_DVSTUP" created with compilation warnings
+ORA-39082: Object type VIEW:"UGM"."VW_FOND_NEW" created with compilation warnings
+ORA-39082: Object type VIEW:"UGM"."VW_SP_UMER_LITS" created with compilation warnings
+ORA-39082: Object type VIEW:"UGM"."VW_VIEW_DOGS_OFORM_OPR" created with compilation warnings
+ORA-39082: Object type VIEW:"UGM"."VW_VIEW_DOGS_OFORM_VKL" created with compilation warnings
+ORA-39082: Object type VIEW:"UGM"."VW_APP_RASSILKA_UNREG" created with compilation warnings
+ORA-39082: Object type VIEW:"UGM"."VW_DOGS_PLAN" created with compilation warnings
+ORA-39082: Object type VIEW:"UGM"."VW_DOGS_PLAN_WITH_UMER" created with compilation warnings
+ORA-39082: Object type VIEW:"UGM"."VW_DOGS_PLAN_TOSYSDATE" created with compilation warnings
+ORA-39082: Object type VIEW:"UGM"."VW_DOGS_PLAN_TOSYSDATE_TMP" created with compilation warnings
+ORA-39082: Object type VIEW:"OLEG"."TOP_USER_PINDEX" created with compilation warnings
+ORA-39082: Object type VIEW:"SYSTEM"."DBA_XML_TABLES" created with compilation warnings
+ORA-39082: Object type VIEW:"SYSTEM"."ALL_XML_TABLES" created with compilation warnings
+ORA-39082: Object type VIEW:"SYSTEM"."USER_XML_TABLES" created with compilation warnings
+ORA-39082: Object type VIEW:"SYSTEM"."DBA_XML_TAB_COLS" created with compilation warnings
+ORA-39082: Object type VIEW:"SYSTEM"."ALL_XML_TAB_COLS" created with compilation warnings
+ORA-39082: Object type VIEW:"SYSTEM"."USER_XML_TAB_COLS" created with compilation warnings
+ORA-39082: Object type VIEW:"SYSTEM"."DBA_XML_VIEWS" created with compilation warnings
+ORA-39082: Object type VIEW:"SYSTEM"."ALL_XML_VIEWS" created with compilation warnings
+ORA-39082: Object type VIEW:"SYSTEM"."USER_XML_VIEWS" created with compilation warnings
+ORA-39082: Object type VIEW:"SYSTEM"."DBA_XML_VIEW_COLS" created with compilation warnings
+ORA-39082: Object type VIEW:"SYSTEM"."ALL_XML_VIEW_COLS" created with compilation warnings
+ORA-39082: Object type VIEW:"SYSTEM"."USER_XML_VIEW_COLS" created with compilation warnings
+ORA-39082: Object type VIEW:"SYSTEM"."ALL_XML_SCHEMAS" created with compilation warnings
+ORA-39082: Object type VIEW:"SYSTEM"."ALL_XML_SCHEMAS2" created with compilation warnings
+ORA-39082: Object type VIEW:"SYSTEM"."USER_XML_SCHEMAS" created with compilation warnings
+ORA-39082: Object type VIEW:"SYSTEM"."DBA_XML_INDEXES" created with compilation warnings
+ORA-39082: Object type VIEW:"SYSTEM"."ALL_XML_INDEXES" created with compilation warnings
+ORA-39082: Object type VIEW:"SYSTEM"."USER_XML_INDEXES" created with compilation warnings
+ORA-39082: Object type VIEW:"SYSTEM"."USER_XML_COLUMN_NAMES" created with compilation warnings
+ORA-39082: Object type VIEW:"FND"."FOR_LEV_DVSR" created with compilation warnings
+ORA-39082: Object type VIEW:"FND"."FOR_LEV_SPI" created with compilation warnings
+ORA-39082: Object type VIEW:"FND"."FOR_LEV_SPL" created with compilation warnings
+ORA-39082: Object type VIEW:"FND"."OPS_DOGOVOR_IZM_HISTORY" created with compilation warnings
+ORA-39082: Object type VIEW:"FND"."V_WEB_OPS_DOGOVOR_DATA" created with compilation warnings
+ORA-39082: Object type VIEW:"OPS"."OPS_REESTR_ERROR" created with compilation warnings
+ORA-39082: Object type VIEW:"FND"."V_GLOBAL_MDM_DOCUMENTS" created with compilation warnings
+ORA-39082: Object type VIEW:"FND"."VW_VPSK_TRANSFER" created with compilation warnings
+ORA-39082: Object type VIEW:"FND"."V_OPS_COMPANY_REPORT" created with compilation warnings
+ORA-39082: Object type VIEW:"FND"."V_OPS_COMPANY_REPORT_TOTAL" created with compilation warnings
+ORA-39082: Object type VIEW:"FND"."VW_VPSK_TRANSFER_VKL" created with compilation warnings
+ORA-39082: Object type VIEW:"FND"."V_WEB_OPS_DOGOVOR_STATUS" created with compilation warnings
+ORA-39082: Object type VIEW:"FND"."V_WEB_OPS_DOGOVOR_SUCCESSOR" created with compilation warnings
+ORA-39082: Object type VIEW:"FND"."V_WEB_OPS_DOCUMENT_OWNER" created with compilation warnings
+ORA-39082: Object type VIEW:"FND"."V_WEB_OPS_UDOCTYPES" created with compilation warnings
+ORA-39082: Object type VIEW:"FND"."V_WEB_OPS_UDOCS" created with compilation warnings
+ORA-39082: Object type VIEW:"FND"."V_WEB_OPS_UADDR" created with compilation warnings
+ORA-39082: Object type VIEW:"FND"."V_WEB_OPS_DOCUMENT_GAZFOND_TMP" created with compilation warnings
+ORA-39082: Object type VIEW:"SYSTEM"."AUD2" created with compilation warnings
+ORA-39082: Object type VIEW:"BNA"."VI_270_COPY" created with compilation warnings
+ORA-39082: Object type VIEW:"FND"."VW_CX7_OPLACH_PENS" created with compilation warnings
+ORA-39082: Object type VIEW:"FND"."V_BAD_PASPORT_DOGOVOR" created with compilation warnings
+ORA-39082: Object type VIEW:"SYSTEM"."VW_GF_SESSIONS" created with compilation warnings
+ORA-39082: Object type VIEW:"GAZFOND"."V_OPS_RESERVE_MAIN" created with compilation warnings
+ORA-39082: Object type VIEW:"FND"."OPS_RESERVE_1" created with compilation warnings
+ORA-39082: Object type VIEW:"GAZFOND"."V_DOCUMENT_REGCARD" created with compilation warnings
+ORA-39082: Object type VIEW:"GAZFOND"."V_PFR_ANNOUNCE_30_EV" created with compilation warnings
+ORA-39082: Object type VIEW:"GAZFOND"."V_PFR_ANNOUNCE_30_NP" created with compilation warnings
+ORA-39082: Object type VIEW:"GAZFOND"."V_PFR_ANNOUNCE_30_SPV" created with compilation warnings
+ORA-39082: Object type VIEW:"GAZFOND"."V_PFR_ANNOUNCE_30_ADD" created with compilation warnings
+ORA-39082: Object type VIEW:"FND"."V_SNILS_ONPF" created with compilation warnings
+ORA-39082: Object type VIEW:"INF"."V_CLIENTS" created with compilation warnings
+ORA-39082: Object type VIEW:"INF"."V_CLIENT_DOCS" created with compilation warnings
+ORA-39082: Object type VIEW:"INF"."V_CLIENT_DOC_PHONES" created with compilation warnings
+ORA-39082: Object type VIEW:"ADV"."VVV" created with compilation warnings
+ORA-39082: Object type VIEW:"ITG"."CHECK_SNILS_1" created with compilation warnings
+ORA-39082: Object type VIEW:"GAZFOND"."V_EXP_DOC" created with compilation warnings
+ORA-39082: Object type VIEW:"GAZFOND"."V_EXP_DOC_INFO" created with compilation warnings
+ORA-39082: Object type VIEW:"GAZFOND"."V_GFPN_DOCUMENTS" created with compilation warnings
+ORA-39082: Object type VIEW:"GAZFOND"."TEST_VIEW_WITH_SYNONYM" created with compilation warnings
+ORA-39082: Object type VIEW:"GAZFOND_PN"."V_OPS_RESERVE_MAIN" created with compilation warnings
+ORA-39082: Object type VIEW:"GAZFOND_PN"."V_DOCUMENT_REGCARD" created with compilation warnings
+ORA-39082: Object type VIEW:"GAZFOND_PN"."V_PFR_ANNOUNCE_30_EV" created with compilation warnings
+ORA-39082: Object type VIEW:"GAZFOND_PN"."V_PFR_ANNOUNCE_30_NP" created with compilation warnings
+ORA-39082: Object type VIEW:"GAZFOND_PN"."V_PFR_ANNOUNCE_30_SPV" created with compilation warnings
+ORA-39082: Object type VIEW:"GAZFOND_PN"."V_PFR_ANNOUNCE_30_ADD" created with compilation warnings
+ORA-39082: Object type VIEW:"GAZFOND_PN"."VW_DISPATCH_438" created with compilation warnings
+ORA-39082: Object type VIEW:"GAZFOND_PN"."V_PERS_DATA_CONFIRM_NPF_WF3" created with compilation warnings
+ORA-39082: Object type VIEW:"GAZFOND_PN"."V_EXP_DOC" created with compilation warnings
+ORA-39082: Object type VIEW:"GAZFOND_PN"."V_EXP_DOC_INFO" created with compilation warnings
+ORA-39082: Object type VIEW:"GAZFOND_PN"."V_GFPN_DOCUMENTS" created with compilation warnings
+ORA-39082: Object type VIEW:"GAZFOND_PN"."TEST_VIEW_WITH_SYNONYM" created with compilation warnings
+ORA-39082: Object type VIEW:"CDM"."TRANSFORM_CONTRAGENTS_MAN_V" created with compilation warnings
+ORA-39082: Object type VIEW:"FND"."SP_OGR_BENEFITS_V" created with compilation warnings
+ORA-39082: Object type VIEW:"FND"."F2NDFL_BENEFITS_DET_V" created with compilation warnings
+ORA-39082: Object type VIEW:"FND"."DV_SR_LSPV_ACC_BEN_V" created with compilation warnings
+ORA-39082: Object type VIEW:"FND"."SP_OGR_BENEFITS_ALL_V" created with compilation warnings
+ORA-39082: Object type PACKAGE BODY:"SYSTEM"."DBMS_EPG" created with compilation warnings
+ORA-39082: Object type PACKAGE BODY:"UGM"."DWH_FUNCTIONS" created with compilation warnings
+ORA-39082: Object type PACKAGE BODY:"UMG"."VPSK_PACK" created with compilation warnings
+ORA-39082: Object type PACKAGE BODY:"FND"."ACCOUNT_STATEMENT_PKG" created with compilation warnings
+ORA-39082: Object type PACKAGE BODY:"FND"."DB_TST_PKG" created with compilation warnings
+ORA-39082: Object type PACKAGE BODY:"FND"."DV_SR_LSPV_DET_PKG" created with compilation warnings
+ORA-39082: Object type PACKAGE BODY:"FND"."FL_PACK" created with compilation warnings
+ORA-39082: Object type PACKAGE BODY:"FND"."FXNDFL_UTIL" created with compilation warnings
+ORA-39082: Object type PACKAGE BODY:"FND"."MW_OPSDSV" created with compilation warnings
+ORA-39082: Object type PACKAGE BODY:"FND"."NDFL2_REPORT_API" created with compilation warnings
+ORA-39082: Object type PACKAGE BODY:"FND"."PERFORMANCE" created with compilation warnings
+ORA-39082: Object type PACKAGE BODY:"FND"."PKG_OSDM_UTILS" created with compilation warnings
+ORA-39082: Object type PACKAGE BODY:"FND"."RFC_4244_PKG" created with compilation warnings
+ORA-39082: Object type PACKAGE BODY:"FND"."VZNFL_ZACH" created with compilation warnings
+ORA-39082: Object type PACKAGE BODY:"FND"."VZNUR_ZACH" created with compilation warnings
+ORA-39082: Object type PACKAGE BODY:"FND"."WWWFOND" created with compilation warnings
+ORA-39082: Object type PACKAGE BODY:"BNA"."ACCOUNT_STATEMENTS_PKG" created with compilation warnings
+ORA-39082: Object type PACKAGE BODY:"ALEX"."PTSQL_CODE" created with compilation warnings
+ORA-39082: Object type PACKAGE BODY:"ALEX"."PTSQL_DBG_MAINT" created with compilation warnings
+ORA-39082: Object type PACKAGE BODY:"ALEX"."PTSQL_DEPEND" created with compilation warnings
+ORA-39082: Object type PACKAGE BODY:"ALEX"."PTSQL_SEARCH" created with compilation warnings
+ORA-39082: Object type PACKAGE BODY:"OLEG"."RAP" created with compilation warnings
+ORA-39082: Object type PACKAGE BODY:"GAZFOND"."BAD_DISPATCH_PLAN_PKG" created with compilation warnings
+ORA-39082: Object type PACKAGE BODY:"GAZFOND"."DEBT_PKG" created with compilation warnings
+ORA-39082: Object type PACKAGE BODY:"GAZFOND"."DOC_OWNER_UPDATER" created with compilation warnings
+ORA-39082: Object type PACKAGE BODY:"GAZFOND"."EXP4UGM2_PKG" created with compilation warnings
+ORA-39082: Object type PACKAGE BODY:"GAZFOND"."EXP4UGM_DVP_PKG" created with compilation warnings
+ORA-39082: Object type PACKAGE BODY:"GAZFOND"."EXP4UGM_PKG" created with compilation warnings
+ORA-39082: Object type PACKAGE BODY:"GAZFOND"."PAY_PKG_SAVEGPBF" created with compilation warnings
+ORA-39082: Object type PACKAGE BODY:"GAZFOND"."PKG_OSDM_UTILS" created with compilation warnings
+ORA-39082: Object type PACKAGE BODY:"GAZFOND"."SDL_PKG" created with compilation warnings
+ORA-39082: Object type PACKAGE BODY:"GAZFOND"."TAX_PKG_SAVEGPBF" created with compilation warnings
+ORA-39082: Object type PACKAGE BODY:"GAZFOND"."TEST_PAKET" created with compilation warnings
+ORA-39082: Object type PACKAGE BODY:"PDN"."ASSIGNMENT_PKG" created with compilation warnings
+ORA-39082: Object type PACKAGE BODY:"PDN"."BANKS_IMPORT" created with compilation warnings
+ORA-39082: Object type PACKAGE BODY:"PDN"."DOCUMENT_PKG" created with compilation warnings
+ORA-39082: Object type PACKAGE BODY:"PDN"."GPBF_IMPORT_BANKS" created with compilation warnings
+ORA-39082: Object type PACKAGE BODY:"PDN"."GPBF_IMPORT_BANKS2" created with compilation warnings
+ORA-39082: Object type PACKAGE BODY:"PDN"."GPBF_IMPORT_CASHFLOW" created with compilation warnings
+ORA-39082: Object type PACKAGE BODY:"PDN"."GPBF_IMPORT_CASHFLOW2" created with compilation warnings
+ORA-39082: Object type PACKAGE BODY:"PDN"."GPBF_IMPORT_CONTRACTS_ACCOUNTS" created with compilation warnings
+ORA-39082: Object type PACKAGE BODY:"PDN"."GPBF_IMPORT_CONTRAGENTS" created with compilation warnings
+ORA-39082: Object type PACKAGE BODY:"PDN"."GPBF_IMPORT_MAIN" created with compilation warnings
+ORA-39082: Object type PACKAGE BODY:"PDN"."GPBF_IMPORT_PENSION" created with compilation warnings
+ORA-39082: Object type PACKAGE BODY:"PDN"."GPBF_IMPORT_PENSION_AGREEMENTS" created with compilation warnings
+ORA-39082: Object type PACKAGE BODY:"PDN"."GPBF_IMPORT_POCARDS" created with compilation warnings
+ORA-39082: Object type PACKAGE BODY:"PDN"."GPBF_IMPORT_PROFIT" created with compilation warnings
+ORA-39082: Object type PACKAGE BODY:"PDN"."GPBF_IMPORT_PURGE" created with compilation warnings
+ORA-39082: Object type PACKAGE BODY:"PDN"."GPBF_IMPORT_UTIL" created with compilation warnings
+ORA-39082: Object type PACKAGE BODY:"PDN"."GPBF_OPERATOR_BARCODE" created with compilation warnings
+ORA-39082: Object type PACKAGE BODY:"PDN"."LOAD_PACK" created with compilation warnings
+ORA-39082: Object type PACKAGE BODY:"MPA"."USER_PKG" created with compilation warnings
+ORA-39082: Object type PACKAGE BODY:"INF"."STD" created with compilation warnings
+ORA-39082: Object type PACKAGE BODY:"DNK"."SYNC_CONTRAGENTS_PKG" created with compilation warnings
+ORA-39082: Object type PACKAGE BODY:"FVA"."PAYMENTS" created with compilation warnings
+ORA-39082: Object type PACKAGE BODY:"INF_PN"."STD" created with compilation warnings
+ORA-39082: Object type PACKAGE BODY:"CDM"."TRANSFORM_PKG" created with compilation warnings
+ORA-39082: Object type PACKAGE BODY:"GAZFOND_PN"."DEBT_PKG" created with compilation warnings
+ORA-39082: Object type PACKAGE BODY:"GAZFOND_PN"."DOC_OWNER_UPDATER" created with compilation warnings
+ORA-39082: Object type PACKAGE BODY:"GAZFOND_PN"."EXP4UGM2_PKG" created with compilation warnings
+ORA-39082: Object type PACKAGE BODY:"GAZFOND_PN"."EXP4UGM_DVP_PKG" created with compilation warnings
+ORA-39082: Object type PACKAGE BODY:"GAZFOND_PN"."EXP4UGM_PKG" created with compilation warnings
+ORA-39082: Object type PACKAGE BODY:"GAZFOND_PN"."PAY_OPSREG1_PKG" created with compilation warnings
+ORA-39082: Object type PACKAGE BODY:"GAZFOND_PN"."PAY_PKG_SAVEGPBF" created with compilation warnings
+ORA-39082: Object type PACKAGE BODY:"GAZFOND_PN"."PKG_OSDM_UTILS" created with compilation warnings
+ORA-39082: Object type PACKAGE BODY:"GAZFOND_PN"."SDL_PKG" created with compilation warnings
+ORA-39082: Object type PACKAGE BODY:"GAZFOND_PN"."SYNC_JOB" created with compilation warnings
+ORA-39082: Object type PACKAGE BODY:"GAZFOND_PN"."TAX_PKG_SAVEGPBF" created with compilation warnings
+ORA-39082: Object type PACKAGE BODY:"GAZFOND_PN"."TEST_PAKET" created with compilation warnings
+ORA-39082: Object type PACKAGE BODY:"GAZFOND_PN"."UNI_CONTRACTOR_API" created with compilation warnings
+ORA-39082: Object type PACKAGE BODY:"IP_ETL"."UPRAF_EXTRA_PKG" created with compilation warnings
+ORA-39082: Object type PACKAGE BODY:"IP_ETL"."UTILS" created with compilation warnings
+ORA-39082: Object type TRIGGER:"BNA"."TRG_ADR_ISH_IU" created with compilation warnings
+ORA-39082: Object type TRIGGER:"BNA"."TRG_SP_ADR_IU" created with compilation warnings
+ORA-39082: Object type TRIGGER:"BNA"."TRG_CNTR_FL" created with compilation warnings
+ORA-39082: Object type TRIGGER:"FND"."SP_UR_LITS_LAST_UPDATE_TRG_BNA" created with compilation warnings
+ORA-39082: Object type TRIGGER:"FND"."BU_OPS_PFR_DATA_RCG" created with compilation warnings
+ORA-39082: Object type TRIGGER:"FND"."FRM_BUFNL_TRG" created with compilation warnings
+ORA-39082: Object type TRIGGER:"FND"."TG_PDT_INS" created with compilation warnings
+ORA-39082: Object type TRIGGER:"RESTORE1"."SP_OPS_RESH_IPSOSTAT_INS" created with compilation warnings
+ORA-39082: Object type TRIGGER:"UGM"."TRG_ADR_ISH_IU" created with compilation warnings
+ORA-39082: Object type TRIGGER:"ALEX"."CAPTURE_TRACE_FILES" created with compilation warnings
+Job "SYSTEM"."SYS_IMPORT_FULL_01" completed with 979 error(s) at Mon Sep 10 15:33:32 2018 elapsed 0 07:06:53
+

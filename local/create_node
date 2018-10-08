@@ -1,0 +1,210 @@
+https://technology.amis.nl/2016/04/06/create-oracledb-enabled-node-js-application-container/
+
+docker-machine create -d virtualbox \
+--virtualbox-disk-size 60000 \
+--virtualbox-memory 4024 \
+--virtualbox-cpu-count 2 \
+--virtualbox-share-folder D:\DOCKER_SHARE:s \
+oranode
+
+sudo vi /var/lib/boot2docker/profile
+
+  add this lines:
+export HTTP_PROXY=http://127.0.0.1:1128
+export HTTPS_PROXY=http://127.0.0.1:1128
+
+reboot
+
+Proxy config:
+sudo /d/cntlm/install_root.sh
+
+Docker config (https://stackoverflow.com/questions/36844213/how-to-set-proxy-in-docker-toolbox):
+
+
+docker pull oraclelinux:7
+
+docker run \
+-p 8081:8081 \
+-v /d/:/d/ \
+--privileged \
+--name oralinux \
+-ti oraclelinux:7 /bin/bash
+
+
+install cntlm
+rpm --nodeps --force -i /d/cntlm/cntlm-0.92.3-1.x86_64.rpm
+cp /d/cntlm/cntlm.conf /etc/cntlm.conf.rpmnew
+cntlm -c /etc/cntlm.conf
+
+
+yum proxy:
+vi /etc/yum.conf
+proxy=http://127.0.0.1:1128
+
+yum -y install unzip libaio gcc-c++ tar make curl
+
+
+exit
+docker ps -a
+docker commit <container_id>
+
+docker images
+docker tag <image_id> linux-base:1.0
+docker images
+
+
+docker run \
+-p 8081:8081 \
+-v /d/:/d/ \
+--privileged \
+--name oranode \
+-ti linux-base:1.0 /bin/bash
+
+
+mkdir /opt/oracle
+cd /opt/oracle
+unzip -q /d/node_oracle/oracle/linux/instantclient-basiclite-linux.x64-12.2.0.1.0.zip
+unzip -q /d/node_oracle/oracle/linux/instantclient-sdk-linux.x64-12.2.0.1.0.zip
+mv instantclient_12_2 instantclient
+cd instantclient
+ln -s libclntsh.so.12.1 libclntsh.so
+
+install cntlm
+rpm --nodeps --force -i /d/cntlm/cntlm-0.92.3-1.x86_64.rpm
+cp /d/cntlm/cntlm.conf /etc/cntlm.conf.rpmnew
+cntlm -c /etc/cntlm.conf
+
+ps aux | grep cntlm
+
+
+alias curl="curl -x 127.0.0.1:1128"
+
+cd /opt
+curl -sSL https://nodejs.org/dist/v4.4.2/node-v4.4.2-linux-x64.tar.xz | tar -xJC /opt/
+
+
+export PATH=/opt/node-v4.4.2-linux-x64/bin:$PATH
+export LD_LIBRARY_PATH=/opt/oracle/instantclient:$LD_LIBRARY_PATH
+
+npm config set proxy http://127.0.0.1:1128
+npm config set https-proxy http://127.0.0.1:1128
+
+npm install -g oracledb
+
+
+exit
+
+docker commit <container_id> jpoot/node_oracledb:1.0
+docker commit e084e4ce96d4 jpoot/node_oracledb:2.0
+
+docker save jpoot/node_oracledb:2.0 > node_oracledb.tar
+
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+ COMPLETE IMAGE
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+Copy image:
+
+docker load -i /s/images/node_oracledb.tar
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+ RUN
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+1. Create env-file:
+PATH=/opt/node-v4.4.2-linux-x64/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+LD_LIBRARY_PATH=/opt/oracle/instantclient:$LD_LIBRARY_PATH
+NODE_PATH=/opt/node-v4.4.2-linux-x64/lib/node_modules
+NODE_ORACLEDB_USER=cdm
+NODE_ORACLEDB_PASSWORD=cdm
+NODE_ORACLEDB_CONNECTIONSTRING=192.168.99.100:1521/ORCLPDB3
+
+2. Run container:
+docker run \
+-u root \
+-v /s:/s \
+-v /s/node:/home/nodejs/projects \
+--name node \
+--env-file /s/node/env.list \
+-ti vladimirzhuravov/nodejs:2.0 /bin/bash
+
+docker run \
+-v /s:/s \
+-v /s/node:/home/nodejs/projects \
+--name node \
+--env-file /s/node/env.list \
+-ti vladimirzhuravov/nodejs:2.0 /bin/bash
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+ Install NODE modules
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+ps aux | grep cntlm
+cntlm -c /etc/cntlm.conf
+npm config set proxy http://127.0.0.1:1128
+npm config set https-proxy http://127.0.0.1:1128
+
+docker run \
+-u nodejs \
+-w /home/nodejs/projects \
+-v /s:/s \
+-v /s/node:/home/nodejs/projects \
+--env-file /s/node/env.list \
+--name node \
+-ti vladimirzhuravov/nodejs:2.6 /bin/bash
+
+Run autonomus container (port надо разбиндить)
+docker run \
+-u nodejs \
+-w /home/nodejs/projects/myKeep/ \
+--add-host=db01.domain.local:192.168.99.100 \
+-p 8081:8081 \
+-v /s:/s \
+-v /s/node:/home/nodejs/projects \
+--env-file /s/node/env.list \
+--name srv \
+-ti vladimirzhuravov/nodejs:2.0 \
+node index.js
+
+docker run \
+-u nodejs \
+-w /home/nodejs/projects/myApp \
+--add-host=db01.domain.local:192.168.99.100 \
+-p 8081:8081 \
+-p 8082:8080 \
+-p 5858:5858 \
+-v /s:/s \
+-v /s/node:/home/nodejs/projects \
+--env-file /s/node/env.list \
+--name node \
+-ti vladimirzhuravov/nodejs /bin/bash
+
+restart:
+docker restart -t 0 srv
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+ TEST
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+dbconfig.js:
+module.exports = {
+  user          : process.env.NODE_ORACLEDB_USER || "cdm",
+
+  // Instead of hard coding the password, consider prompting for it,
+  // passing it in an environment variable via process.env, or using
+  // External Authentication.
+  password      : process.env.NODE_ORACLEDB_PASSWORD || "cdm",
+
+  // For information on connection strings see:
+  // https://github.com/oracle/node-oracledb/blob/master/doc/api.md#connectionstrings
+  connectString : process.env.NODE_ORACLEDB_CONNECTIONSTRING || "ORCLPDB3",
+
+  // Setting externalAuth is optional.  It defaults to false.  See:
+  // https://github.com/oracle/node-oracledb/blob/master/doc/api.md#extauth
+  externalAuth  : process.env.NODE_ORACLEDB_EXTERNALAUTH ? true : false
+};
+
+select1.js:
+"SELECT ct.* " +
+ "FROM contragent_types ct ",
+

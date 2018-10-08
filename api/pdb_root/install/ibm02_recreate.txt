@@ -1,0 +1,187 @@
+﻿https://docs.oracle.com/en/database/oracle/oracle-database/12.2/axdbi/configuring-disk-devices-for-oracle-asm-on-ibm-aix.html#GUID-4881683A-9556-4B8B-9CCE-64267D6DC1CD
+test disk:
+chdev -l hdisk3 -a pv=yes
+chdev -l hdisk4 -a pv=yes
+
+mkvg -s 256 -y vg_odat1 hdisk3 hdisk4
+mklv -t jfs2log -y lv_jlog_od1 vg_odat1 1 hdisk3 hdisk4
+/usr/sbin/logform -V jfs2 /dev/lv_jlog_od1
+mklv -t jfs2 -y lv_odat1 vg_odat1 5443 hdisk3 hdisk4
+mkfs -V jfs2 -o log=/dev/lv_jlog_od1 /dev/lv_odat1
+mount -o log=/dev/lv_jlog_od1 /dev/lv_odat1 /ora1/dat
+mount /dev/lv_odat1 /ora1/dat
+chown oracle:oinstall /ora1/dat
+mkdir /ora1/dat/TSTCDB   
+
+mount /dev/lv_odat1 /ora1/dat
+mount -v jfs2 -o log=/dev/loglv00 /dev/lv_cdb /ora1/dat/TSTCDB
+## mount -v jfs2 -o log=/dev/loglv01 /dev/lv_pdbtmp /ora1/dat/pdbs/tempfiles
+
+oracle:
+. .db_env
+rm -f /ora1/12_1_0/dbs/spfiletstdb.ora
+sqlplus / as sysdba
+startup nomount pfile='/ora1/12_1_0/dbs/inittstdb.ora'
+exit
+
+cd ~/scripts/duplicate
+nohup rman @clonedb.rman &
+tail -n 30 -f nohup.out
+
+
+umount /ora1/dat/evday
+
+Start duplicate: 13:40
+Recovery files complete: 15:48
+Complete full: 16:01
+
+
+
+sqlplus / as sysdba
+alter system reset background_dump_dest scope=spfile;
+alter system reset core_dump_dest scope=spfile;
+alter system reset user_dump_dest scope=spfile;
+alter user system identified by "passwd";
+alter user sys identified by "oSposC.c";
+
+shutdown immediate
+startup mount
+alter database noarchivelog;
+shutdown immediate
+startup
+
+alter system set job_queue_processes=0 scope=both;
+alter system set "_use_single_log_writer"=TRUE scope=spfile;
+alter system set "_kdt_buffering"=FALSE scope=spfile;
+
+
+alter user fnd identified by fnd;
+alter user gazfond identified by gazfond;
+alter user gazfond_pn identified by gazfond_pn;
+-------------------------------------------------
+-- gfnd_chg.sql
+--              - Changes props for GAZFOND:
+--
+-- NOTE: this script mustn't have any parameters
+--
+--   (c) U2R 18.03.16
+-------------------------------------------------
+PROMPT
+PROMPT -- CHANGE GAZFOND PROPERTIES:
+--
+update gazfond.app_settings t set t.application_title='Test Environment' where id=0;
+PROMPT
+PROMPT -- ADD PRIVS FOR RLS:
+--
+grant create any context to gazfond;
+grant execute on dbms_rls to gazfond;
+--
+PROMPT
+PROMPT -- CREATE LOGON TRIGGER:
+--
+create or replace trigger gazfond_chg_sess after logon on gazfond.schema
+begin
+  execute immediate 'alter session set "_optimizer_adaptive_plans"=false';
+end;
+/
+--
+-------------------------------------------------
+-- gfpn_chg.sql
+--              - Changes props for GAZFOND_PN:
+--
+-- NOTE: this script mustn't have any parameters
+--
+--   (c) U2R 18.03.16
+-------------------------------------------------
+PROMPT
+PROMPT -- CHANGE GAZFOND_PN PROPERTIES:
+--
+update gazfond_pn.app_settings t set t.application_title='Test Environment' where id=0;
+--alter user gazfond_pn identified by test_123;
+PROMPT
+PROMPT -- ADD PRIVS FOR RLS:
+--
+grant create any context to gazfond_pn;
+grant execute on dbms_rls to gazfond_pn;
+--
+PROMPT
+PROMPT -- CREATE LOGON TRIGGER:
+--
+create or replace trigger gazfond_pn_chg_sess after logon on gazfond_pn.schema
+begin
+  execute immediate 'alter session set "_optimizer_adaptive_plans"=false';
+end;
+/
+--
+
+
+rm -f /home/oracle/tstcdb/tstdb.xml
+
+. .db_env
+sqlplus / as sysdba
+startup mount;
+alter database open read only;
+exec DBMS_PDB.DESCRIBE(pdb_descr_file => '/home/oracle/tstcdb/tstdb.xml');
+/
+
+shut immediate
+exit
+
+. .cdb_env
+sqlplus / as sysdba
+startup
+
+SET SERVEROUTPUT ON
+DECLARE
+  compatible CONSTANT VARCHAR2(3) := CASE DBMS_PDB.CHECK_PLUG_COMPATIBILITY(
+            pdb_descr_file => '/home/oracle/tstcdb/tstdb.xml',
+            pdb_name       => 'tstdb')
+     WHEN TRUE THEN 'YES'
+     ELSE 'NO'
+ END;
+ BEGIN
+  DBMS_OUTPUT.PUT_LINE(compatible);
+END;
+/
+YES !
+NO ???
+
+CREATE PLUGGABLE DATABASE tstdb_node using '/home/oracle/tstcdb/tstdb.xml' nocopy tempfile reuse;
+
+ALTER SESSION SET CONTAINER=tstdb_node;
+Перед запуском конвертации, изменил скрипт рекомпиляции в @$ORACLE_HOME/rdbms/admin/utlprp.sql:
+
+DECLARE
+   threads pls_integer := &&1;
+   cursor c is
+     select o.owner, count(1) cnt
+from   all_objects o
+where  o.status = 'INVALID'
+group by o.owner;
+BEGIN
+  for s in c loop
+    dbms_output.put('Compile scheme: ' || s.owner || ' .. ');
+    begin
+    utl_recomp.recomp_parallel(threads, s.owner);
+    dbms_output.put_line('ok');
+    exception
+      when others then
+        dbms_output.put_line('error: ' || sqlerrm);
+    end;
+  end loop;
+END;
+
+@$ORACLE_HOME/rdbms/admin/noncdb_to_pdb.sql
+
+Ошибка (см. noncdb_to_pdb_1.log), в чем причина - не разобрался
+$ sqlplus / as sysdba
+@$ORACLE_HOME/rdbms/admin/utluppkg.sql
+SET SERVEROUTPUT ON;
+exec dbms_preup.run_fixup_and_report('INVALID_SYS_TABLEDATA')
+SET SERVEROUTPUT OFF;
+перезапуск:
+@$ORACLE_HOME/rdbms/admin/noncdb_to_pdb.sql
+COMPLETE!!!
+
+alter pluggable database tstdb_node close immediate;
+alter pluggable database tstdb_node open;

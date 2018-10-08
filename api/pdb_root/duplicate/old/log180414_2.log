@@ -1,0 +1,109 @@
+
+Recovery Manager: Release 12.1.0.1.0 - Production on Sat Apr 14 10:03:22 2018
+
+Copyright (c) 1982, 2013, Oracle and/or its affiliates.  All rights reserved.
+
+RMAN> 
+RMAN> connect auxiliary *
+connected to auxiliary database: TSTDB (not mounted)
+
+RMAN> connect catalog *
+connected to recovery catalog database
+
+RMAN> RUN
+2> {
+3>  ALLOCATE AUXILIARY CHANNEL ch1 DEVICE TYPE DISK;
+4>     DUPLICATE DATABASE 'FONDDB' TO 'tstdb'
+5>      UNTIL TIME "to_date('13-04-18 23:30:00','DD-MM-YY HH24:MI:SS')"
+6>     BACKUP LOCATION '/ora1/dat/tstdb/redo'
+7>     LOGFILE
+8>       GROUP 1 ('/ora1/sav/bkup/log01.log') SIZE 1G REUSE,
+9>       GROUP 2 ('/ora1/sav/bkup/log02.log') SIZE 1G REUSE,
+10>       GROUP 3 ('/ora1/sav/bkup/log03.log') SIZE 1G REUSE,
+11>       GROUP 4 ('/ora1/sav/bkup/log04.log') SIZE 1G REUSE;
+12>  RELEASE CHANNEL ch1;
+13> }
+allocated channel: ch1
+channel ch1: SID=2271 device type=DISK
+
+Starting Duplicate Db at 14-04-2018 10:03:32
+
+contents of Memory Script:
+{
+   sql clone "create spfile from memory";
+}
+executing Memory Script
+
+sql statement: create spfile from memory
+
+contents of Memory Script:
+{
+   shutdown clone immediate;
+   startup clone nomount;
+}
+executing Memory Script
+
+Oracle instance shut down
+
+connected to auxiliary database (not started)
+Oracle instance started
+
+Total System Global Area   25654751232 bytes
+
+Fixed Size                     2767776 bytes
+Variable Size               7516193888 bytes
+Database Buffers           18052284416 bytes
+Redo Buffers                  83505152 bytes
+allocated channel: ch1
+channel ch1: SID=2647 device type=DISK
+
+contents of Memory Script:
+{
+   set until scn  61326540485;
+   sql clone "alter system set  db_name = 
+ ''FONDDB'' comment=
+ ''Modified by RMAN duplicate'' scope=spfile";
+   sql clone "alter system set  db_unique_name = 
+ ''TSTDB'' comment=
+ ''Modified by RMAN duplicate'' scope=spfile";
+   shutdown clone immediate;
+   startup clone force nomount
+   restore clone primary controlfile;
+   alter clone database mount;
+}
+executing Memory Script
+
+executing command: SET until clause
+
+sql statement: alter system set  db_name =  ''FONDDB'' comment= ''Modified by RMAN duplicate'' scope=spfile
+
+sql statement: alter system set  db_unique_name =  ''TSTDB'' comment= ''Modified by RMAN duplicate'' scope=spfile
+
+Oracle instance shut down
+
+Oracle instance started
+
+Total System Global Area   25654751232 bytes
+
+Fixed Size                     2767776 bytes
+Variable Size               7516193888 bytes
+Database Buffers           18052284416 bytes
+Redo Buffers                  83505152 bytes
+allocated channel: ch1
+channel ch1: SID=2647 device type=DISK
+
+Starting restore at 14-04-2018 10:04:11
+
+released channel: ch1
+RMAN-00571: ===========================================================
+RMAN-00569: =============== ERROR MESSAGE STACK FOLLOWS ===============
+RMAN-00571: ===========================================================
+RMAN-03002: failure of Duplicate Db command at 04/14/2018 10:04:11
+RMAN-05501: aborting duplication of target database
+RMAN-03015: error occurred in stored script Memory Script
+RMAN-06026: some targets not found - aborting restore
+RMAN-06101: no channel to restore a backup or copy of the control file
+
+RMAN> exit
+
+Recovery Manager complete.

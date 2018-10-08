@@ -1,0 +1,11 @@
+exec dbms_application_info.set_module('SQLPLUS', 'BIT_IDX');
+ALTER SESSION SET TRACEFILE_IDENTIFIER = 'BIT_IDX_10053';
+ALTER SESSION SET EVENTS '10053 trace name context forever, level 8';
+--dbms_monitor.serv_mod_act_stat_enable(service_name => , module_name  => , action_name  => )
+select * from t1 where 1 = n1;
+select * from t1 where 1 = n3;
+select * from t1 where 1 = n5;
+select * from t1 where 1 = n2;
+select * from t1 where 1 = n4;
+select * from t1 where 1 = n6;
+ALTER SESSION SET EVENTS '10053 trace name context off';

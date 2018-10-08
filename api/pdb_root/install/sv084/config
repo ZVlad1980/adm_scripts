@@ -1,0 +1,98 @@
+﻿Disks:
+sdb - 1,7 TB:
+  lv_cdb,     50Gb    - CDB + PDB_ROOT
+  lv_tmp,    250Gb    - temp files of pdbs
+  lv_buf,    400Gb   - buffer, datapump, etc
+  lv_backup,   1Tb   - backup
+sdc - 1,5 TB, PDBS, mount /u01/app/oracle/oradata/evday
+sdd - 1,5 TB, PDBS, mount /u01/app/oracle/oradata/weekly
+
+
+fdisk /dev/sdb
+lvm
+vgcreate vg_cdb /dev/sdb1
+lvcreate --size 50G -n lv_cdb vg_cdb
+lvcreate --size 250G -n lv_tmp vg_cdb
+lvcreate --size 400G -n lv_buf vg_cdb
+lvcreate --size 1T -n lv_backup vg_cdb
+exit
+
+mkfs.ext4 /dev/vg_cdb/lv_cdb
+mkfs.ext4 /dev/vg_cdb/lv_tmp
+mkfs.ext4 /dev/vg_cdb/lv_buf
+mkfs.ext4 /dev/vg_cdb/lv_backup
+
+mkdir /u01/app/oracle/oradata/tstcdb
+mkdir /u01/app/oracle/oradata/pdbs
+mkdir /u01/app/oracle/oradata/pdbs/tempfiles
+mkdir /u01/app/oracle/oradata/pdbs/tempfiles/clones
+mkdir /u01/app/oracle/buf
+mkdir /u01/app/oracle/oradata/pdbs/evday
+mkdir /u01/app/oracle/oradata/pdbs/weekly
+
+chown -R oracle:oinstall /u01/app/oracle/oradata
+
+chmod -R 774 /u01/app/oracle/oradata
+chown -R oracle:oinstall /u01/app/oracle/buf
+chown -R oracle:oinstall /u01/app/oracle/backup
+chmod -R 774 /u01/app/oracle/buf    
+chmod -R 774 /u01/app/oracle/backup 
+
+vi /etc/fstab
+/dev/vg_cdb/lv_cdb /u01/app/oracle/oradata/tstcdb     ext4 defaults 0 2
+/dev/vg_cdb/lv_tmp /u01/app/oracle/oradata/pdbs/tempfiles ext4 defaults 0 2
+/dev/vg_cdb/lv_buf /u01/app/oracle/buf ext4 defaults 0 2
+/dev/vg_cdb/lv_backup /u01/app/oracle/backup ext4 defaults 0 2
+
+ну или разово:
+mount /dev/vg_cdb/lv_cdb /u01/app/oracle/oradata/tstcdb
+mount /dev/vg_cdb/lv_tmp /u01/app/oracle/oradata/pdbs/tempfiles
+mount /dev/vg_cdb/lv_buf /u01/app/oracle/buf
+mount /dev/vg_cdb/lv_backup /u01/app/oracle/backup
+
+
+Настройка ACFS дисков:
+fdisk /dev/sdc --n w
+fdisk /dev/sdd --n w
+
+/usr/sbin/oracleasm createdisk EVDAY /dev/sdc1
+/usr/sbin/oracleasm createdisk WEEKLY /dev/sdd1
+
+/usr/sbin/oracleasm deletedisk EVDAY
+/usr/sbin/oracleasm deletedisk WEEKLY
+
+
+Start ACFS:
+/u01/app/oracle/product/12.2.0/grid/bin/acfsload start
+
+ASMCA: config disk groups, volumes and ACFS
+
+/sbin/mkfs -t acfs /dev/asm/vol_evday-236
+/bin/mount -t acfs /dev/asm/vol_evday-236 /u01/app/oracle/oradata/evday
+/sbin/mkfs -t acfs /dev/asm/vol_weekly-477
+/bin/mount -t acfs /dev/asm/vol_weekly-477 /u01/app/oracle/oradata/weekly
+
+chown -R oracle:oinstall /u01/app/oracle/oradata/evday
+chown -R oracle:oinstall /u01/app/oracle/oradata/weekly
+chmod -R 774 /u01/app/oracle/oradata/evday
+chmod -R 774 /u01/app/oracle/oradata/weekly
+
+Удаление:
+umount /dev/vg_cdb/lv_cdb 
+umount /dev/vg_cdb/lv_tmp 
+umount /dev/vg_cdb/lv_buf 
+umount /dev/vg_cdb/lv_backup 
+lvm
+lvremove vg_cdb/lv_cdb 
+lvremove vg_cdb/lv_tmp 
+lvremove vg_cdb/lv_buf
+lvremove vg_cdb/lv_backup
+vgremove vg_cdb
+pvremove /dev/sdb1
+fdisk /dev/sdb
+d
+w
+
+
+
+lv remove vg_name/lv_name

@@ -1,0 +1,24 @@
+﻿connect root:
+--/ora1/grid/bin/acfsload start
+mount -v jfs2 -o log=/dev/loglv00 /dev/lv_cdb /ora1/dat/TSTCDB
+
+connect oralce:
+lsnrctl start
+sqlplus / as sysdba
+startup
+alter pluggable database tstdb open
+
+
+
+Shutdown:
+oracle:
+sqlplus / as sysdba
+shut immediate
+exit
+
+lsnrctl stop
+
+root:
+shutdown -r
+
+

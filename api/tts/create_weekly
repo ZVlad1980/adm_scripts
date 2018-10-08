@@ -1,0 +1,101 @@
+Подготовка базы-источника (IBM02):
+  1. настроить TSTDB_TTS на базу источник в vi $ORACLE_HOME/network/admin/tnsnames.ora
+  2. sqlplus sys@tstdb_tts as sysdba  
+  3. grant dba to vbz
+  4. check_tts.sql
+  5. connect vbz@tstdb_tts
+VIEW:  show_top_n_query.sql
+!!!!!!!! ОБЕРНУТЬ переменные в функцию to_number в этих пакетах (BUG 17404511, видимо полечен на IBM02!)
+Поиск по телам пакетов, ищем fetch first и fetch next и offset, заворачиваем аргументы в to_number
+OWNER	OBJECT_NAME
+#FND	ISTOB
+#GAZFOND	IMPORT_DOCUMENT_PKG
+GAZFOND	DOCLIST_PKG
+#FND	FXNDFL_UTIL
+#FND	ITG_INFO_PACK
+SASHA	FIRSTPAY_REGISTER
+#GAZFOND	DISPATCH_PLAN_PKG
+#GAZFOND_PN	PAY_FSTREG_PKG
+#GAZFOND	DOCUMENT_REGISTRATOR_PKG
+#FND	NDFL_REPORT_API
+GAZFOND_PN	PAY_OPSREG1_PKG
+#FND	NDFL2_REPORT_API
+#GAZFOND_PN	DOCUMENT_REGISTRATOR_PKG
+#GAZFOND_PN	IMPORT_DOCUMENT_PKG
+
+  6. Install prepare_tts objects (./install/sql/)
+  7.1. выполнить ./install/sql/start_perpare.sql
+  7.2. выполнить ./install/sql/prepare_transport.sql
+  8. выполнить ./install/sql/show_scp_commands.sql - скопировать команды scp в файл /home/oracle/projects/move_tstcdb/scripts/copy_files/weekly/start.sh на приемнике
+  8. connect system@tstdb_tts => выполнить ./install/sql/offline.sql
+  9. exit
+ 10. cd /ora1/buf/datapump
+   rm -f expdat.dmp
+   rm -f export.log
+   rm -f nohup.out
+ 11. vi exp.sh + chmod 774 exp.sh
+#! /bin/bash
+expdp system@tstdb_tts full=y dumpfile=expdat.dmp directory=data_dump_dir transportable=always logfile=export.log
+
+expdp system@tstdb_tts parfile=./exp.par logfile=exp_fnd.log
+ 
+ 12. nohup ./exp.sh &
+
+IBM: tail -n 30 -f nohup.out
+
+ 
+ Подготовка базы-приемника (SV084)     
+ Настроить WEEKLY_NODE: vi $ORACLE_HOME/network/admin/tnsnames.ora
+rm -f /u01/app/oracle/buf/datapump/exp*
+rm -f /u01/app/oracle/buf/datapump/import.log
+rm -f /home/oracle/projects/move_tstcdb/scripts/copy_files/weekly/nohup.out
+rm -f /home/oracle/projects/move_tstcdb/scripts/copy_files/weekly/rman.log
+rm -f /u01/app/oracle/backup/aix_files/*
+
+sqlplus / as sysdba
+create pluggable database weekly_node admin user admin identified by admin file_name_convert=(
+  '/u01/app/oracle/oradata/tstcdb/pdbseed/system01.dbf', '/u01/app/oracle/oradata/weekly/WEEKLY_NODE/datafile/system01.dbf',
+  '/u01/app/oracle/oradata/tstcdb/pdbseed/sysaux01.dbf', '/u01/app/oracle/oradata/weekly/WEEKLY_NODE/datafile/sysaux01.dbf',
+  '/u01/app/oracle/oradata/tstcdb/pdbseed/temp01.dbf', '/u01/app/oracle/oradata/tempfiles/weekly_node_temp01.dbf'
+);
+
+alter pluggable database weekly_node open;
+alter session set container=weekly_node;
+
+
+ALTER DATABASE TEMPFILE '/u01/app/oracle/oradata/tempfiles/weekly_node_temp01.dbf' RESIZE 5G;
+ALTER DATABASE TEMPFILE '/u01/app/oracle/oradata/tempfiles/weekly_node_temp01.dbf' autoextend on maxsize 5G;
+ALTER DATABASE dataFILE '/u01/app/oracle/oradata/weekly/WEEKLY_NODE/datafile/system01.dbf' RESIZE 9G;
+ALTER DATABASE dataFILE '/u01/app/oracle/oradata/weekly/WEEKLY_NODE/datafile/sysaux01.dbf' RESIZE 1G;
+
+connect system@weekly_node
+CREATE OR REPLACE DIRECTORY data_dump_dir AS '/u01/app/oracle/buf/datapump';
+
+exit
+
+du -ha $ORACLE_BASE/oradata/weekly
+cd /home/oracle/projects/move_tstcdb/scripts/copy_files/weekly/
+скопировать путь к /datafile и вставить в convert.rman
+
+17404511
+
+nohup ./start.sh &
+
+SV:  tail -n 30 -s 5 -f nohup.out
+
+IBM: tail -n 30 -f nohup.out
+
+
+
+После импорта:
+connect / as sys
+./sql/disable_all_jobs
+connect sys@weekly_node as sys
+./sql/Grants/grant_on_sys.sql
+connect vbz@weekly_node
+./sql/start_repaire.sql
+connect sys@weekly_node as sys
+./sql/recompile_all_schemas.sql
+View show_invalids.sql
+
+pdb_root/install/scripts/add_database.tst
