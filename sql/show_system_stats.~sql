@@ -9,7 +9,7 @@ exec sys.dbms_stats.gather_system_stats('START');
 
 alter session disable parallel query;
 
-select /*+ FULL(a) */ count(*) from all_objects a;
+select /*+ FULL(a) */ count(*) from gazfond_pn.people a;
 
 exec sys.dbms_stats.gather_system_stats('STOP');
 /

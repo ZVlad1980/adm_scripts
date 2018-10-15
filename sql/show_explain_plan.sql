@@ -7,6 +7,7 @@ select ...
 
 explain plan for select * from   t1 where  n1 in (1, 2);
 select * from table(dbms_xplan.display);
+select * from table(DBMS_XPLAN.display_cursor(FORMAT => 'ADAPTIVE'));
 --select * from plan_table
 /
 select * from table(dbms_xplan.display_cursor(sql_id => ))

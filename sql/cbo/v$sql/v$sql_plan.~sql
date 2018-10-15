@@ -1,0 +1,36 @@
+/*
+https://docs.oracle.com/database/121/TGSQL/tgsql_genplan.htm#TGSQL94700
+ Check parameter STATISTICS_LEVEL
+ See Also:
+  - Monitoring Database Operations for information about the V$SQL_PLAN_MONITOR view
+  - Oracle Database Reference for more information about V$SQL_PLAN views
+  - Oracle Database Reference for information about the STATISTICS_LEVEL initialization parameter
+
+v$sql
+v$sql_plan
+v$sql_plan_statistics
+v$sql_plan_statistics_all
+*/
+select *
+from   v$sql s
+where  s.sql_text like '%employees emp%'
+/
+select sp.id, sp.parent_id, 
+       rpad(' ', sp.depth * 2, ' ')
+         || sp.operation || ' '
+         || sp.options operation, 
+       case sp.id
+         when 0 then
+           sp.optimizer
+         else
+           sp.object_owner || '.' || sp.object_name || ' (' || sp.object_type || ')'
+       end object_name,
+       sp.cardinality,
+       sp.cost || ' (' || sp.cpu_cost || ', ' || sp.io_cost|| ')' costs,
+       sp.time,
+       sp.access_predicates,
+       sp.filter_predicates,
+       sp.projection,
+       sp.*
+from   v$sql_plan_statistics_all sp
+where  sp.sql_id = '11672wcncwa9u'
