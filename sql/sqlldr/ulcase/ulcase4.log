@@ -1,0 +1,59 @@
+
+SQL*Loader: Release 12.2.0.1.0 - Production on Sun Oct 21 00:00:57 2018
+
+Copyright (c) 1982, 2017, Oracle and/or its affiliates.  All rights reserved.
+
+Control File:   ./ulcase4.ctl
+Data File:      ././ulcase4.dat
+  Bad File:     ./ulcase4.bad
+  Discard File: ulcase4.dsc 
+ (Allow 999 discards)
+
+Number to load: ALL
+Number to skip: 0
+Errors allowed: 50
+Bind array:     64 rows, maximum of 256000 bytes
+Continuation:   1:1 = 0X2a(character '*'), in current physical record
+Path used:      Conventional
+
+Table EMP, loaded from every logical record.
+Insert option in effect for this table: REPLACE
+
+   Column Name                  Position   Len  Term Encl Datatype
+------------------------------ ---------- ----- ---- ---- ---------------------
+EMPNO                                 1:4     4           CHARACTER            
+ENAME                                6:15    10           CHARACTER            
+JOB                                 17:25     9           CHARACTER            
+MGR                                 27:30     4           CHARACTER            
+SAL                                 32:39     8           CHARACTER            
+COMM                                41:48     8           CHARACTER            
+DEPTNO                              50:51     2           CHARACTER            
+HIREDATE                            52:60     9           CHARACTER            
+
+Record 8: Rejected - Error on table EMP, column EMPNO.
+ORA-01400: cannot insert NULL into ("SCOTT"."EMP"."EMPNO")
+
+Record 9: Rejected - Error on table EMP.
+ORA-00001: unique constraint (SCOTT.EMPIX) violated
+
+
+Table EMP:
+  7 Rows successfully loaded.
+  2 Rows not loaded due to data errors.
+  0 Rows not loaded because all WHEN clauses were failed.
+  0 Rows not loaded because all fields were null.
+
+
+Space allocated for bind array:                   4608 bytes(64 rows)
+Read   buffer bytes: 1048576
+
+Total logical records skipped:          0
+Total logical records read:             9
+Total logical records rejected:         2
+Total logical records discarded:        0
+
+Run began on Sun Oct 21 00:00:57 2018
+Run ended on Sun Oct 21 00:00:59 2018
+
+Elapsed time was:     00:00:01.38
+CPU time was:         00:00:00.03

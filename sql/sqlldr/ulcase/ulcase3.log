@@ -1,0 +1,56 @@
+
+SQL*Loader: Release 12.2.0.1.0 - Production on Sat Oct 20 23:53:25 2018
+
+Copyright (c) 1982, 2017, Oracle and/or its affiliates.  All rights reserved.
+
+Control File:   ./ulcase3.ctl
+Data File:      ./ulcase3.ctl
+  Bad File:     ./ulcase3.bad
+  Discard File:  none specified
+ 
+ (Allow all discards)
+
+Number to load: ALL
+Number to skip: 0
+Errors allowed: 50
+Bind array:     64 rows, maximum of 256000 bytes
+Continuation:    none specified
+Path used:      Conventional
+
+Table EMP, loaded from every logical record.
+Insert option in effect for this table: APPEND
+
+   Column Name                  Position   Len  Term Encl Datatype
+------------------------------ ---------- ----- ---- ---- ---------------------
+EMPNO                               FIRST     *   ,  O(") CHARACTER            
+ENAME                                NEXT     *   ,  O(") CHARACTER            
+JOB                                  NEXT     *   ,  O(") CHARACTER            
+MGR                                  NEXT     *   ,  O(") CHARACTER            
+HIREDATE                             NEXT    20   ,  O(") DATE DD-Month-YYYY   
+SAL                                  NEXT     *   ,  O(") CHARACTER            
+COMM                                 NEXT     *   ,  O(") CHARACTER            
+DEPTNO                               NEXT     *   :  O(") CHARACTER            
+PROJNO                               NEXT     *   ,  O(") CHARACTER            
+LOADSEQ                                                   SEQUENCE (MAX, 1)
+
+
+Table EMP:
+  7 Rows successfully loaded.
+  0 Rows not loaded due to data errors.
+  0 Rows not loaded because all WHEN clauses were failed.
+  0 Rows not loaded because all fields were null.
+
+
+Space allocated for bind array:                 134976 bytes(64 rows)
+Read   buffer bytes: 1048576
+
+Total logical records skipped:          0
+Total logical records read:             7
+Total logical records rejected:         0
+Total logical records discarded:        0
+
+Run began on Sat Oct 20 23:53:25 2018
+Run ended on Sat Oct 20 23:53:30 2018
+
+Elapsed time was:     00:00:04.52
+CPU time was:         00:00:00.04

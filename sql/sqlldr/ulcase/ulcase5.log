@@ -1,0 +1,103 @@
+
+SQL*Loader: Release 12.2.0.1.0 - Production on Sun Oct 21 00:08:57 2018
+
+Copyright (c) 1982, 2017, Oracle and/or its affiliates.  All rights reserved.
+
+Control File:   ./ulcase5.ctl
+Data File:      ././ulcase5.dat
+  Bad File:     ulcase5.bad
+  Discard File: ulcase5.dsc 
+ (Allow all discards)
+
+Number to load: ALL
+Number to skip: 0
+Errors allowed: 50
+Bind array:     64 rows, maximum of 256000 bytes
+Continuation:    none specified
+Path used:      Conventional
+
+Table EMP, loaded from every logical record.
+Insert option in effect for this table: REPLACE
+
+   Column Name                  Position   Len  Term Encl Datatype
+------------------------------ ---------- ----- ---- ---- ---------------------
+EMPNO                                 1:4     4           CHARACTER            
+ENAME                                6:15    10           CHARACTER            
+DEPTNO                              17:18     2           CHARACTER            
+MGR                                 20:23     4           CHARACTER            
+
+Table PROJ, loaded when PROJNO != 0X202020(character '   ')
+Insert option in effect for this table: REPLACE
+
+   Column Name                  Position   Len  Term Encl Datatype
+------------------------------ ---------- ----- ---- ---- ---------------------
+EMPNO                                 1:4     4           CHARACTER            
+PROJNO                              25:27     3           CHARACTER            
+
+Table PROJ, loaded when PROJNO != 0X202020(character '   ')
+Insert option in effect for this table: REPLACE
+
+   Column Name                  Position   Len  Term Encl Datatype
+------------------------------ ---------- ----- ---- ---- ---------------------
+EMPNO                                 1:4     4           CHARACTER            
+PROJNO                              29:31     3           CHARACTER            
+
+Table PROJ, loaded when PROJNO != 0X202020(character '   ')
+Insert option in effect for this table: REPLACE
+
+   Column Name                  Position   Len  Term Encl Datatype
+------------------------------ ---------- ----- ---- ---- ---------------------
+EMPNO                                 1:4     4           CHARACTER            
+PROJNO                              33:35     3           CHARACTER            
+
+Record 2: Rejected - Error on table EMP.
+ORA-00001: unique constraint (SCOTT.EMPIX) violated
+
+Record 8: Rejected - Error on table EMP, column DEPTNO.
+ORA-01722: invalid number
+
+Record 3: Rejected - Error on table PROJ, column PROJNO.
+ORA-01722: invalid number
+
+
+Table EMP:
+  9 Rows successfully loaded.
+  3 Rows not loaded due to data errors.
+  0 Rows not loaded because all WHEN clauses were failed.
+  0 Rows not loaded because all fields were null.
+
+
+Table PROJ:
+  7 Rows successfully loaded.
+  2 Rows not loaded due to data errors.
+  3 Rows not loaded because all WHEN clauses were failed.
+  0 Rows not loaded because all fields were null.
+
+
+Table PROJ:
+  7 Rows successfully loaded.
+  3 Rows not loaded due to data errors.
+  2 Rows not loaded because all WHEN clauses were failed.
+  0 Rows not loaded because all fields were null.
+
+
+Table PROJ:
+  6 Rows successfully loaded.
+  3 Rows not loaded due to data errors.
+  3 Rows not loaded because all WHEN clauses were failed.
+  0 Rows not loaded because all fields were null.
+
+
+Space allocated for bind array:                   4096 bytes(64 rows)
+Read   buffer bytes: 1048576
+
+Total logical records skipped:          0
+Total logical records read:            12
+Total logical records rejected:         3
+Total logical records discarded:        0
+
+Run began on Sun Oct 21 00:08:57 2018
+Run ended on Sun Oct 21 00:08:59 2018
+
+Elapsed time was:     00:00:02.50
+CPU time was:         00:00:00.04
