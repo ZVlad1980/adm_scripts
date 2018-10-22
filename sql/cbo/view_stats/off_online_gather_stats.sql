@@ -1,0 +1,3 @@
+--off
+CREATE TABLE employees2 AS
+  SELECT /*+NO_GATHER_OPTIMIZER_STATISTICS*/ * FROM employees
