@@ -5,7 +5,7 @@ duplicate(){
   local -r src_host="oracle@10.1.1.108"
   local -r src_dmp_path="/ora1/buf/datapump/tts"
   local -r src_file_path="/ora1/dat/tstdb/dbs"
-  local -r export_file="export_tts_$(date +%y%m%d).dmp"
+  local -r export_file="export.dmp"
   local -r import_file="export.dmp"
   local -r import_log="import_$(date +%y%m%d).log"
   local -r signal_file="tts_ready_$(date +%y%m%d)"
@@ -46,12 +46,14 @@ duplicate(){
 }
 
 run_sql(){
-  local sqlfile="${sqldir}/${1:-}"
+  local file="${1}"
   shift
+  local sqlfile="${sqldir}/${file}.sql"
+  local logfile="${logdir}/sql_${file}_$(date +%y%m%d)_$(date +%H%M).log"
   if [ -f "${sqlfile}" ]
   then
-    out "Run @${sqlfile}"
-    sqlplus /nolog @"${sqlfile}" "$@"
+    out "Run @${sqlfile}, logout: ${logfile}"
+    sqlplus /nolog @"${sqlfile}" "$@" &> "${logfile}" 
     out "Complete ${sqlfile}"
   else
     raise "Script ${sqlfile} not found!"
@@ -59,7 +61,7 @@ run_sql(){
 }
 
 scp_from(){
-  scp_copy "${src_host}:${1}" "${logdir}/"
+  scp_copy "${src_host}:${1}" "${2}"
 }
 
 check_signal(){
@@ -69,7 +71,7 @@ check_signal(){
 copy_files(){
   rm -f "${dmp_path}/${import_file}"
   rm -f "${dmp_path}/${import_log}"
-  rm -f "${backup_path}/*"
+  rm -f "${backup_path}/"*
   scp_from "${src_file_path}/arh*" "${backup_path}/"
   scp_from "${src_file_path}/ctx*" "${backup_path}/"
   scp_from "${src_file_path}/dwh*" "${backup_path}/"
@@ -85,35 +87,35 @@ copy_files(){
   
   scp_from "${src_dmp_path}/${export_file}" "${dmp_path}/export.dmp"
 
-  run_sql "set_tablespace_online.sql"
+  run_sql "set_tablespace_online"
 
 }
 
 recreate_node(){
-  run_sql "drop_node.sql" "${target_db}"
+  run_sql "drop_node" "${target_db}"
   sleep 30 #????
-  run_sql "stop_daemon.sql"
-  run_sql "shut_tstcdb.sql"
+  run_sql "stop_daemon"
+  run_sql "shut_tstcdb"
   wait_clean_snaps "dev"
   wait_clean_snaps "weekly"
-  run_sql "start_tstcdb.sql"
-  run_sql "start_daemon.sql"
-  run_sql "create_${target_db}.sql"  
+  run_sql "start_tstcdb"
+  out "Start PDB_DAEMON"
+  "${__dir}"/start_daemon.sh
+  run_sql "create_${target_db}" "${dmp_path}"
 }
 
 convert_datafiles(){
-  rman target / @"${confdir}/convert_${target_db}.rman" LOG="${rmnlog}"
-  #TODO Add check result import
+  rman target / @"${confdir}/convert_${target_db}.rman" LOG="${rmnlog}" &>> /dev/null
 }
 
 import_dmp(){
-  run_sql "open_node.sql" "${target_db}"
+  run_sql "open_node" "${target_db}"
   set +e
-  impdp system/passwd@"${TARGET}" parfile="${confdir}/imp_${TARGET}.par" logfile="${import_log}"
+  impdp system/passwd@"${target_db}" parfile="${confdir}/imp_${target_db}.par" logfile="${import_log}" &>> "${logdir}/${import_log}"
   set -e
   #TODO Add check result import
 }
 
 post_import(){
-  run_sql "post_import.sql" "${target_db}"
+  run_sql "post_import" "${target_db}"
 }

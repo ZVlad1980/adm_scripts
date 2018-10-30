@@ -1,6 +1,7 @@
 def dump_dir = '&1';
 conn / as sysdba
 @@set_env.sql
+
 host rm -fr /u01/app/oracle/oradata/weekly/WEEKLY_NODE/datafile
 create pluggable database weekly_node admin user admin identified by admin file_name_convert=(
   '/u01/app/oracle/oradata/tstcdb/pdbseed/system01.dbf', '/u01/app/oracle/oradata/weekly/WEEKLY_NODE/datafile/system01.dbf',
@@ -80,4 +81,4 @@ END;
 /
 connect system/passwd@weekly_node
 CREATE OR REPLACE DIRECTORY data_dump_dir AS '&dump_dir';
-exit
+exit success

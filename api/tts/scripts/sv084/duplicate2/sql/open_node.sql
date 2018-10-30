@@ -31,4 +31,4 @@ exception
     raise;
 end;
 /
-exit
+exit success

@@ -6,4 +6,4 @@ startup mount;
 alter database open read only;
 exec DBMS_PDB.DESCRIBE(pdb_descr_file => '&xml_file');
 shut immediate
-exit
+exit success

@@ -63,4 +63,4 @@ begin
 
 end;
 /
-exit;
+exit success

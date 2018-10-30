@@ -1,14 +1,14 @@
 #!/usr/bin/env bash
 
-declare -r __LOCKFILE="lock.lck"
+declare -r __LOCKFILE="${__dir}/lock.lck"
 declare -r __TWO_TASK="${TWO_TASK:-}"
 declare __error_msg=""
 
 set_lock(){
   
-  if ! ( set -o noclobber; echo "$$" > "$__LOCKFILE") 2> /dev/null; 
+  if ! ( set -o noclobber; echo "$$" > "${__LOCKFILE}") 2> /dev/null; 
   then
-    set_error "Failed to acquire lockfile"
+    set_error "Failed to acquire lockfile: ${__LOCKFILE}"
     exit 1
   fi
 }
@@ -69,18 +69,22 @@ scp_copy(){
 }
 
 wait_clean_snaps(){
+
   local acfs_path="${ORACLE_BASE}/oradata/${1}"
   local del_lines=1
 
   while [ $del_lines -gt 0 ]
   do
-    del_lines=$(acfsutil snap info "${acfs_path}" | grep -c "delete in progress")
-    if [ "${DEL_LINES}" -eq 0 ]
+    set +e
+    del_lines=`acfsutil snap info "${acfs_path}" | grep -c "delete in progress"`
+    set -e
+      
+    if [ "${del_lines}" -eq 0 ]
     then
       break;
     fi
-    (( DEL_LINES-=1 ))
-    out "Delete processing ${DEL_LINES}. Sleep 20 sec"
+    (( del_lines-=1 ))
+    out "Delete processing ${del_lines}. Sleep 20 sec"
     sleep 20
   done
 }

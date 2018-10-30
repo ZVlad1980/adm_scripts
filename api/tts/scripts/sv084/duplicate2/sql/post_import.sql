@@ -172,4 +172,4 @@ begin
   pdb_api.recreate_pdbs(p_pdb_node => '&pdb');
 end;
 /
-exit;
+exit success

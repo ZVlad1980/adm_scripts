@@ -36,4 +36,4 @@ begin
   end loop;
 end;
 /
-exit
+exit success

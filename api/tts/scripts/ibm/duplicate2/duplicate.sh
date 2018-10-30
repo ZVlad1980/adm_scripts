@@ -5,14 +5,13 @@ duplicate(){
   local -r signal_file="tts_ready_$(date +%y%m%d)"
   local -r sqldir="${__dir}/sql"
   local -r confdir="${__dir}/conf"
+  local -r logdir="${__dir}/logs"
   local -r rmnlog="${__dir}/logs/rman_$(date +%y%m%d)_$(date +%H%M).log"
   local -r cnvlog="${__dir}/logs/conv_$(date +%y%m%d)_$(date +%H%M).log"
-  local -r explog="${__dir}/logs/exp_$(date +%y%m%d)_$(date +%H%M).log"
-#  local -r finlog="${__dir}/logs/fin_$(date +%y%m%d)_$(date +%H%M).log"
   local -r prepttslog="${__dir}/logs/prep_tts_$(date +%y%m%d)_$(date +%H%M).log"
   local -r backup_path="/ora1/sav/bkup"
   local -r dump_dir="/ora1/buf/datapump/tts"
-  local -r dump_file="export_tts_$(date +%y%m%d).dmp"
+  local -r dump_file="export.dmp"
   local -r dump_log="export_tts_$(date +%y%m%d).log"
   local -r xml_file="${confdir}/xml/tstdb.xml"
   mkdir -p "${confdir}/xml"
@@ -52,12 +51,14 @@ duplicate(){
 }
 
 run_sql(){
-  local sqlfile="${sqldir}/${1:-}"
+  local file="${1}"
   shift
+  local sqlfile="${sqldir}/${file}.sql"
+  local logfile="${logdir}/sql_${file}_$(date +%y%m%d)_$(date +%H%M).log"
   if [ -f "${sqlfile}" ]
   then
-    out "Run @${sqlfile}"
-    sqlplus /nolog @"${sqlfile}" "$@"
+    out "Run @${sqlfile}, logout: ${logfile}"
+    sqlplus /nolog @"${sqlfile}" "$@" &> "${logfile}" 
     out "Complete ${sqlfile}"
   else
     raise "Script ${sqlfile} not found!"
@@ -66,7 +67,7 @@ run_sql(){
 
 prepare_duplicate(){
   set_ora "tstcdb"
-  run_sql "drop_tstdb.sql"
+  run_sql "drop_tstdb"
   rm -fr /ora1/dat/tstdb/arc/*
   rm -fr /ora1/dat/tstdb/ctl/*
   rm -fr /ora1/dat/tstdb/redo/*
@@ -80,33 +81,33 @@ prepare_duplicate(){
 create_duplicate(){
   set_ora "tstdb"
   cp "${confdir}/init/"* "${ORACLE_HOME}/dbs/"
-  run_sql "startup_auxiliary.sql" "${ORACLE_HOME}/dbs/inittstdb.ora"
+  run_sql "startup_auxiliary" "${ORACLE_HOME}/dbs/inittstdb.ora"
   rman @"${confdir}/duplicate_db.rman" log "${rmnlog}"
   out "####"
 }
 
 post_duplicate(){
   set_ora "tstdb"
-  run_sql "post_duplicate.sql"
+  run_sql "post_duplicate"
 }
 
 noncdb_to_cdb(){
   rm -f /home/oracle/tstcdb/tstdb.xml
   set_ora "tstdb"
-  run_sql "prepare_plugin.sql" "${xml_file}"
+  run_sql "prepare_plugin" "${xml_file}"
   set_ora "tstcdb"
-  out "Apply plugin_to_tstcdb.sql 1 RUN"
-  run_sql "plugin_to_tstcdb.sql" "${xml_file}" "${cnvlog}"
-  out "Apply plugin_to_tstcdb.sql 2 RUN"
-  run_sql "plugin_to_tstcdb2.sql" "${cnvlog}"
+  out "Apply plugin_to_tstcdb 1 RUN"
+  run_sql "plugin_to_tstcdb" "${xml_file}"
+  out "Apply plugin_to_tstcdb 2 RUN"
+  run_sql "plugin_to_tstcdb2"
 }
 
 prepare_tts(){
   set_ora "tstcdb"
-  run_sql "prepare_tts.sql" "${dump_dir}" "${prepttslog}"
+  run_sql "prepare_tts" "${dump_dir}"
   out "Datapump export start"
   set +e
-  expdp system/passwd@tstdb full=y dumpfile="${dump_file}" directory=data_dump_dir transportable=always logfile="${dump_log}" 2>> "${explog}"
+  expdp system/passwd@tstdb full=y dumpfile="${dump_file}" directory=data_dump_dir transportable=always logfile="${dump_log}" &> "${logdir}/${dump_log}"
   set -e
   if [ $(tail -1 "${dump_dir}/${dump_log}" | grep -c 'completed with 4 error(s)') -eq 0 ]
   then 

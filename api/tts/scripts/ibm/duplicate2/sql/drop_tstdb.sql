@@ -17,4 +17,4 @@ end;
 /
 show pdbs
 shut immediate
-exit
+exit success

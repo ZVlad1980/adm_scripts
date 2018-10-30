@@ -1,10 +1,6 @@
 def dump_dir = '&1';
-def log_file = '&2';
 connect system/passwd@tstdb
 @@set_env.sql
-prompt Log continue into &log_file
-spool '$log_file'
-set termout off
 create table vbz.tts_invalids_t as 
   select ao.owner,
          ao.object_type,
@@ -170,6 +166,4 @@ CREATE OR REPLACE DIRECTORY data_dump_dir AS '&dump_dir'
 /
 ALTER DATABASE dataFILE '/ora1/dat/tstdb/dbs/system01.dbf' RESIZE 11G
 /
-spool off
-set termout on
-exit;
+exit success

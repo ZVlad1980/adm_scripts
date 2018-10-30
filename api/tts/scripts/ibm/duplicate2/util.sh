@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-declare -r __LOCKFILE="lock.lck"
+declare -r __LOCKFILE="${__dir}/lock.lck"
 declare -r __TWO_TASK="${TWO_TASK:-}"
 declare __error_msg=""
 

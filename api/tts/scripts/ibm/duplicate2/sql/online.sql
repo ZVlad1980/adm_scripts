@@ -20,4 +20,4 @@ alter tablespace GFPNINDX read write;
 alter tablespace SMPPDATA read write;
 alter tablespace ETL_DATA read write;
 alter tablespace ETL_INDX read write;
-exit
+exit success
