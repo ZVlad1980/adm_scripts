@@ -375,8 +375,8 @@ create or replace package body pdb_api is
     --
     l_clone_row.pdb_name    := upper(p_pdb_name);
     l_clone_row.creator     := p_creator;
-    l_clone_row.refreshable := p_refreshable;
-    l_clone_row.freeze      := p_freeze;
+    l_clone_row.refreshable := nvl(p_refreshable, GC_RFR_NO);
+    l_clone_row.freeze      := nvl(p_freeze, GC_FRZ_NO);
 
     if p_action = GC_ACT_CLONE then
       l_clone_row.pdb_parent := nvl(upper(p_pdb_parent), G_PDB_DEFAULT);
@@ -444,7 +444,7 @@ create or replace package body pdb_api is
       select t.pdb_name,
              t.pdb_parent,
              t.open_mode,
-             t.refreshable,
+             coalesce(t.refreshable, GC_RFR_NO) refreshable,
              t.last_open_mode,
              t.creator,
              (select c.freeze from pdb_clones c where c.pdb_name = t.pdb_parent) parent_freeze,

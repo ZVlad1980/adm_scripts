@@ -19,8 +19,6 @@ duplicate(){
 
   out "Starting update ${target_db}"
   
-  check_signal
-  
   out "Copy datafiles and datapump file from IBM02"
   copy_files
   out "Copy complete"
@@ -28,7 +26,7 @@ duplicate(){
   out "Recreate ${target_db}"
   recreate_node
   out "Recreate complete"
-  
+
   out "Convert datafiles"
   convert_datafiles
   out "Convert complete"
@@ -58,6 +56,10 @@ run_sql(){
   else
     raise "Script ${sqlfile} not found!"
   fi
+}
+
+start_pdb_daemon(){
+  nohup sqlplus /nolog @"${__dir}/sql/start_daemon.sql" &
 }
 
 scp_from(){
@@ -93,25 +95,27 @@ copy_files(){
 
 recreate_node(){
   run_sql "drop_node" "${target_db}"
-  sleep 30 #????
   run_sql "stop_daemon"
   run_sql "shut_tstcdb"
   wait_clean_snaps "dev"
   wait_clean_snaps "weekly"
+
   run_sql "start_tstcdb"
+
   out "Start PDB_DAEMON"
-  "${__dir}"/start_daemon.sh
+  start_pdb_daemon
+  
   run_sql "create_${target_db}" "${dmp_path}"
 }
 
 convert_datafiles(){
-  rman target / @"${confdir}/convert_${target_db}.rman" LOG="${rmnlog}" &>> /dev/null
+  rman target / @"${confdir}/convert_${target_db}.rman" LOG="${rmnlog}" &> /dev/null
 }
 
 import_dmp(){
   run_sql "open_node" "${target_db}"
   set +e
-  impdp system/passwd@"${target_db}" parfile="${confdir}/imp_${target_db}.par" logfile="${import_log}" &>> "${logdir}/${import_log}"
+  impdp system/passwd@"${target_db}" parfile="${confdir}/imp_${target_db}.par" logfile="${import_log}" &> "${logdir}/${import_log}"
   set -e
   #TODO Add check result import
 }

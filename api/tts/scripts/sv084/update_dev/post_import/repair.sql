@@ -1,45 +1,3 @@
-def pdb = '&1';
-conn sys/"oSposC.c"@'&pdb' as sysdba
-@@set_env.sql
-whenever sqlerror continue;
-show con_name;
-declare 
-  cursor c_jobs is
-    select j.owner ||'.' || j.job_name job_name
-    from   all_scheduler_jobs j
-    where  j.enabled = 'TRUE';
-    --
-begin
-
-  for j in c_jobs loop
-    begin
-      dbms_output.put('Disable job ' || j.job_name || ' ... ');
-      dbms_scheduler.disable(
-        name             => j.job_name,
-        force            => true
-      );
-      dbms_output.put_line('Ok');
-    exception
-      when others then 
-        dbms_output.put_line('Failed. ' || sqlerrm);
-    end;
-  end loop;
-
-end;
-/
-grant execute on dbms_lock to inf;
-grant execute on dbms_lock to inf_pn;
-grant execute on dbms_lock to gazfond;
-grant execute on dbms_lock to gazfond_pn;
-grant execute on dbms_lock to fnd;
-grant execute on dbms_lock to cdm;
-grant select on v_$session to gazfond, gazfond_pn, cdm;
-set serveroutput on
-exec dbms_stats.gather_system_stats();
-exec sys.dbms_stats.gather_system_stats('START');
-alter session disable parallel query;
-select /*+ FULL(a) */ count(*) from gazfond_pn.people a;
-exec sys.dbms_stats.gather_system_stats('STOP');
 alter table gazfond.documents add REG_DEPT_NUM_FOR_SORT VARCHAR2(14) GENERATED ALWAYS AS (COALESCE(LPAD(REG_DEPT_NUM,14,'0'),'00000000000000')) VIRTUAL  NOT NULL ENABLE;
 alter table gazfond.documents add REG_ACT_NUM_FOR_SORT VARCHAR2(14) GENERATED ALWAYS AS (COALESCE(LPAD(REG_ACT_NUM,14,'0'),'00000000000000')) VIRTUAL  NOT NULL ENABLE;
 alter table gazfond.documents add REG_DOC_NUM_FOR_SORT VARCHAR2(14) GENERATED ALWAYS AS (COALESCE(LPAD(REG_DOC_NUM,14,'0'),'00000000000000')) VIRTUAL  NOT NULL ENABLE;
@@ -141,37 +99,30 @@ column object_type format a15;
 column object_name format a20;
 column status format a10;
 select tt.owner,
-       tt.object_type,
-       tt.object_name,
-       tt.status
-from   (
-        select ao.owner,
-               ao.object_type,
-               ao.object_name,
-               ao.status
-        from   all_objects ao
-        where  1 = 1
-        and    ao.status <> 'VALID'
-        and    ao.owner in (select u.username
-                            from   all_users u
-                            where  u.common = 'NO')
-        minus
-        select t.owner, t.object_type, t.object_name, t.status
-        from   vbz.tts_invalids_t t
-       ) tt
-order by 
-  case tt.object_type
-    when 'PACKAGE' then 1
-    when 'VIEW' then 2
-    when 'SYNONYM' then 3
-    else 99
-  end
+           tt.object_type,
+           tt.object_name,
+           tt.status
+    from   (
+            select ao.owner,
+                   ao.object_type,
+                   ao.object_name,
+                   ao.status
+            from   all_objects ao
+            where  1 = 1
+            and    ao.status <> 'VALID'
+            and    ao.owner in (select u.username
+                                from   all_users u
+                                where  u.common = 'NO')
+            minus
+            select t.owner, t.object_type, t.object_name, t.status
+            from   vbz.tts_invalids_t t
+           ) tt
+    order by 
+      case tt.object_type
+        when 'PACKAGE' then 1
+        when 'VIEW' then 2
+        when 'SYNONYM' then 3
+        else 99
+      end
 /
-conn pdb_root/pdb_root@pdb_root
-@@set_env.sql
-begin
-  -- Test statements here
-  pdb_api.recreate_pdbs(p_pdb_node => '&pdb');
-end;
-/
-exit success
+exit

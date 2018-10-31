@@ -22,8 +22,9 @@ echo Start Oracle listener
 $ORACLE_HOME/bin/lsnrctl start
 #иногда автозапуск не проходит, поэтому на всякий случай
 echo Start ASM instance
+set +e
 $ORACLE_HOME/bin/srvctl start asm 
-sleep 20
+set -e
 
 echo Prepare ACFS diskgroups
 $ORACLE_HOME/bin/asmcmd umount -a 

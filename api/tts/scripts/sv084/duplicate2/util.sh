@@ -84,7 +84,7 @@ wait_clean_snaps(){
       break;
     fi
     (( del_lines-=1 ))
-    out "Delete processing ${del_lines}. Sleep 20 sec"
+    out "Delete processing ${del_lines}. Sleep 60 sec"
     sleep 20
   done
 }

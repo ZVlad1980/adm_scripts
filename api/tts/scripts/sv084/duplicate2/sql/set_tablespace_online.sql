@@ -1,5 +1,6 @@
 conn system/passwd@tstdb
 @@set_env.sql
+whenever sqlerror continue;
 alter tablespace DWHDATA read write;
 alter tablespace FONDDATA read write;
 alter tablespace FONDINDX read write;

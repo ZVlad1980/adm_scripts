@@ -4,10 +4,10 @@
   <cid>0</cid>
   <byteorder>2</byteorder>
   <vsn>201326592</vsn>
-  <dbid>3524417123</dbid>
-  <cdbid>3524417123</cdbid>
+  <dbid>3524679025</dbid>
+  <cdbid>3524679025</cdbid>
   <guid>05227189B74C0006E0530A0101759187</guid>
-  <uscnbas>3316751739</uscnbas>
+  <uscnbas>3316755464</uscnbas>
   <uscnwrp>14</uscnwrp>
   <rdba>4250893</rdba>
   <tablespace>
@@ -26,12 +26,12 @@
       <fileblocks>393216</fileblocks>
       <blocksize>16384</blocksize>
       <vsn>201326592</vsn>
-      <fdbid>3524417123</fdbid>
+      <fdbid>3524679025</fdbid>
       <fcpsw>14</fcpsw>
-      <fcpsb>3316751738</fcpsb>
+      <fcpsb>3316755463</fcpsb>
       <frlsw>14</frlsw>
       <frlsb>3316601109</frlsb>
-      <frlt>990614755</frlt>
+      <frlt>990876657</frlt>
     </file>
   </tablespace>
   <tablespace>
@@ -50,12 +50,12 @@
       <fileblocks>393216</fileblocks>
       <blocksize>16384</blocksize>
       <vsn>201326592</vsn>
-      <fdbid>3524417123</fdbid>
+      <fdbid>3524679025</fdbid>
       <fcpsw>14</fcpsw>
-      <fcpsb>3316751738</fcpsb>
+      <fcpsb>3316755463</fcpsb>
       <frlsw>14</frlsw>
       <frlsb>3316601109</frlsb>
-      <frlt>990614755</frlt>
+      <frlt>990876657</frlt>
     </file>
   </tablespace>
   <tablespace>
@@ -110,12 +110,12 @@
       <fileblocks>655360</fileblocks>
       <blocksize>16384</blocksize>
       <vsn>201326592</vsn>
-      <fdbid>3524417123</fdbid>
+      <fdbid>3524679025</fdbid>
       <fcpsw>14</fcpsw>
-      <fcpsb>3316751738</fcpsb>
+      <fcpsb>3316755463</fcpsb>
       <frlsw>14</frlsw>
       <frlsb>3316601109</frlsb>
-      <frlt>990614755</frlt>
+      <frlt>990876657</frlt>
     </file>
   </tablespace>
   <tablespace>
@@ -134,12 +134,12 @@
       <fileblocks>1310720</fileblocks>
       <blocksize>16384</blocksize>
       <vsn>201326592</vsn>
-      <fdbid>3524417123</fdbid>
+      <fdbid>3524679025</fdbid>
       <fcpsw>14</fcpsw>
-      <fcpsb>3316751738</fcpsb>
+      <fcpsb>3316755463</fcpsb>
       <frlsw>14</frlsw>
       <frlsb>3316601109</frlsb>
-      <frlt>990614755</frlt>
+      <frlt>990876657</frlt>
     </file>
     <file>
       <path>/ora1/dat/tstdb/dbs/fnddat05.dbf</path>
@@ -151,12 +151,12 @@
       <fileblocks>1310720</fileblocks>
       <blocksize>16384</blocksize>
       <vsn>201326592</vsn>
-      <fdbid>3524417123</fdbid>
+      <fdbid>3524679025</fdbid>
       <fcpsw>14</fcpsw>
-      <fcpsb>3316751738</fcpsb>
+      <fcpsb>3316755463</fcpsb>
       <frlsw>14</frlsw>
       <frlsb>3316601109</frlsb>
-      <frlt>990614755</frlt>
+      <frlt>990876657</frlt>
     </file>
     <file>
       <path>/ora1/dat/tstdb/dbs/fnddat04.dbf</path>
@@ -168,12 +168,12 @@
       <fileblocks>1310720</fileblocks>
       <blocksize>16384</blocksize>
       <vsn>201326592</vsn>
-      <fdbid>3524417123</fdbid>
+      <fdbid>3524679025</fdbid>
       <fcpsw>14</fcpsw>
-      <fcpsb>3316751738</fcpsb>
+      <fcpsb>3316755463</fcpsb>
       <frlsw>14</frlsw>
       <frlsb>3316601109</frlsb>
-      <frlt>990614755</frlt>
+      <frlt>990876657</frlt>
     </file>
     <file>
       <path>/ora1/dat/tstdb/dbs/fnddat03.dbf</path>
@@ -185,12 +185,12 @@
       <fileblocks>1310720</fileblocks>
       <blocksize>16384</blocksize>
       <vsn>201326592</vsn>
-      <fdbid>3524417123</fdbid>
+      <fdbid>3524679025</fdbid>
       <fcpsw>14</fcpsw>
-      <fcpsb>3316751738</fcpsb>
+      <fcpsb>3316755463</fcpsb>
       <frlsw>14</frlsw>
       <frlsb>3316601109</frlsb>
-      <frlt>990614755</frlt>
+      <frlt>990876657</frlt>
     </file>
     <file>
       <path>/ora1/dat/tstdb/dbs/fnddat02.dbf</path>
@@ -202,12 +202,12 @@
       <fileblocks>655360</fileblocks>
       <blocksize>16384</blocksize>
       <vsn>201326592</vsn>
-      <fdbid>3524417123</fdbid>
+      <fdbid>3524679025</fdbid>
       <fcpsw>14</fcpsw>
-      <fcpsb>3316751738</fcpsb>
+      <fcpsb>3316755463</fcpsb>
       <frlsw>14</frlsw>
       <frlsb>3316601109</frlsb>
-      <frlt>990614755</frlt>
+      <frlt>990876657</frlt>
     </file>
     <file>
       <path>/ora1/dat/tstdb/dbs/fnddat01.dbf</path>
@@ -219,12 +219,12 @@
       <fileblocks>655360</fileblocks>
       <blocksize>16384</blocksize>
       <vsn>201326592</vsn>
-      <fdbid>3524417123</fdbid>
+      <fdbid>3524679025</fdbid>
       <fcpsw>14</fcpsw>
-      <fcpsb>3316751738</fcpsb>
+      <fcpsb>3316755463</fcpsb>
       <frlsw>14</frlsw>
       <frlsb>3316601109</frlsb>
-      <frlt>990614755</frlt>
+      <frlt>990876657</frlt>
     </file>
   </tablespace>
   <tablespace>
@@ -243,12 +243,12 @@
       <fileblocks>2621440</fileblocks>
       <blocksize>16384</blocksize>
       <vsn>201326592</vsn>
-      <fdbid>3524417123</fdbid>
+      <fdbid>3524679025</fdbid>
       <fcpsw>14</fcpsw>
-      <fcpsb>3316751738</fcpsb>
+      <fcpsb>3316755463</fcpsb>
       <frlsw>14</frlsw>
       <frlsb>3316601109</frlsb>
-      <frlt>990614755</frlt>
+      <frlt>990876657</frlt>
     </file>
     <file>
       <path>/ora1/dat/tstdb/dbs/fndidx03.dbf</path>
@@ -260,12 +260,12 @@
       <fileblocks>655360</fileblocks>
       <blocksize>16384</blocksize>
       <vsn>201326592</vsn>
-      <fdbid>3524417123</fdbid>
+      <fdbid>3524679025</fdbid>
       <fcpsw>14</fcpsw>
-      <fcpsb>3316751738</fcpsb>
+      <fcpsb>3316755463</fcpsb>
       <frlsw>14</frlsw>
       <frlsb>3316601109</frlsb>
-      <frlt>990614755</frlt>
+      <frlt>990876657</frlt>
     </file>
     <file>
       <path>/ora1/dat/tstdb/dbs/fndidx02.dbf</path>
@@ -277,12 +277,12 @@
       <fileblocks>655360</fileblocks>
       <blocksize>16384</blocksize>
       <vsn>201326592</vsn>
-      <fdbid>3524417123</fdbid>
+      <fdbid>3524679025</fdbid>
       <fcpsw>14</fcpsw>
-      <fcpsb>3316751738</fcpsb>
+      <fcpsb>3316755463</fcpsb>
       <frlsw>14</frlsw>
       <frlsb>3316601109</frlsb>
-      <frlt>990614755</frlt>
+      <frlt>990876657</frlt>
     </file>
     <file>
       <path>/ora1/dat/tstdb/dbs/fndidx01.dbf</path>
@@ -294,12 +294,12 @@
       <fileblocks>655360</fileblocks>
       <blocksize>16384</blocksize>
       <vsn>201326592</vsn>
-      <fdbid>3524417123</fdbid>
+      <fdbid>3524679025</fdbid>
       <fcpsw>14</fcpsw>
-      <fcpsb>3316751738</fcpsb>
+      <fcpsb>3316755463</fcpsb>
       <frlsw>14</frlsw>
       <frlsb>3316601109</frlsb>
-      <frlt>990614755</frlt>
+      <frlt>990876657</frlt>
     </file>
   </tablespace>
   <tablespace>
@@ -318,12 +318,12 @@
       <fileblocks>1310720</fileblocks>
       <blocksize>16384</blocksize>
       <vsn>201326592</vsn>
-      <fdbid>3524417123</fdbid>
+      <fdbid>3524679025</fdbid>
       <fcpsw>14</fcpsw>
-      <fcpsb>3316751738</fcpsb>
+      <fcpsb>3316755463</fcpsb>
       <frlsw>14</frlsw>
       <frlsb>3316601109</frlsb>
-      <frlt>990614755</frlt>
+      <frlt>990876657</frlt>
     </file>
     <file>
       <path>/ora1/dat/tstdb/dbs/usrdat01.dbf</path>
@@ -335,12 +335,12 @@
       <fileblocks>655360</fileblocks>
       <blocksize>16384</blocksize>
       <vsn>201326592</vsn>
-      <fdbid>3524417123</fdbid>
+      <fdbid>3524679025</fdbid>
       <fcpsw>14</fcpsw>
-      <fcpsb>3316751738</fcpsb>
+      <fcpsb>3316755463</fcpsb>
       <frlsw>14</frlsw>
       <frlsb>3316601109</frlsb>
-      <frlt>990614755</frlt>
+      <frlt>990876657</frlt>
     </file>
   </tablespace>
   <tablespace>
@@ -359,12 +359,12 @@
       <fileblocks>131072</fileblocks>
       <blocksize>16384</blocksize>
       <vsn>201326592</vsn>
-      <fdbid>3524417123</fdbid>
+      <fdbid>3524679025</fdbid>
       <fcpsw>14</fcpsw>
-      <fcpsb>3316751738</fcpsb>
+      <fcpsb>3316755463</fcpsb>
       <frlsw>14</frlsw>
       <frlsb>3316601109</frlsb>
-      <frlt>990614755</frlt>
+      <frlt>990876657</frlt>
     </file>
   </tablespace>
   <tablespace>
@@ -383,12 +383,12 @@
       <fileblocks>1966080</fileblocks>
       <blocksize>16384</blocksize>
       <vsn>201326592</vsn>
-      <fdbid>3524417123</fdbid>
+      <fdbid>3524679025</fdbid>
       <fcpsw>14</fcpsw>
-      <fcpsb>3316751738</fcpsb>
+      <fcpsb>3316755463</fcpsb>
       <frlsw>14</frlsw>
       <frlsb>3316601109</frlsb>
-      <frlt>990614755</frlt>
+      <frlt>990876657</frlt>
     </file>
   </tablespace>
   <tablespace>
@@ -407,12 +407,12 @@
       <fileblocks>1966080</fileblocks>
       <blocksize>16384</blocksize>
       <vsn>201326592</vsn>
-      <fdbid>3524417123</fdbid>
+      <fdbid>3524679025</fdbid>
       <fcpsw>14</fcpsw>
-      <fcpsb>3316751738</fcpsb>
+      <fcpsb>3316755463</fcpsb>
       <frlsw>14</frlsw>
       <frlsb>3316601109</frlsb>
-      <frlt>990614755</frlt>
+      <frlt>990876657</frlt>
     </file>
   </tablespace>
   <tablespace>
@@ -431,12 +431,12 @@
       <fileblocks>983040</fileblocks>
       <blocksize>16384</blocksize>
       <vsn>201326592</vsn>
-      <fdbid>3524417123</fdbid>
+      <fdbid>3524679025</fdbid>
       <fcpsw>14</fcpsw>
-      <fcpsb>3316751738</fcpsb>
+      <fcpsb>3316755463</fcpsb>
       <frlsw>14</frlsw>
       <frlsb>3316601109</frlsb>
-      <frlt>990614755</frlt>
+      <frlt>990876657</frlt>
     </file>
   </tablespace>
   <tablespace>
@@ -455,12 +455,12 @@
       <fileblocks>3276800</fileblocks>
       <blocksize>16384</blocksize>
       <vsn>201326592</vsn>
-      <fdbid>3524417123</fdbid>
+      <fdbid>3524679025</fdbid>
       <fcpsw>14</fcpsw>
-      <fcpsb>3316751738</fcpsb>
+      <fcpsb>3316755463</fcpsb>
       <frlsw>14</frlsw>
       <frlsb>3316601109</frlsb>
-      <frlt>990614755</frlt>
+      <frlt>990876657</frlt>
     </file>
     <file>
       <path>/ora1/dat/tstdb/dbs/infdat02.dbf</path>
@@ -472,12 +472,12 @@
       <fileblocks>3276800</fileblocks>
       <blocksize>16384</blocksize>
       <vsn>201326592</vsn>
-      <fdbid>3524417123</fdbid>
+      <fdbid>3524679025</fdbid>
       <fcpsw>14</fcpsw>
-      <fcpsb>3316751738</fcpsb>
+      <fcpsb>3316755463</fcpsb>
       <frlsw>14</frlsw>
       <frlsb>3316601109</frlsb>
-      <frlt>990614755</frlt>
+      <frlt>990876657</frlt>
     </file>
     <file>
       <path>/ora1/dat/tstdb/dbs/infdat01.dbf</path>
@@ -489,12 +489,12 @@
       <fileblocks>3276800</fileblocks>
       <blocksize>16384</blocksize>
       <vsn>201326592</vsn>
-      <fdbid>3524417123</fdbid>
+      <fdbid>3524679025</fdbid>
       <fcpsw>14</fcpsw>
-      <fcpsb>3316751738</fcpsb>
+      <fcpsb>3316755463</fcpsb>
       <frlsw>14</frlsw>
       <frlsb>3316601109</frlsb>
-      <frlt>990614755</frlt>
+      <frlt>990876657</frlt>
     </file>
   </tablespace>
   <tablespace>
@@ -513,12 +513,12 @@
       <fileblocks>655360</fileblocks>
       <blocksize>16384</blocksize>
       <vsn>201326592</vsn>
-      <fdbid>3524417123</fdbid>
+      <fdbid>3524679025</fdbid>
       <fcpsw>14</fcpsw>
-      <fcpsb>3316751738</fcpsb>
+      <fcpsb>3316755463</fcpsb>
       <frlsw>14</frlsw>
       <frlsb>3316601109</frlsb>
-      <frlt>990614755</frlt>
+      <frlt>990876657</frlt>
     </file>
     <file>
       <path>/ora1/dat/tstdb/dbs/gf_idx05.dbf</path>
@@ -530,12 +530,12 @@
       <fileblocks>655360</fileblocks>
       <blocksize>16384</blocksize>
       <vsn>201326592</vsn>
-      <fdbid>3524417123</fdbid>
+      <fdbid>3524679025</fdbid>
       <fcpsw>14</fcpsw>
-      <fcpsb>3316751738</fcpsb>
+      <fcpsb>3316755463</fcpsb>
       <frlsw>14</frlsw>
       <frlsb>3316601109</frlsb>
-      <frlt>990614755</frlt>
+      <frlt>990876657</frlt>
     </file>
     <file>
       <path>/ora1/dat/tstdb/dbs/gf_idx04.dbf</path>
@@ -547,12 +547,12 @@
       <fileblocks>655360</fileblocks>
       <blocksize>16384</blocksize>
       <vsn>201326592</vsn>
-      <fdbid>3524417123</fdbid>
+      <fdbid>3524679025</fdbid>
       <fcpsw>14</fcpsw>
-      <fcpsb>3316751738</fcpsb>
+      <fcpsb>3316755463</fcpsb>
       <frlsw>14</frlsw>
       <frlsb>3316601109</frlsb>
-      <frlt>990614755</frlt>
+      <frlt>990876657</frlt>
     </file>
     <file>
       <path>/ora1/dat/tstdb/dbs/gf_idx03.dbf</path>
@@ -564,12 +564,12 @@
       <fileblocks>655360</fileblocks>
       <blocksize>16384</blocksize>
       <vsn>201326592</vsn>
-      <fdbid>3524417123</fdbid>
+      <fdbid>3524679025</fdbid>
       <fcpsw>14</fcpsw>
-      <fcpsb>3316751738</fcpsb>
+      <fcpsb>3316755463</fcpsb>
       <frlsw>14</frlsw>
       <frlsb>3316601109</frlsb>
-      <frlt>990614755</frlt>
+      <frlt>990876657</frlt>
     </file>
     <file>
       <path>/ora1/dat/tstdb/dbs/gf_idx02.dbf</path>
@@ -581,12 +581,12 @@
       <fileblocks>655360</fileblocks>
       <blocksize>16384</blocksize>
       <vsn>201326592</vsn>
-      <fdbid>3524417123</fdbid>
+      <fdbid>3524679025</fdbid>
       <fcpsw>14</fcpsw>
-      <fcpsb>3316751738</fcpsb>
+      <fcpsb>3316755463</fcpsb>
       <frlsw>14</frlsw>
       <frlsb>3316601109</frlsb>
-      <frlt>990614755</frlt>
+      <frlt>990876657</frlt>
     </file>
     <file>
       <path>/ora1/dat/tstdb/dbs/gf_idx01.dbf</path>
@@ -598,12 +598,12 @@
       <fileblocks>655360</fileblocks>
       <blocksize>16384</blocksize>
       <vsn>201326592</vsn>
-      <fdbid>3524417123</fdbid>
+      <fdbid>3524679025</fdbid>
       <fcpsw>14</fcpsw>
-      <fcpsb>3316751738</fcpsb>
+      <fcpsb>3316755463</fcpsb>
       <frlsw>14</frlsw>
       <frlsb>3316601109</frlsb>
-      <frlt>990614755</frlt>
+      <frlt>990876657</frlt>
     </file>
   </tablespace>
   <tablespace>
@@ -622,12 +622,12 @@
       <fileblocks>655360</fileblocks>
       <blocksize>16384</blocksize>
       <vsn>201326592</vsn>
-      <fdbid>3524417123</fdbid>
+      <fdbid>3524679025</fdbid>
       <fcpsw>14</fcpsw>
-      <fcpsb>3316751738</fcpsb>
+      <fcpsb>3316755463</fcpsb>
       <frlsw>14</frlsw>
       <frlsb>3316601109</frlsb>
-      <frlt>990614755</frlt>
+      <frlt>990876657</frlt>
     </file>
   </tablespace>
   <tablespace>
@@ -646,12 +646,12 @@
       <fileblocks>1310720</fileblocks>
       <blocksize>16384</blocksize>
       <vsn>201326592</vsn>
-      <fdbid>3524417123</fdbid>
+      <fdbid>3524679025</fdbid>
       <fcpsw>14</fcpsw>
-      <fcpsb>3316751738</fcpsb>
+      <fcpsb>3316755463</fcpsb>
       <frlsw>14</frlsw>
       <frlsb>3316601109</frlsb>
-      <frlt>990614755</frlt>
+      <frlt>990876657</frlt>
     </file>
   </tablespace>
   <tablespace>
@@ -670,12 +670,12 @@
       <fileblocks>655360</fileblocks>
       <blocksize>16384</blocksize>
       <vsn>201326592</vsn>
-      <fdbid>3524417123</fdbid>
+      <fdbid>3524679025</fdbid>
       <fcpsw>14</fcpsw>
-      <fcpsb>3316751738</fcpsb>
+      <fcpsb>3316755463</fcpsb>
       <frlsw>14</frlsw>
       <frlsb>3316601109</frlsb>
-      <frlt>990614755</frlt>
+      <frlt>990876657</frlt>
     </file>
   </tablespace>
   <tablespace>
@@ -694,12 +694,12 @@
       <fileblocks>2621440</fileblocks>
       <blocksize>16384</blocksize>
       <vsn>201326592</vsn>
-      <fdbid>3524417123</fdbid>
+      <fdbid>3524679025</fdbid>
       <fcpsw>14</fcpsw>
-      <fcpsb>3316751738</fcpsb>
+      <fcpsb>3316755463</fcpsb>
       <frlsw>14</frlsw>
       <frlsb>3316601109</frlsb>
-      <frlt>990614755</frlt>
+      <frlt>990876657</frlt>
     </file>
     <file>
       <path>/ora1/dat/tstdb/dbs/gf2dat02.dbf</path>
@@ -711,12 +711,12 @@
       <fileblocks>2621440</fileblocks>
       <blocksize>16384</blocksize>
       <vsn>201326592</vsn>
-      <fdbid>3524417123</fdbid>
+      <fdbid>3524679025</fdbid>
       <fcpsw>14</fcpsw>
-      <fcpsb>3316751738</fcpsb>
+      <fcpsb>3316755463</fcpsb>
       <frlsw>14</frlsw>
       <frlsb>3316601109</frlsb>
-      <frlt>990614755</frlt>
+      <frlt>990876657</frlt>
     </file>
   </tablespace>
   <tablespace>
@@ -735,12 +735,12 @@
       <fileblocks>2621440</fileblocks>
       <blocksize>16384</blocksize>
       <vsn>201326592</vsn>
-      <fdbid>3524417123</fdbid>
+      <fdbid>3524679025</fdbid>
       <fcpsw>14</fcpsw>
-      <fcpsb>3316751738</fcpsb>
+      <fcpsb>3316755463</fcpsb>
       <frlsw>14</frlsw>
       <frlsb>3316601109</frlsb>
-      <frlt>990614755</frlt>
+      <frlt>990876657</frlt>
     </file>
     <file>
       <path>/ora1/dat/tstdb/dbs/gfpndat01.dbf</path>
@@ -752,12 +752,12 @@
       <fileblocks>2621440</fileblocks>
       <blocksize>16384</blocksize>
       <vsn>201326592</vsn>
-      <fdbid>3524417123</fdbid>
+      <fdbid>3524679025</fdbid>
       <fcpsw>14</fcpsw>
-      <fcpsb>3316751738</fcpsb>
+      <fcpsb>3316755463</fcpsb>
       <frlsw>14</frlsw>
       <frlsb>3316601109</frlsb>
-      <frlt>990614755</frlt>
+      <frlt>990876657</frlt>
     </file>
     <file>
       <path>/ora1/dat/tstdb/dbs/gfpndat03.dbf</path>
@@ -769,12 +769,12 @@
       <fileblocks>2621440</fileblocks>
       <blocksize>16384</blocksize>
       <vsn>201326592</vsn>
-      <fdbid>3524417123</fdbid>
+      <fdbid>3524679025</fdbid>
       <fcpsw>14</fcpsw>
-      <fcpsb>3316751738</fcpsb>
+      <fcpsb>3316755463</fcpsb>
       <frlsw>14</frlsw>
       <frlsb>3316601109</frlsb>
-      <frlt>990614755</frlt>
+      <frlt>990876657</frlt>
     </file>
   </tablespace>
   <tablespace>
@@ -793,12 +793,12 @@
       <fileblocks>2621440</fileblocks>
       <blocksize>16384</blocksize>
       <vsn>201326592</vsn>
-      <fdbid>3524417123</fdbid>
+      <fdbid>3524679025</fdbid>
       <fcpsw>14</fcpsw>
-      <fcpsb>3316751738</fcpsb>
+      <fcpsb>3316755463</fcpsb>
       <frlsw>14</frlsw>
       <frlsb>3316601109</frlsb>
-      <frlt>990614755</frlt>
+      <frlt>990876657</frlt>
     </file>
     <file>
       <path>/ora1/dat/tstdb/dbs/gfpnidx01.dbf</path>
@@ -810,12 +810,12 @@
       <fileblocks>2621440</fileblocks>
       <blocksize>16384</blocksize>
       <vsn>201326592</vsn>
-      <fdbid>3524417123</fdbid>
+      <fdbid>3524679025</fdbid>
       <fcpsw>14</fcpsw>
-      <fcpsb>3316751738</fcpsb>
+      <fcpsb>3316755463</fcpsb>
       <frlsw>14</frlsw>
       <frlsb>3316601109</frlsb>
-      <frlt>990614755</frlt>
+      <frlt>990876657</frlt>
     </file>
     <file>
       <path>/ora1/dat/tstdb/dbs/gfpnidx03.dbf</path>
@@ -827,12 +827,12 @@
       <fileblocks>2621440</fileblocks>
       <blocksize>16384</blocksize>
       <vsn>201326592</vsn>
-      <fdbid>3524417123</fdbid>
+      <fdbid>3524679025</fdbid>
       <fcpsw>14</fcpsw>
-      <fcpsb>3316751738</fcpsb>
+      <fcpsb>3316755463</fcpsb>
       <frlsw>14</frlsw>
       <frlsb>3316601109</frlsb>
-      <frlt>990614755</frlt>
+      <frlt>990876657</frlt>
     </file>
   </tablespace>
   <tablespace>
@@ -851,12 +851,12 @@
       <fileblocks>655360</fileblocks>
       <blocksize>16384</blocksize>
       <vsn>201326592</vsn>
-      <fdbid>3524417123</fdbid>
+      <fdbid>3524679025</fdbid>
       <fcpsw>14</fcpsw>
-      <fcpsb>3316751738</fcpsb>
+      <fcpsb>3316755463</fcpsb>
       <frlsw>14</frlsw>
       <frlsb>3316601109</frlsb>
-      <frlt>990614755</frlt>
+      <frlt>990876657</frlt>
     </file>
   </tablespace>
   <tablespace>
@@ -875,12 +875,12 @@
       <fileblocks>1310720</fileblocks>
       <blocksize>16384</blocksize>
       <vsn>201326592</vsn>
-      <fdbid>3524417123</fdbid>
+      <fdbid>3524679025</fdbid>
       <fcpsw>14</fcpsw>
-      <fcpsb>3316751738</fcpsb>
+      <fcpsb>3316755463</fcpsb>
       <frlsw>14</frlsw>
       <frlsb>3316601109</frlsb>
-      <frlt>990614755</frlt>
+      <frlt>990876657</frlt>
     </file>
     <file>
       <path>/ora1/dat/tstdb/dbs/etldat01.dbf</path>
@@ -892,12 +892,12 @@
       <fileblocks>2621440</fileblocks>
       <blocksize>16384</blocksize>
       <vsn>201326592</vsn>
-      <fdbid>3524417123</fdbid>
+      <fdbid>3524679025</fdbid>
       <fcpsw>14</fcpsw>
-      <fcpsb>3316751738</fcpsb>
+      <fcpsb>3316755463</fcpsb>
       <frlsw>14</frlsw>
       <frlsb>3316601109</frlsb>
-      <frlt>990614755</frlt>
+      <frlt>990876657</frlt>
     </file>
   </tablespace>
   <tablespace>
@@ -916,12 +916,12 @@
       <fileblocks>655360</fileblocks>
       <blocksize>16384</blocksize>
       <vsn>201326592</vsn>
-      <fdbid>3524417123</fdbid>
+      <fdbid>3524679025</fdbid>
       <fcpsw>14</fcpsw>
-      <fcpsb>3316751738</fcpsb>
+      <fcpsb>3316755463</fcpsb>
       <frlsw>14</frlsw>
       <frlsb>3316601109</frlsb>
-      <frlt>990614755</frlt>
+      <frlt>990876657</frlt>
     </file>
   </tablespace>
   <optional>

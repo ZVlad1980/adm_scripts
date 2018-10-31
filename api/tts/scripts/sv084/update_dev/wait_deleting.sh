@@ -1,6 +1,5 @@
-#!/usr/bin/env bash
-
-ACFS_PATH="${ORACLE_BASE}/oradata/"$1
+#! /usr/bin/bash
+ACFS_PATH="${ORACLE_BASE}/oradata/dev"
 DEL_LINES=1
 
 while [ $DEL_LINES -gt 0 ]
@@ -11,6 +10,6 @@ then
 break;
 fi
 let "DEL_LINES-=1"
-echo "Delete processing ${DEL_LINES}. Sleep 20 sec at "`date`
-sleep 10
+echo "Delete processing ${DEL_LINES}. Sleep 300 sec at "`date`
+sleep 300
 done

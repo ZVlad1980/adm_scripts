@@ -32,7 +32,7 @@ COMPLETE
 
 Stop:
 oracle:
-. .cdb_env
+/home/oracle/.cdb_env
 sqlplus / as sysdba
 shut immediate
 exit

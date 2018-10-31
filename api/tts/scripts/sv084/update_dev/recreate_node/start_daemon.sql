@@ -1,4 +1,4 @@
-whenever sqlerror exit failure rollback
+set serveroutput on
 connect c##pdbroot/c##pdbroot@tstcdb as sysdba;
 exec pdb_daemon_api.start_daemon;
-exit success
+exit
