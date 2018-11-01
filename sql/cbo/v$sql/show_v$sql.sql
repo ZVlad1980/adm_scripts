@@ -14,7 +14,7 @@ select d.username,
        s.plan_hash_value
 from   v$sql     s,
        dba_users d
-where  sql_text like '%ustom%'
+where  sql_text like '%select emp.*, rowid from   hr.employees emp%'
 and    sql_text not like '%SQL_TEXT%'
 and    d.user_id = s.parsing_user_id
 order by s.sql_id, s.child_number
