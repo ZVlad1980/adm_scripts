@@ -1,0 +1,63 @@
+select p.SPID linux_pid,
+       vs.service_name,
+       vs.osuser,
+       vs.username,
+       vs.logon_time,
+       vs.sid,
+       vs.serial#,
+       vs.audsid,
+       vs.user#,
+       vs.process,
+       vs.machine,
+       vs.port,
+       vs.terminal,
+       vs.program,
+       vs.module,
+       vs.type,
+       vs.status,
+       vs.server,
+       vs.schemaname,
+       vs.sql_id,
+       vs.sql_child_number,
+       vs.sql_exec_start,
+       vs.sql_exec_id,
+       vs.prev_sql_addr,
+       vs.prev_hash_value,
+       vs.prev_sql_id,
+       vs.prev_child_number,
+       vs.prev_exec_start,
+       vs.prev_exec_id,
+       vs.blocking_session_status,
+       vs.blocking_instance,
+       vs.blocking_session,
+       vs.final_blocking_session_status,
+       vs.final_blocking_instance,
+       vs.final_blocking_session,
+       vs.event#,
+       vs.event,
+       vs.state,
+       vs.SECONDS_IN_WAIT,
+       vs.wait_time,
+       vs.wait_time_micro,
+       vs.time_remaining_micro,
+       vs.time_since_last_wait_micro,
+       vs.con_id,
+       vs.sql_address,
+       vs.sql_hash_value,
+       round(vs.pga_tunable_mem /1024/1024, 3)  pga_tunable_mem,
+       round(p.PGA_USED_MEM     /1024/1024, 3)  PGA_USED_MEM    ,
+       round(p.PGA_ALLOC_MEM    /1024/1024, 3)  PGA_ALLOC_MEM   ,
+       round(p.PGA_FREEABLE_MEM /1024/1024, 3)  PGA_FREEABLE_MEM,
+       round(p.PGA_MAX_MEM      /1024/1024, 3)  PGA_MAX_MEM     ,
+       p.TRACEFILE
+from   v$session vs,
+       v$process p
+where  p.ADDR(+) = vs.PADDR
+and    vs.username is not null and vs.status = 'ACTIVE'
+order by vs.logon_time, vs.sid
+/
+SQL_MONITOR
+select m.sql_text, dbms_sqltune.report_sql_monitor(sql_id => m.sql_id, type => /*'ACTIVE'*/'HTML', report_level => 'ALL') AS report
+from  v$sql_monitor m
+where m.sid = :sid and m.session_serial# = :serial#
+order by 1
