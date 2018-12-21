@@ -6,6 +6,7 @@ with t(v1, v2) as (
   select null, null from dual
 )
 select t.*,
+       decode(t.v1, t.v2, 'Yes', 'No') is_decode, --most simple!!!
        case
          when coalesce(nullif(t.v1, t.v2), nullif(t.v2, t.v1)) is null then 'Yes'
          else 'No'

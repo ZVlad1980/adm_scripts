@@ -13,12 +13,17 @@ docker run -d \
 --network host \
 -p 1521:1521 \
 -p 5500:5500 \
--v /dump/:/opt/oracle/oradata/ \
--v /data/:/home/oracle/oradump/ \
+-p 5501:5501 \
+-p 5502:5502 \
+-e ORACLE_SID=NODE \
+-e ORACLE_PDB=NODEPDB \
+-e ORACLE_PWD=passwd \
+-v /u01/app/oracle/oradata/:/opt/oracle/oradata/ \
+-v /home/node/projects/oracle/:/home/oracle/projects/ \
 --name ora \
 --privileged \
 --shm-size 3096MB \
-teamcity:8083/ospos/db:12.2.0.1-ee
+oracle/database:12.2.0.1-ee
 
 vladimirzhuravov/oracle:12.2
 ora_work
