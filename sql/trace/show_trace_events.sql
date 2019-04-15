@@ -1,5 +1,5 @@
 DECLARE
-  err_msg VARCHAR2(120);
+  err_msg VARCHAR2(1200);
 BEGIN
   dbms_output.enable (1000000);
   FOR err_num IN 10000..10999

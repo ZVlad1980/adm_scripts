@@ -1,0 +1,5 @@
+Get last commit with changes
+git rev-list origin -1 -- plsql/extensions/PDH_LOGGER/*
+
+Get list of changes 
+pdh]$ git diff --name-only PDH_LOGGERv0.2.2 | grep /sql/

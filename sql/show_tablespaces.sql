@@ -1,6 +1,14 @@
-select *
-from   dba_tablespace_usage_metrics
+select a.tablespace_name,
+       round((a.used_space * b.block_size) / 1048576, 2) as "Used space (MB)",
+       round((a.tablespace_size * b.block_size) / 1048576, 2) as "Tablespace size (MB)",
+       round(a.used_percent, 2) as "Used %"
+from   dba_tablespace_usage_metrics a,
+       dba_tablespaces b
+where  a.tablespace_name = b.tablespace_name
+and    b.tablespace_name = ''PDH_STG
 /
+--PDH_STG	1130581.69	1458135	77.54
+
 /*
 GFNDDAT2  80  42,481  37,519  46,9  ONLINE  PERMANENT GAZFOND, GAZFOND_AUD, GAZFOND_DOTNET, GAZFOND_LOGS, PDN /u01/app/oracle/oradata/weekly/WEEKLY_VBZ_2/datafile/gf2dat01.dbf, /u01/app/oracle/oradata/weekly/WEEKLY_VBZ_2/datafile/gf2dat02.dbf  LOGGING AVAILABLE
 GFNDINDX  60  39,364  20,636  34,39 ONLINE  PERMANENT GAZFOND, GAZFOND_AUD, GAZFOND_DOTNET, OPSEXP, PDN /u01/app/oracle/oradata/weekly/WEEKLY_VBZ_2/datafile/gf_idx01.dbf, /u01/app/oracle/oradata/weekly/WEEKLY_VBZ_2/datafile/gf_idx02.dbf, /u01/app/oracle/oradata/weekly/WEEKLY_VBZ_2/datafile/gf_idx03.dbf, /u01/app/oracle/oradata/weekly/WEEKLY_VBZ_2/datafile/gf_idx04.dbf, /u01/app/oracle/oradata/weekly/WEEKLY_VBZ_2/datafile/gf_idx05.dbf, /u01/app/oracle/oradata/weekly/WEEKLY_VBZ_2/datafile/gf_idx06.dbf  LOGGING AVAILABLE
