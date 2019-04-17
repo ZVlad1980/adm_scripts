@@ -1,37 +1,40 @@
 PL/SQL Developer Test script 3.0
-33
+36
 declare
-  c       NUMBER;
-  d       NUMBER;
-  n_tab   DBMS_SQL.NUMBER_TABLE;
-  indx    NUMBER := 1;
-  v       number;
-BEGIN
-  c := DBMS_SQL.OPEN_CURSOR;
-  dBMS_SQL.PARSE(c, 'select code from test_tbl order by 1', DBMS_SQL.NATIVE);
+  c     number;
+  d     number;
+  n_tab dbms_sql.number_table;
+  indx  number := 1;
+  v     number;
+begin
+  c := dbms_sql.open_cursor;
+  dbms_sql.parse(c,
+                 'select code from test_tbl order by 1',
+                 dbms_sql.native);
 
-  DBMS_SQL.DEFINE_ARRAY(c, 1, n_tab, 100, indx);
+  dbms_sql.define_array(c, 1, n_tab, 100, indx);
 
-  d := DBMS_SQL.EXECUTE(c);
+  d := dbms_sql.execute(c);
   loop
-    d := DBMS_SQL.FETCH_ROWS(c);
+    d := dbms_sql.fetch_rows(c);
     dbms_output.put_line('d: ' || d);
-    DBMS_SQL.COLUMN_VALUE(c, 1, n_tab);
+    dbms_sql.column_value(c, 1, n_tab);
     --DBMS_SQL.variable_value(c, 'code', n_tab);
     dbms_output.put_line('n_tab.count: ' || n_tab.count);
-    for i in 1..n_tab.count loop
+    for i in 1 .. n_tab.count loop
       dbms_output.put_line('n_tab(' || i || '): ' || n_tab(i));
     end loop;
-    EXIT WHEN d != 100;
-  END LOOP;
+    exit when d != 100;
+  end loop;
 
-  DBMS_SQL.CLOSE_CURSOR(c);
+  dbms_sql.close_cursor(c);
 
-  EXCEPTION WHEN OTHERS THEN
-    IF DBMS_SQL.IS_OPEN(c) THEN
-      DBMS_SQL.CLOSE_CURSOR(c);
-    END IF;
-    RAISE;
-END;
+exception
+  when others then
+    if dbms_sql.is_open(c) then
+      dbms_sql.close_cursor(c);
+    end if;
+    raise;
+end;
 0
 0
