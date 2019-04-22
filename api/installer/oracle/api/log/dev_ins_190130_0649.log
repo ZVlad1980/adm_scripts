@@ -1,0 +1,82 @@
+
+SQL*Plus: Release 12.2.0.1.0 Production on Wed Jan 30 06:49:43 2019
+
+Copyright (c) 1982, 2016, Oracle.  All rights reserved.
+
+Type PDH user name [prod_pdh]: Type PDH user password [PROD_PDH]: 
+Connected.
+
+Connection
+------------------------------------------------------------------------------------------------------------------------
+Connected to MDMORS as PROD_PDH at 01/30/2019 06:49:48
+
+
+General install
+-------------------
+01/30/2019 06:49:48
+
+Create tables
+Create pdh_inst_extensions_t.sql
+
+Sequence created.
+
+
+Table created.
+
+
+Sequence created.
+
+
+Table created.
+
+
+Complete create tables
+
+Create packages
+Create pdh_inst_extensions_def.pks
+
+Package created.
+
+No errors.
+Create pdh_inst_extensions_api.pks
+
+Package created.
+
+No errors.
+Create pdh_inst_extensions_pub.pks
+
+Package created.
+
+No errors.
+
+Complete create packages
+
+Create synonyms
+Create pdh_install.sql
+
+Complete create synonyms
+
+Create package bodies
+Create pdh_inst_extensions_api.pkb
+
+Package body created.
+
+No errors.
+Create pdh_inst_extensions_pub.pkb
+
+Package body created.
+
+No errors.
+
+Complete create package bodies
+
+Register extension "PDH_INSTALL", ext_id: 1
+
+PL/SQL procedure successfully completed.
+
+
+Install complete at
+-------------------
+01/30/2019 06:49:48
+
+Disconnected from Oracle Database 12c Enterprise Edition Release 12.2.0.1.0 - 64bit Production

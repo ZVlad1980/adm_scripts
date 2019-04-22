@@ -1,0 +1,2 @@
+prompt Prepare install scripts
+@@

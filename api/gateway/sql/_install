@@ -1,0 +1,28 @@
+@conn &_PDH_NAME/&_PDH_PWD
+Tables
+  pdh_gateway_modules_t.sql
+  pdh_gateway_actions_t.sql
+  pdh_gateway_parameters_t.sql
+Types
+  pdh_gateway_param_typ.tps
+  pdh_gateway_param_tbl_typ.sql
+  pdh_gateway_params_typ.tps
+  pdh_gateway_module_typ.tps
+Packages
+  pdh_gateway_pkg.pks
+  pdh_gateway_reg_pkg.pks
+Synonyms
+  pdh_gateway.sql
+Views
+  pdh_gateway_modules_v.sql
+PackageBodies
+  pdh_gateway_pkg.pkb
+  pdh_gateway_reg_pkg.pkb
+TypeBodies
+  pdh_gateway_param_typ.tpb
+  pdh_gateway_params_typ.tpb
+  pdh_gateway_module_typ.tpb
+Grants
+  grant_pdh_prod.sql
+_actions
+  registration.sql

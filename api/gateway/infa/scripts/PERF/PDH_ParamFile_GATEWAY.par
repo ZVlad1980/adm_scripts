@@ -1,0 +1,14 @@
+[GLOBAL]
+
+$PMSessLogDir=/informatica/infa_home/PDH/PERF/logs
+$PMCacheDir=/informatica/infa_home/PDH/PERF/infacache
+$PMBadFileDir=/informatica/infa_home/PDH/PERF/badfiles
+$PMParmFileDir=/informatica/infa_home/PDH/PERF/parameter
+$PMSourceFileDir=/informatica/infa_home/PDH/PERF/SRC_Files
+$PMTargetFileDir=/informatica/infa_home/PDH/PERF/TGT_Files
+$PMSessionLogDir=/informatica/infa_home/PDH/PERF/sesslogs
+$PMWorkflowLogDir=/informatica/infa_home/PDH/PERF/wflogs
+
+$DBConnection_TGT=PROD_PDH_PERF
+$DBConnection_SRC=PDH_STG_PERF
+

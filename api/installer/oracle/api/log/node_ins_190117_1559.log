@@ -1,0 +1,94 @@
+
+SQL*Plus: Release 12.2.0.1.0 Production on Thu Jan 17 15:59:39 2019
+
+Copyright (c) 1982, 2016, Oracle.  All rights reserved.
+
+Type PDH user name [dev_pdh]: Type PDH user password [dev_pdh]: 
+Connected.
+
+Connection
+------------------------------------------------------------------------------------------------------------------------
+Connected to ORCLPDB1 as DEV_PDH at 01/17/2019 12:59:41
+
+
+General install
+---------------------------------------------------------
+01/17/2019 12:59:41
+
+Create tables
+Create pdh_inst_extensions_t.sql
+create sequence pdh_inst_extensions_seq start with 1 order nocache
+                *
+ERROR at line 1:
+ORA-00955: name is already used by an existing object
+
+
+create table pdh_inst_extensions_t(
+             *
+ERROR at line 1:
+ORA-00955: name is already used by an existing object
+
+
+create sequence pdh_inst_extension_hist_seq start with 1 order nocache
+                *
+ERROR at line 1:
+ORA-00955: name is already used by an existing object
+
+
+create table pdh_inst_extension_hist_t(
+             *
+ERROR at line 1:
+ORA-00955: name is already used by an existing object
+
+
+
+Complete create tables
+
+Create packages
+Create pdh_inst_extensions_def.pks
+
+Package created.
+
+No errors.
+Create pdh_inst_extensions_api.pks
+
+Package created.
+
+No errors.
+Create pdh_inst_extensions_pub.pks
+
+Package created.
+
+No errors.
+
+Complete create packages
+
+Create synonyms
+Create pdh_install.sql
+
+Complete create synonyms
+
+Create package bodies
+Create pdh_inst_extensions_api.pkb
+
+Package body created.
+
+No errors.
+Create pdh_inst_extensions_pub.pkb
+
+Package body created.
+
+No errors.
+
+Complete create package bodies
+
+Extension "PDH_INSTALL" already registered
+
+PL/SQL procedure successfully completed.
+
+
+Install complete at
+---------------------------------------------------------
+01/17/2019 12:59:41
+
+Disconnected from Oracle Database 12c Enterprise Edition Release 12.2.0.1.0 - 64bit Production

@@ -1,0 +1,12 @@
+[GLOBAL]
+$PMSessLogDir=/informatica/infa_home/shared/logs
+$PMCacheDir=/informatica/infa_home/PDH/infacache
+$PMBadFileDir=/informatica/infa_home/PDH/badfiles
+$PMParmFileDir=/informatica/infa_home/PDH/parameter
+$PMSourceFileDir=/informatica/infa_home/PDH/SRC_Files
+$PMTargetFileDir=/informatica/infa_home/PDH/TGT_Files
+$PMSessionLogDir=/informatica/infa_home/PDH/sesslogs
+$PMWorkflowLogDir=/informatica/infa_home/PDH/wflogs
+
+$DBConnection_STG=PDH_STG_DEV@MDMORS
+$DBConnection_PDH=DEV_PDH_DEV@MDMORS

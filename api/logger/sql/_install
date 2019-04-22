@@ -1,0 +1,17 @@
+@conn &_PDH_NAME/&_PDH_PWD
+Tables
+ log_data.sql
+Views
+ log_data_v.vw
+Packages
+  logger_def.pks
+  logger_api.pks
+  logger_pub.pks 
+PackageBodies
+  logger_api.pkb
+  logger_pub.pkb
+Synonyms
+  log.sql
+_actions
+  registration.sql
+
